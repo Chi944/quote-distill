@@ -1,0 +1,76 @@
+{
+  "description": "Hand-authored seed quotations covering the hardest cases. All suppliers, people, addresses and prices are fictional. Seeds are development material: never part of the frozen test set and never used to tune prompts against test results.",
+  "seeds": [
+    {
+      "id": "seed-01",
+      "layout": "fixed-width table, Singapore",
+      "hard_cases": [
+        "GST-inclusive prices: GST must be backed out of the total, not added",
+        "document-level 5% discount whose exact value 24.745 rounds half-up to 24.75 (banker's rounding gives 24.74)",
+        "typos in labels: 'QUOTATON', 'disount'",
+        "unit synonyms: 'units' -> each, 'bx' -> box"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "seed-02",
+      "layout": "markdown-style table, Australia",
+      "hard_cases": [
+        "DD/MM/YYYY date",
+        "thousands separators and $ symbols in every money cell",
+        "decimal quantity with superscript unit (6.5 m³)",
+        "line-level percent discount and line-level amount discount",
+        "lump-sum row with no quantity or unit price ('L/S' -> lot)",
+        "GST 10% exclusive with half-cent rounding (584.214 -> 584.21)",
+        "validity as an end date"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "seed-03",
+      "layout": "informal email, Malaysia",
+      "hard_cases": [
+        "no quote number, no date, no subtotal, no validity, no payment terms",
+        "GST/SST never mentioned: treatment not_stated, not 'not_charged'",
+        "typos kept verbatim in values ('Galvinised')",
+        "'Grand totl' typo on the total label",
+        "a delivery lead time that must not be read as validity"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "seed-04",
+      "layout": "fixed-width table, US exporter",
+      "hard_cases": [
+        "supplier arithmetic error on line 2 (4 x 18.75 = 75.00, printed 76.00): the label keeps the printed 76.00",
+        "free-of-charge row: 'FOC' -> unit price 0.00",
+        "credit row with negative unit price and line total",
+        "freight row with quantity but no unit",
+        "GST explicitly not applicable: treatment not_charged",
+        "part numbers kept out of descriptions"
+      ],
+      "locale": "US",
+      "expected_check_failures": [
+        "line[1].line_total"
+      ]
+    },
+    {
+      "id": "seed-05",
+      "layout": "prose email, New Zealand",
+      "hard_cases": [
+        "no table: every value is inside sentences",
+        "bare '$' with a New Zealand address: currency not_stated",
+        "'Ref: your enquiry 2219' is the customer's reference, not a quote number",
+        "quantity written in words ('three')",
+        "'plus GST' with no rate and no amount: rate and amount not_stated, total not_stated (do not invent 15%)",
+        "relative validity 'end of this month' resolved against the email date",
+        "conditional 2.5% early-payment discount belongs in payment_terms, not discounts"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    }
+  ]
+}

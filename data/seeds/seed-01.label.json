@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "KESTREL LANE HARDWARE PTE. LTD.",
+    "raw": "KESTREL LANE HARDWARE PTE. LTD."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "KLH-Q-26-0417",
+    "raw": "KLH-Q-26-0417"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-10-18",
+    "raw": "18 Oct 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "SGD",
+    "raw": "Singapore dollars (S$)"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Cordless drill 18V, 2 batteries",
+        "raw": "Cordless drill 18V, 2 batteries"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "2",
+        "raw": "2"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "units"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "189.90",
+        "raw": "189.90"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "379.80",
+        "raw": "379.80"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Drill bit set (19 pc)",
+        "raw": "Drill bit set (19 pc)"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "set",
+        "raw": "sets"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "24.55",
+        "raw": "24.55"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "73.65",
+        "raw": "73.65"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Nitrile safety gloves, box/12pr",
+        "raw": "Nitrile safety gloves, box/12pr"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "5",
+        "raw": "5"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "box",
+        "raw": "bx"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "8.29",
+        "raw": "8.29"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "41.45",
+        "raw": "41.45"
+      }
+    }
+  ],
+  "discounts": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "5% project disount",
+        "raw": "5% project disount"
+      },
+      "kind": "percent",
+      "rate": {
+        "state": "stated",
+        "value": "5",
+        "raw": "5%"
+      },
+      "amount": {
+        "state": "stated",
+        "value": "24.75",
+        "raw": "24.75"
+      }
+    }
+  ],
+  "gst": {
+    "treatment": "inclusive",
+    "rate": {
+      "state": "stated",
+      "value": "9",
+      "raw": "9%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "38.82",
+      "raw": "38.82"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "494.90",
+    "raw": "494.90"
+  },
+  "total": {
+    "state": "stated",
+    "value": "470.15",
+    "raw": "470.15"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P14D",
+    "raw": "Valid for 14 days from date of quotation"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "net 30 days",
+    "raw": "Net 30 days"
+  }
+}

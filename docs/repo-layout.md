@@ -1,0 +1,64 @@
+# Repository layout for Chi944/quote-distill
+
+Built so far: schema, seeds, checks, generator, tests and CI. Everything else below is planned.
+
+Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
+
+```text
+quote-distill/
+├── README.md                    # one sentence, demo link, results table, run locally in 3 commands
+├── LICENSE
+├── .env.example                 # ANTHROPIC_API_KEY= (placeholder only)
+├── .gitignore                   # .env, data/generated/, runs/, models/, demo/dist/, demo/public/models/
+├── pyproject.toml               # package quote_distill; dev extras: pytest, ruff, jsonschema
+├── schema/
+│   └── quotation.schema.json    # the single source of truth (v1.0.0)
+├── src/quote_distill/
+│   ├── schema.py                # load and validate against the JSON Schema
+│   ├── money.py                 # Decimal parsing, half-up rounding; no floats anywhere
+│   ├── normalise.py             # unit, currency and date tables shared by generator and checks
+│   ├── checks.py                # provenance, normalisation and arithmetic checks
+│   ├── generator/
+│   │   ├── vocab.py             # fictional suppliers, items, units, typo tables
+│   │   ├── sample.py            # draw values and their printed forms; build the gold label
+│   │   ├── layouts.py           # five renderers: fixed table, pipe table, item blocks, email list, prose
+│   │   └── build.py             # CLI; keeps only labels that pass checks.py
+│   ├── splits.py                # dev / train / test assignment by hash; test is frozen
+│   ├── teacher/
+│   │   ├── prompt.py            # system prompt built from docs/schema.md + schema
+│   │   ├── batch.py             # estimate, submit, poll, fetch Message Batches; custom_id = doc id
+│   │   └── spend.py             # appends estimates and actual usage to docs/spend.md
+│   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match
+│   └── report.py                # results tables and failure gallery, every number with its denominator
+├── students/
+│   ├── encoder/                 # token tagger: BIO labels from `raw` spans + deterministic assembly
+│   └── generative/              # small seq2seq / decoder (< ~500M) emitting schema JSON
+│       └── (each has train.py, export_onnx.py, and a Colab/Kaggle notebook)
+├── data/
+│   ├── seeds/                   # the five hand-authored hard cases (committed)
+│   ├── samples/                 # small committed generator sample for review
+│   ├── test/                    # 300 hand-checked, frozen: docs, labels, MANIFEST.sha256
+│   └── generated/               # dev and train output (git-ignored, reproducible from a seed)
+├── demo/                        # TypeScript + Vite static site
+│   ├── src/                     # transformers.js inference, schema validation, arithmetic badges
+│   ├── public/models/           # quantised ONNX weights (git-ignored; fetched from Hugging Face Hub)
+│   └── package.json
+├── tests/                       # pytest: money, checks, metrics, generator invariants, test-set hashes
+├── docs/
+│   ├── schema.md                # normalisation and arithmetic rules
+│   ├── pilot-plan.md
+│   ├── spend.md                 # every API job: estimate, actual tokens, cost, running total
+│   ├── test-set.md              # how the 300 were hand-checked; freeze date and hashes
+│   ├── evaluation.md            # full results, per field, with denominators and failures
+│   └── decisions.md             # choices made, options rejected, and why
+└── .github/workflows/
+    └── ci.yml                   # on every push: ruff, pytest, schema check on seeds and test set,
+                                 # test-set hash check, demo typecheck and build
+```
+
+## Rules the layout enforces
+
+- **Test set is frozen.** `data/test/MANIFEST.sha256` is checked in CI; any change to a test document or label fails the build. Training and prompt code never import from `data/test/`; a test checks that.
+- **One schema.** Python validates with `schema/quotation.schema.json`; the demo imports the same file at build time.
+- **No key in the demo.** The demo build has no environment variables. Model weights are served as static files (or from the Hub), so it runs on GitHub Pages.
+- **Spend is logged by code.** `teacher/batch.py` refuses to submit without writing the estimate row to `docs/spend.md` first.

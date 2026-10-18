@@ -218,3 +218,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# quote-distill
+.env.*
+!.env.example
+data/generated/
+runs/
+models/
+demo/node_modules/
+demo/dist/
+demo/public/models/
