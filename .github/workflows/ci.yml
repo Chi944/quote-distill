@@ -20,5 +20,7 @@ jobs:
       - run: pytest -q
       - name: Seeds pass every check
         run: python -m quote_distill.checks data/seeds
+      - name: Frozen test set is unchanged
+        run: python -m quote_distill.splits verify data/test
       - name: Generator keeps every document
         run: quote-distill-generate --n 1000 --seed 1 --split dev --out data/generated/ci

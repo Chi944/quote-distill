@@ -109,3 +109,16 @@ def test_collect_scores_by_custom_id():
     assert out["outcomes"] == {"succeeded": 3, "errored": 1}
     assert out["usage"]["input_tokens"] == 12_000
     assert out["cost"] == spend.cost("claude-haiku-5-5", 12_000, 6_000)
+
+
+def test_test_set_reaches_the_teacher_only_as_an_evaluation_job(monkeypatch, tmp_path):
+    from quote_distill.teacher import batch
+
+    monkeypatch.setattr(batch, "RUNS", tmp_path)
+    test_docs = str(ROOT / "data" / "test" / "docs.jsonl")
+    with pytest.raises(SystemExit, match="only for the final evaluation"):
+        batch.main(["plan", "--job", "x", "--docs", test_docs])
+    with pytest.raises(SystemExit, match="only frozen test-set documents"):
+        batch.main(["plan", "--job", "x", "--docs", str(PILOT / "pilot-20.jsonl"), "--evaluation"])
+    batch.main(["plan", "--job", "eval", "--docs", test_docs, "--evaluation"])
+    assert json.loads((tmp_path / "eval" / "plan.json").read_text())["evaluation"] is True

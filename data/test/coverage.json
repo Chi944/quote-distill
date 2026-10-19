@@ -1,0 +1,53 @@
+{
+  "documents": 300,
+  "locales": {
+    "AU": 60,
+    "MY": 60,
+    "NZ": 60,
+    "SG": 60,
+    "US": 60
+  },
+  "layouts": {
+    "email_list": 60,
+    "fixed_table": 60,
+    "item_blocks": 60,
+    "pipe_table": 60,
+    "prose_email": 60
+  },
+  "features": {
+    "all_lump_sum": 15,
+    "bare_dollar": 60,
+    "conditional_discount": 40,
+    "customer_ref_decoy": 162,
+    "description_typo": 76,
+    "doc_discount": 62,
+    "doc_discount_amount_unprinted": 15,
+    "gst:exclusive": 88,
+    "gst:inclusive": 50,
+    "gst:not_charged": 57,
+    "gst:not_stated": 105,
+    "gst_plus_unpriced": 22,
+    "gst_rate_unprinted": 18,
+    "half_cent_tie": 21,
+    "header_typos": 83,
+    "line:credit": 28,
+    "line:decimal_qty": 104,
+    "line:foc": 35,
+    "line:line_discount_amount": 56,
+    "line:line_discount_percent": 59,
+    "line:lump_sum": 126,
+    "line:qty_in_words": 61,
+    "line:sub_cent_price": 26,
+    "line:supplier_error": 26,
+    "missing:date": 33,
+    "missing:payment_terms": 58,
+    "missing:quote_number": 39,
+    "missing:subtotal": 49,
+    "missing:total": 57,
+    "missing:validity": 59,
+    "relative_validity": 43,
+    "supplier_error": 26
+  },
+  "line_items": 1318,
+  "with_supplier_error": 26
+}
