@@ -15,6 +15,7 @@ dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]
 quote-distill-generate = "quote_distill.generator.build:main"
+quote-distill-score = "quote_distill.metrics:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
