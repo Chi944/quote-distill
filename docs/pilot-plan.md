@@ -20,7 +20,7 @@ The generator already produces gold labels, so the teacher is not needed to crea
 | A. Train the student on generator gold; the teacher is only the baseline | Cheapest and cleanest labels; "distillation" then means matching the teacher's task, not its outputs |
 | B. Train on teacher outputs, filtered by the same checks as gold | A true distillation story and a learned teacher-style output; costs a bulk job and inherits teacher errors that pass the checks |
 
-**Recommendation: A first, B as an ablation if budget allows.** The pilot is the same under both.
+**Decided 19 October 2026: A.** The student trains on generator gold and the teacher is the baseline; B stays a possible ablation if budget allows. The pilot is the same under both.
 
 ## Sample
 
