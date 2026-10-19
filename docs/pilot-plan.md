@@ -1,6 +1,6 @@
 # Teacher pilot plan (20 samples)
 
-Status: **planned, not run.** No API call has been made. Prices were read from the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) on 18 October 2026.
+Status: **ready to run, not run.** Documents, prompt, scoring and spend guard are built and tested. No API call has been made. Prices were read from the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) on 18 October 2026.
 
 ## The step and how we will know it worked
 
@@ -24,36 +24,48 @@ The generator already produces gold labels, so the teacher is not needed to crea
 
 ## Sample
 
-- 20 documents from the **dev** split: the 5 seeds in `data/seeds/` plus 15 generator documents, 3 from each hard-case family (inclusive GST and rounding, line and lump-sum discounts, sparse or missing fields, supplier arithmetic errors and credits, prose layouts with bare `$` and conditional discounts).
-- Generator seed and document hashes recorded before the run. **No test-set document is used**, because the pilot is prompt tuning.
+Frozen in [`data/pilot/`](../data/pilot) (`manifest.json` lists ids, families and text hashes; a test regenerates them and checks the hashes).
+
+- The 5 seeds in `data/seeds/`.
+- 15 generator documents from a **dev** pool (seed 7, 2,000 documents), 3 per hard-case family, picked by [`teacher/pilot.py`](../src/quote_distill/teacher/pilot.py): the documents with the most hard features of that family, spread across locales and layouts.
+
+| Family | Must have | Documents |
+|---|---|---|
+| Inclusive GST and rounding | `gst:inclusive` | 3 (AU, SG, SG) |
+| Line and lump-sum discounts | a lump-sum row | 3 (US, AU, MY) |
+| Sparse or missing fields | no subtotal and no quote number | 3 (AU, MY, NZ) |
+| Supplier errors and credits | a supplier arithmetic error kept as printed | 3 (AU, NZ, US) |
+| Prose, bare `$` and conditional discounts | prose email with a bare `$` | 3 (US, US, AU) |
+
+**No test-set document is used**, because the pilot is prompt tuning; `batch.py plan` refuses any document from a test split.
 
 ## Request
 
 - System prompt: `docs/schema.md` rules plus the minified JSON Schema, identical for all 20 requests. User turn: the document text only.
 - `model: claude-haiku-5-5`, `output_config.effort: "low"` (adaptive thinking stays on, which is the model's default), `max_tokens: 8000`, no sampling parameters (Haiku 5.5 rejects non-default values).
-- JSON output via `output_config.format` if the schema fits the structured-outputs subset (we check this locally first; `oneOf` may need to become `anyOf`). Otherwise a plain JSON instruction. Either way every output is validated locally with `jsonschema`.
+- Plain JSON instruction, no structured outputs. Whether our schema fits the structured-outputs subset can only be confirmed by an API call, and gate 1 measures exactly what we need to know: whether the teacher returns valid JSON unaided. Parsing is strict (a code fence counts as a failure) and every output is validated locally with `jsonschema`. If gate 1 is the only failure, structured outputs is the first fix to try.
 - `custom_id` = document id. Results are keyed by `custom_id`, never by order.
 
 ## Token and cost estimate
 
-Sizes are measured from the files in this folder; tokens use a conservative 3 characters per token because exact counts need the token-counting endpoint, which is an API call. Generated pilot documents are assumed larger than the seeds (about 6 lines each).
+Measured from the actual 20 requests by `python -m quote_distill.teacher.batch plan` (no network call), at a conservative 3 characters per token. The `count` command replaces the input figure with exact counts from the token-counting endpoint, which is free but is an API call.
 
-| Per request | Measured basis | Estimate |
+| Per request (average of 20) | Measured basis | Estimate |
 |---|---|---|
-| System prompt | schema 6,720 chars + rules 3,907 chars + about 1,000 chars of instructions | ~3,900 tokens |
-| Document | seeds average 855 chars; generated docs up to ~2,500 | ~600 tokens |
-| Output JSON with `raw` | seeds average 2,060 chars for 3.4 lines | ~1,200 tokens |
+| System prompt | 11,472 characters (instructions, schema rules, minified JSON Schema) | ~3,800 tokens |
+| Document | 762 characters on average, longest 1,374 | ~260 tokens |
+| Output JSON with `raw` | gold labels average 2,455 characters | ~900 tokens |
 | Thinking at effort low | allowance, billed as output | ~1,500 tokens |
-| **Input / output** | | **~4,500 / ~2,700** |
+| **Input / output** | | **~4,100 / ~2,400** |
 
-Batch prices (50% of standard): Haiku 5.5 $0.05 input and $0.25 output per million tokens (prompts up to 100K tokens); Sonnet 5.5 $1 and $5.
+Batch prices (50% of standard), checked 18 October 2026: Haiku 5.5 $0.05 input and $0.25 output per million tokens (prompts up to 100K tokens); Sonnet 5.5 $1 and $5.
 
 | Job (20 requests) | Input tokens | Output tokens | Expected cost | Worst case (every reply hits 8,000 tokens) |
 |---|---|---|---|---|
-| Haiku 5.5 pilot | 90,000 | 54,000 | **$0.018** | $0.045 |
-| Sonnet 5.5 pilot (only if Haiku fails) | 90,000 | 54,000 | **$0.36** | $0.89 |
+| Haiku 5.5 pilot | ~81,900 | ~48,000 | **$0.016** | $0.044 |
+| Sonnet 5.5 pilot (only if Haiku fails) | ~81,900 | ~48,000 | **$0.32** | $0.88 |
 
-For later planning, the same per-document figures give about $0.0009 per document on Haiku and $0.018 on Sonnet in batch, so 300 test documents cost about $0.27 or $5.40. Caching the shared system prompt would cut input cost further, but output dominates.
+For later planning that is about $0.0008 per document on Haiku and $0.016 on Sonnet in batch, so 300 test documents cost about $0.24 or $4.80. Prices are re-checked on the pricing page before every job.
 
 ## Quality gates (fixed before the run)
 
@@ -69,12 +81,25 @@ Scored per document against gold, with denominators reported.
 
 Whole-document exact match and per-field exact match for every field are reported, not gated. Every failing document goes into the failure gallery.
 
+The gates are coded in [`metrics.py`](../src/quote_distill/metrics.py) (`PILOT_GATES`) and tested, so they cannot drift after the results are in. Line-item F1 counts a line only when all six fields match and ignores order; per-field line accuracy is also reported by position.
+
 ## Sequence
 
-1. Freeze the prompt, gold, sample list and gates in a commit.
+1. Freeze the prompt, gold, sample list and gates in a commit. **Done.**
 2. Count tokens for the 20 requests with the token-counting endpoint and update the estimate above (needs your go-ahead, as it is an API call, though it is not billed).
 3. Submit the Haiku batch; log it in `docs/spend.md` before and after (estimate, then actual usage and cost).
 4. Score locally. Pass: stop here and report. Fail: report the failing gates first, then run Sonnet on the same 20 and log it.
 5. If a failure is clearly a rule our prompt never stated (for example a normalisation rule), I will say so and propose one Haiku rerun with the fixed prompt as a new logged job before escalating. You decide.
 
-The pilot can only run once the generator (plan step 2) exists, because it needs 15 generated documents. Until then the 5 seeds let us dry-run the scoring code with no API call.
+## Commands
+
+```bash
+python -m quote_distill.teacher.batch plan    --job pilot-haiku-1 --docs data/pilot/pilot-20.jsonl --model claude-haiku-5-5
+python -m quote_distill.teacher.batch log     --job pilot-haiku-1          # estimate row in docs/spend.md
+python -m quote_distill.teacher.batch count   --job pilot-haiku-1 --yes    # API call, free
+python -m quote_distill.teacher.batch submit  --job pilot-haiku-1 --yes    # API call, billed
+python -m quote_distill.teacher.batch collect --job pilot-haiku-1          # actual cost into docs/spend.md
+quote-distill-score --gold data/pilot/pilot-20.jsonl --pred runs/pilot-haiku-1/predictions.jsonl --gates
+```
+
+`submit` refuses without `--yes`, without the estimate row, if the prompt changed since `plan`, or if the job was already submitted. The key is read from the git-ignored `.env`.

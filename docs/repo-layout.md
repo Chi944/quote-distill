@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -25,11 +25,12 @@ quote-distill/
 │   │   └── build.py             # CLI; keeps only labels that pass checks.py
 │   ├── splits.py                # dev / train / test assignment by hash; test is frozen
 │   ├── teacher/
-│   │   ├── prompt.py            # system prompt built from docs/schema.md + schema
-│   │   ├── batch.py             # estimate, submit, poll, fetch Message Batches; custom_id = doc id
-│   │   └── spend.py             # appends estimates and actual usage to docs/spend.md
-│   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match
-│   └── report.py                # results tables and failure gallery, every number with its denominator
+│   │   ├── pilot.py             # picks the 20 pilot documents (5 seeds + 3 per hard-case family, dev only)
+│   │   ├── prompt.py            # system prompt built from docs/schema.md + schema; strict JSON parsing
+│   │   ├── batch.py             # plan, log, count, submit, collect Message Batches; custom_id = doc id
+│   │   └── spend.py             # pricing table; estimate and actual rows in docs/spend.md
+│   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
+│   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
 ├── students/
 │   ├── encoder/                 # token tagger: BIO labels from `raw` spans + deterministic assembly
 │   └── generative/              # small seq2seq / decoder (< ~500M) emitting schema JSON
@@ -37,6 +38,7 @@ quote-distill/
 ├── data/
 │   ├── seeds/                   # the five hand-authored hard cases (committed)
 │   ├── samples/                 # small committed generator sample for review
+│   ├── pilot/                   # the 20 frozen pilot documents with gold, and their manifest
 │   ├── test/                    # 300 hand-checked, frozen: docs, labels, MANIFEST.sha256
 │   └── generated/               # dev and train output (git-ignored, reproducible from a seed)
 ├── demo/                        # TypeScript + Vite static site
@@ -61,4 +63,4 @@ quote-distill/
 - **Test set is frozen.** `data/test/MANIFEST.sha256` is checked in CI; any change to a test document or label fails the build. Training and prompt code never import from `data/test/`; a test checks that.
 - **One schema.** Python validates with `schema/quotation.schema.json`; the demo imports the same file at build time.
 - **No key in the demo.** The demo build has no environment variables. Model weights are served as static files (or from the Hub), so it runs on GitHub Pages.
-- **Spend is logged by code.** `teacher/batch.py` refuses to submit without writing the estimate row to `docs/spend.md` first.
+- **Spend is logged by code.** `teacher/batch.py` refuses to submit without an estimate row in `docs/spend.md`, without `--yes`, if the prompt changed since the estimate, or if the job was already submitted. `collect` writes the actual usage and cost back to the same row.
