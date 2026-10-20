@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), the demo's TypeScript post-processing and model runners ([demo.md](demo.md)), tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), the demo's TypeScript post-processing, model runners and page ([demo.md](demo.md)), the final evaluation command, not yet run ([evaluation.md](evaluation.md)), tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -38,7 +38,7 @@ quote-distill/
 │   │   ├── generative.py        # prompt, train, generate, score and export the generative student
 │   │   └── fixtures.py          # Python results the demo's TypeScript port must match
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
-│   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
+│   └── evaluation.py            # teacher and students on the test set: docs/evaluation.md and the README table
 ├── students/
 │   ├── encoder/                 # token tagger: BIO labels from `raw` spans + deterministic assembly
 │   └── generative/              # small seq2seq / decoder (< ~500M) emitting compact JSON that student/data.py expands to the schema
@@ -56,6 +56,7 @@ quote-distill/
 │   ├── src/core/                # TypeScript port of decode, expand, token reading, arithmetic, offsets (docs/demo.md)
 │   ├── src/models/              # tagger and generative runners on transformers.js
 │   ├── src/page/                # the page: samples, rendering, wiring
+│   ├── scripts/predict.ts       # a student over a JSONL with the page's runners, timed: predictions for evaluation.py
 │   ├── test/                    # vitest: parity with Python on every dev and pilot document
 │   ├── src/                     # transformers.js inference, schema validation, arithmetic badges
 │   ├── public/models/           # quantised ONNX weights (git-ignored; fetched from Hugging Face Hub)
