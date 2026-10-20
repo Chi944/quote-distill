@@ -1,10 +1,11 @@
 """The final evaluation: the teacher and both students, scored on the frozen 300-document test set.
 
     python -m quote_distill.evaluation --teacher results/teacher/test-session-haiku-1/predictions.jsonl \\
-        --tagger results/students/tagger/predictions.jsonl --generative results/students/generative/predictions.jsonl \\
+        --tagger results/students/tagger/predictions-tagger.jsonl \\
+        --generative results/students/generative/predictions-generative.jsonl \\
         --teacher-cost-usd 4.20
 
-Each file is {id, output} per line, the format teacher/session.py collect and demo/scripts/predict.ts write; a
+Each file is {id, output} per line, the format teacher/session.py collect and student/evaluate.py write; a
 `latency_ms` per row gives the latency column. Scoring is metrics.py's, unchanged. The command writes the results
 into docs/evaluation.md and the README table, between their `results` markers.
 

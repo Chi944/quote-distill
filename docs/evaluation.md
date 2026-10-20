@@ -32,23 +32,22 @@ Read the meter again and log the job in [`spend.md`](spend.md). The teacher's la
 
 ## 2. Students
 
-Both run on CPU with the page's own runners and model files, one document at a time ([`demo/scripts/predict.ts`](../demo/scripts/predict.ts)):
+Both run on CPU through onnxruntime with the same model files the page loads (int8 tagger, 4-bit generative), one document at a time ([`student/evaluate.py`](../src/quote_distill/student/evaluate.py), [student-eval.md](student-eval.md)):
 
 ```bash
-cd demo
-npm run predict -- --model tagger     --docs ../data/test/docs.jsonl --out ../results/students/tagger
-npm run predict -- --model generative --docs ../data/test/docs.jsonl --out ../results/students/generative
+python -m quote_distill.student.evaluate --docs data/test/docs.jsonl --evaluation --tagger out/tagger-onnx --out results/students/tagger
+python -m quote_distill.student.evaluate --docs data/test/docs.jsonl --evaluation --generative out/generative-onnx --out results/students/generative
 ```
 
-Each writes `predictions.jsonl` and `run.json`, which records the model files' SHA-256, the machine and the median latency. The latency is onnxruntime-node on that machine's CPU after one warm-up document. A browser runs the same files in WebAssembly, usually slower, so the number is a floor for the demo, not a measurement of it. Add `--limit 5` for a smoke run first.
+Each writes `predictions-<student>.jsonl` with a `latency_ms` per document, and `summary.json`, which records the model file's SHA-256. The latency is that machine's CPU with model loading excluded. A browser runs the same files in WebAssembly, usually slower, so the number is a floor for the demo, not a measurement of it. Run on dev documents with `--limit 5` first.
 
 ## 3. Score
 
 ```bash
 python -m quote_distill.evaluation \
   --teacher results/teacher/test-session-haiku-1/predictions.jsonl \
-  --tagger results/students/tagger/predictions.jsonl \
-  --generative results/students/generative/predictions.jsonl \
+  --tagger results/students/tagger/predictions-tagger.jsonl \
+  --generative results/students/generative/predictions-generative.jsonl \
   --teacher-cost-usd <the teacher job's credit draw from spend.md>
 ```
 
