@@ -31,7 +31,8 @@ quote-distill/
 │   │   └── spend.py             # pricing table; estimate and actual rows in docs/spend.md
 │   ├── student/
 │   │   ├── data.py              # train/dev sets without test or pilot texts; compact targets and expand()
-│   │   └── spans.py             # where each gold value is printed, for the encoder tagger
+│   │   ├── spans.py             # where each gold value is printed, for the encoder tagger
+│   │   └── decode.py            # tagged spans + two document classes back to a schema label
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
 │   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
 ├── students/

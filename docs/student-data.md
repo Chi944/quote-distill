@@ -34,7 +34,7 @@ The pilot pool is `dev` seed 7 and the test pool is `test-candidates` seed 1, so
 | Document length, characters (median / p95 / max) | 672 / 1,343 / 2,182 | 681 / 1,351 / 1,979 |
 | Target length, characters (median / p95 / max) | 578 / 953 / 1,279 | 575 / 972 / 1,183 |
 | Documents with every field located (spans) | 10,000/10,000 | 1,000/1,000 |
-| File SHA-256 (first 12) | `573080dcff58` | `8c625d541410` |
+| File SHA-256 (first 12) | `7bde65f87aa2` | `c15dc3f9e84e` |
 
 Token counts aren't measured yet, because this build environment can't reach the Hugging Face Hub to load a tokenizer. They'll be measured in the training notebook, which sets the model's maximum input and output lengths from them.
 
@@ -75,6 +75,6 @@ An alignment can be complete and still wrong, and there is no gold for positions
 
 The decoder groups line items and discounts by their descriptions, using the same row regions as the aligner. It converts printed text to values with the generator's own tables (units, currencies, date formats, half-up money). It reads a currency symbol or a rate from inside an enclosing field, and leaves anything untagged as not stated.
 
-**Ceiling check.** Gold spans and gold classes, decoded, reproduce the gold label exactly for every document: PLACEHOLDER_CEILING, and all 20 pilot documents, including the five hand-written seeds. So any mistake in the tagger's results is the tagger's own, not the decoder's. Without the date-order class, guessing month-first from US-dollar currency alone gets PLACEHOLDER_FALLBACK, because a US quotation with a bare `$` has ambiguous dates. That's why date order is a class.
+**Ceiling check.** Gold spans and gold classes, decoded, reproduce the gold label exactly for every document: 10,000/10,000 train and 1,000/1,000 dev, and all 20 pilot documents, including the five hand-written seeds. So any mistake in the tagger's results is the tagger's own, not the decoder's. Without the date-order class, guessing month-first from US-dollar currency alone gets 9,946/10,000 train and 993/1,000 dev, because a US quotation with a bare `$` has ambiguous dates. That's why date order is a class.
 
 Next: convert spans to token tags in the training notebook, which needs a tokenizer.

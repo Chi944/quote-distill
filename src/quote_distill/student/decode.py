@@ -183,7 +183,7 @@ def decode(text: str, spans: list[tuple[int, int, str]], treatment: str, month_f
     gst_rate_raw = raw.get("gst.rate")
     if gst_rate_raw is None and treatment in ("exclusive", "inclusive"):
         # A rate printed inside a GST label ("GST 9%: 38.82", "include 10% GST") that the tagger can't mark alone.
-        cue = re.search(r"(\d+(?:\.\d+)?%)\s*GST|GST[^\n\d]{0,20}?(\d+(?:\.\d+)?%)", text)
+        cue = re.search(r"(\d+(?:\.\d+)?%)[ \t]*GST|GST[^\n\d]{0,20}?(\d+(?:\.\d+)?%)", text)
         gst_rate_raw = (cue.group(1) or cue.group(2)) if cue else None
     label["gst"] = {
         "treatment": treatment,
