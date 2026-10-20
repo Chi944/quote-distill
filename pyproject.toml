@@ -12,6 +12,8 @@ dependencies = ["jsonschema>=4.21"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.6"]
+# Training and ONNX export (notebooks/); tested with transformers 5.20 and torch 2.14.
+train = ["torch>=2.4", "transformers>=5.20,<6", "accelerate>=1.0", "onnx>=1.17", "onnxruntime>=1.20"]
 
 [project.scripts]
 quote-distill-generate = "quote_distill.generator.build:main"
