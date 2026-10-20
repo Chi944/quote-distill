@@ -58,14 +58,25 @@ def stand_in_tokenizer(texts: list[str]):
     return tok
 
 
-def add_tokens(rows: list[dict], out_dir: Path) -> None:
-    tok = stand_in_tokenizer([r["text"] for r in rows])
+def add_tokens(rows: list[dict], out_dir: Path, tokenizer: Path | None = None) -> None:
+    """With `tokenizer` (a folder holding a model's tokenizer.json and tokenizer_config.json, such as an unpacked
+    export), check that one instead of the stand-in."""
+    import shutil
+
+    from tokenizers import Tokenizer
+
     out_dir.mkdir(parents=True, exist_ok=True)
-    tok.save(str(out_dir / "tokenizer.json"))
-    (out_dir / "tokenizer_config.json").write_text(json.dumps({"tokenizer_class": "PreTrainedTokenizerFast",
-                                                                "cls_token": "[CLS]", "sep_token": "[SEP]",
-                                                                "pad_token": "[PAD]", "unk_token": "[UNK]",
-                                                                "mask_token": "[MASK]"}) + "\n", encoding="utf-8")
+    if tokenizer is not None:
+        tok = Tokenizer.from_file(str(tokenizer / "tokenizer.json"))
+        for name in ("tokenizer.json", "tokenizer_config.json"):
+            shutil.copy(tokenizer / name, out_dir / name)
+    else:
+        tok = stand_in_tokenizer([r["text"] for r in rows])
+        tok.save(str(out_dir / "tokenizer.json"))
+        (out_dir / "tokenizer_config.json").write_text(json.dumps({"tokenizer_class": "PreTrainedTokenizerFast",
+                                                                    "cls_token": "[CLS]", "sep_token": "[SEP]",
+                                                                    "pad_token": "[PAD]", "unk_token": "[UNK]",
+                                                                    "mask_token": "[MASK]"}) + "\n", encoding="utf-8")
     for r in rows:
         enc = tok.encode(r["text"])
         r["token_ids"] = enc.ids
@@ -87,13 +98,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--data", type=Path, required=True, help="a student data file (dev.jsonl)")
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--tokenizer", type=Path, help="a real model's tokenizer folder to check instead of the stand-in")
     args = parser.parse_args(argv)
     rows = pilot_rows()
     for line in args.data.open(encoding="utf-8"):
         r = json.loads(line)
         rows.append(fixture(r["id"], r["text"], r["target"], r["spans"], r["classes"]))
     try:
-        add_tokens(rows, args.out.parent / "tokenizer")
+        add_tokens(rows, args.out.parent / "tokenizer", args.tokenizer)
     except ImportError:
         print("tokenizers is not installed; skipping the tokenizer fixtures")
     args.out.parent.mkdir(parents=True, exist_ok=True)

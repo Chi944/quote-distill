@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), the demo's TypeScript post-processing and model runners ([demo.md](demo.md)), tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), the demo's TypeScript post-processing, model runners and page ([demo.md](demo.md)), student scoring ([student-eval.md](student-eval.md)), tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -36,7 +36,8 @@ quote-distill/
 │   │   ├── tokens.py            # spans to per-token labels and back (no tokenizer needed)
 │   │   ├── tagger.py            # train, predict, score and export the tagger (needs the train extra)
 │   │   ├── generative.py        # prompt, train, generate, score and export the generative student
-│   │   └── fixtures.py          # Python results the demo's TypeScript port must match
+│   │   ├── fixtures.py          # Python results the demo's TypeScript port must match
+│   │   └── evaluate.py          # scores the exported students like the teacher (docs/student-eval.md)
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
 │   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
 ├── students/
