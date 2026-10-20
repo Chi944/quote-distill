@@ -16,12 +16,12 @@ The teacher and both students on the frozen 300-document [test set](test-set.md)
 
 ## 1. Teacher
 
-The teacher runs in a cloud session, as the pilot did ([teacher-session.md](teacher-session.md)). Read the credit meter, then paste:
+The teacher runs in a cloud session, as the pilot did ([teacher-session.md](teacher-session.md), added by PR #5; until #5 is merged it is on the `build/teacher-session` branch). Read the credit meter, then paste:
 
 ```text
 Run the Quote Distill teacher evaluation. Follow docs/teacher-session.md exactly; do not change any file under src/ or docs/schema.md.
 
-1. pip install -e ".[dev]" and run: python -m quote_distill.teacher.session prepare --job test-session-haiku-1 --docs data/test/docs.jsonl --evaluation
+1. git checkout build/teacher-session (until PR #5 is merged, that branch has the session runner), pip install -e ".[dev]" and run: python -m quote_distill.teacher.session prepare --job test-session-haiku-1 --docs data/test/docs.jsonl --evaluation
 2. For every file runs/test-session-haiku-1/tasks/<id>.txt, start one Agent subagent with model "haiku" whose prompt is the file's full contents, unchanged. Run them in parallel batches of 5. Do not read data/test labels or give the subagent anything else.
 3. Save each subagent's final reply verbatim, with no edits or reformatting, to results/teacher/test-session-haiku-1/outputs/<id>.txt. If a subagent errors, save nothing for that id and say which.
 4. Run: python -m quote_distill.teacher.session collect --job test-session-haiku-1. Do not run the score command or look at the scores.
