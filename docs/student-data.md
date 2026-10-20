@@ -66,4 +66,15 @@ Anything still ambiguous is reported and never guessed. Such a document would be
 
 An alignment can be complete and still wrong, and there is no gold for positions. On 3,000 extra documents I checked that no row's fields fall after the next row's description, and that no total or subtotal sits above an item, with 0 violations. I also read a tagged prose quotation by eye.
 
-Next: convert spans to token tags in the training notebook, which needs a tokenizer, and write the decoder that turns tagged spans back into the schema.
+## Decoding the tagger's output
+
+[`student/decode.py`](../src/quote_distill/student/decode.py) turns tagged spans back into a schema label, so the tagger is scored with the same metrics as the teacher and the generative student. Each record's `classes` holds two answers the tagger predicts for the whole document, because neither is a stretch of text:
+
+- **GST treatment:** exclusive, inclusive, not charged or not stated.
+- **Date order:** whether numeric dates are written month first (US) or day first. `05/06/2026` reads differently in each.
+
+The decoder groups line items and discounts by their descriptions, using the same row regions as the aligner. It converts printed text to values with the generator's own tables (units, currencies, date formats, half-up money). It reads a currency symbol or a rate from inside an enclosing field, and leaves anything untagged as not stated.
+
+**Ceiling check.** Gold spans and gold classes, decoded, reproduce the gold label exactly for every document: PLACEHOLDER_CEILING, and all 20 pilot documents, including the five hand-written seeds. So any mistake in the tagger's results is the tagger's own, not the decoder's. Without the date-order class, guessing month-first from US-dollar currency alone gets PLACEHOLDER_FALLBACK, because a US quotation with a bare `$` has ambiguous dates. That's why date order is a class.
+
+Next: convert spans to token tags in the training notebook, which needs a tokenizer.

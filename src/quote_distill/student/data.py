@@ -2,11 +2,12 @@
 
     python -m quote_distill.student.data --out data/generated/student
 
-Output: <out>/train.jsonl and <out>/dev.jsonl, one {id, text, target, spans, nested, meta} per line, and <out>/stats.json.
+Output: <out>/train.jsonl and <out>/dev.jsonl, one {id, text, target, spans, nested, classes, meta} per line, and <out>/stats.json.
 `target` is the string the generative student learns to write: the gold label in the compact form below, which
 `expand` turns back into a schema-shaped label. `raw` is dropped (outputs may omit it and metrics never score it).
 `spans` is [start, end, field path] for the encoder tagger (see spans.py), or null when alignment is incomplete;
 `nested` lists fields printed inside another field's span, which the tagger's decoder derives rather than tags.
+`classes` holds the tagger's two document-level targets: GST treatment and whether dates are written month first.
 The same arguments always produce byte-identical files.
 """
 
@@ -103,6 +104,7 @@ def prepare(records: list[dict]) -> tuple[list[dict], dict]:
         out.append({"id": r["id"], "text": r["text"], "target": t,
                     "spans": sorted([s, e, p] for p, (s, e) in a.spans.items()) if a.complete else None,
                     "nested": sorted([s, e, p] for p, (s, e) in a.nested.items()) if a.complete else None,
+                    "classes": {"gst_treatment": r["label"]["gst"]["treatment"], "month_first": r["meta"]["locale"] == "US"},
                     "meta": {k: r["meta"][k] for k in ("locale", "layout", "features", "text_sha256")}})
     return out, {"generated": len(records), "dropped_test": n_test, "dropped_pilot": len(kept) - len(clean),
                  "kept": len(out), "targets_not_exact": not_exact, "spans_incomplete": unaligned}
