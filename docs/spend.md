@@ -6,6 +6,6 @@ Every job gets a row before submission (estimate) and is completed after (actual
 
 | Date | Job | Model | Mode | Requests | Input tokens | Output tokens | Est. cost | Actual cost | Running total | Pricing checked |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 2026-10-20 | pilot-session-haiku-1 | Haiku subagents (Claude Code) | cloud session | 20 | ~1.8M incl. Claude Code overhead (session report) | n/a | a few dollars (estimate) | pending meter reading |  | 2026-10-18 |
+| 2026-10-20 | pilot-session-haiku-1 | Haiku subagents (Claude Code) | cloud session | 20 | ~1.8M incl. Claude Code overhead (session report) | n/a | a few dollars (estimate) | not isolated: meter fell $100 → $86 while 2 other cloud sessions also ran, so at most $14.00 | ≤ $14.00 | 2026-10-18 |
 
-Running total: **$0.0000** of US$100.
+Running total: **at most $14.00** of US$100 (meter at $86 on 20 October 2026, shared with other sessions). To measure a job alone, read the meter right before and after with no other cloud session running.

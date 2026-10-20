@@ -30,7 +30,7 @@ Run the Quote Distill teacher pilot. Follow docs/teacher-session.md exactly; do 
 5. Commit results/teacher/pilot-session-haiku-1/ on a new branch, push, open a pull request, and tell me the five pilot gate results.
 ```
 
-When it finishes, read the meter again and post both readings in the project thread. They go into `docs/spend.md` with the job.
+When it finishes, read the meter again and post both readings in the project thread. Don't run other cloud sessions during the job, or the difference can't be attributed to it. They go into `docs/spend.md` with the job.
 
 ## After the pilot
 
