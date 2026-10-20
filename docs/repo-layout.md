@@ -55,6 +55,7 @@ quote-distill/
 ├── demo/                        # TypeScript + Vite static site
 │   ├── src/core/                # TypeScript port of decode, expand, token reading, arithmetic, offsets (docs/demo.md)
 │   ├── src/models/              # tagger and generative runners on transformers.js
+│   ├── src/page/                # the page: samples, rendering, wiring
 │   ├── test/                    # vitest: parity with Python on every dev and pilot document
 │   ├── src/                     # transformers.js inference, schema validation, arithmetic badges
 │   ├── public/models/           # quantised ONNX weights (git-ignored; fetched from Hugging Face Hub)

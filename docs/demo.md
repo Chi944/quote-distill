@@ -53,6 +53,29 @@ cd demo && npm ci --ignore-scripts && npm test
 
 The real tokenizers (Ettin's and SmolLM2's) are checked the same way once the notebooks' exports are attached.
 
+## Part 3: the page
+
+**Step.** A static page ([`demo/index.html`](../demo/index.html), [`demo/src/page/`](../demo/src/page/)). Pick one of the 20 pilot quotations or paste your own, and both students run one after the other. Each shows its fields, line items and discounts, one arithmetic badge per check (adds up, doesn't add up, or can't be checked), and how long it took. For a sample, each value is marked against the sample's answer key, with a count such as "24 of 26 values match". That count is a quick per-value comparison for the page, not the evaluation metric; the reported results come from `metrics.py`. The generative student's text streams in as it's written, and its raw output stays one click away.
+
+**It worked when** the built page, in Chromium, shows the same answers the Node runners give for the same text, and fetches nothing from outside the page. **Result: passes** with the tiny models ([`demo/test/page.test.ts`](../demo/test/page.test.ts)). Two fixes came out of it: transformers.js only reads "local" models from a path on the page's own host, not a full URL; and it fetches its ONNX runtime from a CDN unless told otherwise, so the page now serves that runtime itself. Layout was checked at desktop width and at 390 px (phone), where wide tables scroll inside their panel.
+
+Model files are static files next to the page, which the page fetches once:
+
+```
+demo/public/models/tagger/        config.json, tokenizer files, onnx/model_quantized.onnx   (from tagger-onnx.zip)
+demo/public/models/generative/    config.json, tokenizer files, onnx/model_q4.onnx          (from generative-onnx.zip)
+```
+
+Until they're there, each panel says its model isn't published yet. To try the page with the tiny test models:
+
+```bash
+cd demo && npm ci --ignore-scripts
+mkdir -p public/models && cp -r fixtures/models/tiny-tagger public/models/tagger && cp -r fixtures/models/tiny-generative public/models/generative
+npm run dev
+```
+
+The browser test runs with `npm test` when the tiny models and Chromium (`CHROMIUM_PATH`) are present; CI has neither, so it builds the page and skips that test.
+
 ## Next part
 
-- **The page:** paste or pick a synthetic quotation, run both students, and show the fields, the arithmetic badges, latency, and a link to the results.
+- **Publishing:** put the trained models where the page can fetch them, deploy to GitHub Pages, and link it from the README.

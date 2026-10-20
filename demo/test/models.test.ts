@@ -35,7 +35,10 @@ describe.skipIf(!has("generative-expected.json"))("generative runner matches Pyt
     it(`gives Python's greedy output with ${file}`, async () => {
       const model = await loadGenerative("tiny-generative", DTYPE[file]!);
       for (const c of expected.cases.filter((c) => c.file === file)) {
-        expect((await model.extract(c.text, expected.max_new_tokens)).output).toBe(c.output);
+        let streamed = "";
+        const r = await model.extract(c.text, { maxNewTokens: expected.max_new_tokens, onText: (t) => (streamed = t) });
+        expect(r.output).toBe(c.output);
+        expect(streamed).toBe(c.output);
       }
     }, 60_000);
   }

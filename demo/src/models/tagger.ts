@@ -1,5 +1,5 @@
 // The encoder tagger in the browser: tokenize as training did, run the ONNX model, read labels off the logits.
-import { AutoModelForTokenClassification, AutoTokenizer, Tensor } from "@huggingface/transformers";
+import { AutoModelForTokenClassification, AutoTokenizer, type ProgressCallback, Tensor } from "@huggingface/transformers";
 import type { Label } from "../core/expand";
 import { byteLevelOffsets } from "../core/offsets";
 import { type Offset, read } from "../core/tokens";
@@ -11,9 +11,9 @@ export interface Tagger {
   extract(text: string): Promise<{ label: Label; tokens: number; truncated: boolean }>;
 }
 
-export async function loadTagger(path: string, dtype: Dtype): Promise<Tagger> {
-  const tokenizer = await AutoTokenizer.from_pretrained(path);
-  const model = await AutoModelForTokenClassification.from_pretrained(path, { dtype });
+export async function loadTagger(path: string, dtype: Dtype, progress?: ProgressCallback): Promise<Tagger> {
+  const tokenizer = await AutoTokenizer.from_pretrained(path, { progress_callback: progress });
+  const model = await AutoModelForTokenClassification.from_pretrained(path, { dtype, progress_callback: progress });
   const special = new Set<string>(tokenizer.all_special_tokens);
   return {
     async extract(text) {
