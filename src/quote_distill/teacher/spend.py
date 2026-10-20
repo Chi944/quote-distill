@@ -67,7 +67,7 @@ def _write(path: Path, lines: list[str], rows: list[Row]) -> None:
         end += 1
     tail = [line for line in lines[end:] if line.strip() and not line.startswith(("No jobs yet", "Running total"))]
     total = sum((Decimal(r.actual_cost.lstrip("$")) for r in rows if r.actual_cost.startswith("$")), Decimal(0))
-    body = [*lines[:start], *(r.render() for r in rows), "", f"Running total: **{usd(total)}** of US$50.",
+    body = [*lines[:start], *(r.render() for r in rows), "", f"Running total: **{usd(total)}** of US$100.",
             *(["", *tail] if tail else [])]
     path.write_text("\n".join(body).rstrip() + "\n", encoding="utf-8")
 

@@ -28,6 +28,7 @@ quote-distill/
 │   │   ├── pilot.py             # picks the 20 pilot documents (5 seeds + 3 per hard-case family, dev only)
 │   │   ├── prompt.py            # system prompt built from docs/schema.md + schema; strict JSON parsing
 │   │   ├── batch.py             # plan, log, count, submit, collect Message Batches; custom_id = doc id
+│   │   ├── session.py           # the same teacher run inside a cloud session (cloud credits), see teacher-session.md
 │   │   └── spend.py             # pricing table; estimate and actual rows in docs/spend.md
 │   ├── student/
 │   │   ├── data.py              # train/dev sets without test or pilot texts; compact targets and expand()
