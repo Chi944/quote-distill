@@ -14,7 +14,7 @@ The student trains on generator gold (teacher role A, decided 19 October 2026). 
 python -m quote_distill.student.data --out data/generated/student
 ```
 
-It takes about 90 seconds on one CPU and writes `train.jsonl`, `dev.jsonl` and `stats.json`. The data folder is git-ignored because the command rebuilds it exactly; [`stats.json`](#result) records the hashes to check against.
+It takes about two minutes on one CPU and writes `train.jsonl`, `dev.jsonl` and `stats.json`. The data folder is git-ignored because the command rebuilds it exactly; [`stats.json`](#result) records the hashes to check against.
 
 | Set | Generator split and seed | Documents |
 |---|---|---|
@@ -33,7 +33,8 @@ The pilot pool is `dev` seed 7 and the test pool is `test-candidates` seed 1, so
 | Texts shared between train and dev | 0 | |
 | Document length, characters (median / p95 / max) | 672 / 1,343 / 2,182 | 681 / 1,351 / 1,979 |
 | Target length, characters (median / p95 / max) | 578 / 953 / 1,279 | 575 / 972 / 1,183 |
-| File SHA-256 (first 12) | `cb020968524d` | `d1321bcd3d07` |
+| Documents with every field located (spans) | 10,000/10,000 | 1,000/1,000 |
+| File SHA-256 (first 12) | `573080dcff58` | `8c625d541410` |
 
 Token counts aren't measured yet, because this build environment can't reach the Hugging Face Hub to load a tokenizer. They'll be measured in the training notebook, which sets the model's maximum input and output lengths from them.
 
@@ -51,4 +52,18 @@ The generative student writes a compact form of the label, and `student.data.exp
 
 **Why not the full schema JSON?** The full form, without `raw`, has a median of 1,736 characters. The compact form has 578, a third as long. A small model in a browser generates one token at a time, so output length is the largest part of latency. The cost is one deterministic decoding step. A malformed output (a row with the wrong number of cells, a missing key) raises an error in `expand` and is scored as unparsed, the same as broken JSON from the teacher.
 
-The encoder tagger needs character spans instead of a target string. That alignment is the next step.
+## Spans for the encoder tagger
+
+The encoder tagger labels stretches of the document instead of writing a string, so each example also carries `spans`: `[start, end, field path]` for every stated field. A label records what was printed but not where, so [`student/spans.py`](../src/quote_distill/student/spans.py) finds the place.
+
+1. It finds every occurrence of the field's `raw` text. Whitespace may differ, and a match may not split a word or a number, so `"2"` is never found inside `"12"`.
+2. It places line-item descriptions in document order. Each row's region runs from its description's line to the next row, and the row's quantity, unit, prices and total are taken from that region, after the description where possible. This skips row numbers and a "2" inside "Drill, 2 batteries".
+3. Totals, GST amounts and document discounts are looked for below the items. That way a "Discount" column header can't be mistaken for a discount row.
+4. Every other field must then have exactly one free place. A subtotal printed the same as its total takes the earlier one.
+5. A currency symbol, a GST rate or a discount rate printed inside another field's text (`NZ$ 101.75`, `10% trade discount`) is recorded in `nested` and not tagged. The tagger's decoder will read it out of the enclosing field.
+
+Anything still ambiguous is reported and never guessed. Such a document would be left out of tagger training and counted, but none was: all 11,000 align. The tests check four things: every pilot document aligns, each span's text matches its `raw`, tagged spans never overlap, and a quote number printed twice is reported as ambiguous.
+
+An alignment can be complete and still wrong, and there is no gold for positions. On 3,000 extra documents I checked that no row's fields fall after the next row's description, and that no total or subtotal sits above an item, with 0 violations. I also read a tagged prose quotation by eye.
+
+Next: convert spans to token tags in the training notebook, which needs a tokenizer, and write the decoder that turns tagged spans back into the schema.

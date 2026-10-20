@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets ([student-data.md](student-data.md)), tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -30,7 +30,8 @@ quote-distill/
 │   │   ├── batch.py             # plan, log, count, submit, collect Message Batches; custom_id = doc id
 │   │   └── spend.py             # pricing table; estimate and actual rows in docs/spend.md
 │   ├── student/
-│   │   └── data.py              # train/dev sets without test or pilot texts; compact targets and expand()
+│   │   ├── data.py              # train/dev sets without test or pilot texts; compact targets and expand()
+│   │   └── spans.py             # where each gold value is printed, for the encoder tagger
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
 │   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
 ├── students/

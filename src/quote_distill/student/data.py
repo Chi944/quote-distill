@@ -2,9 +2,11 @@
 
     python -m quote_distill.student.data --out data/generated/student
 
-Output: <out>/train.jsonl and <out>/dev.jsonl, one {id, text, target, meta} per line, and <out>/stats.json.
+Output: <out>/train.jsonl and <out>/dev.jsonl, one {id, text, target, spans, nested, meta} per line, and <out>/stats.json.
 `target` is the string the generative student learns to write: the gold label in the compact form below, which
 `expand` turns back into a schema-shaped label. `raw` is dropped (outputs may omit it and metrics never score it).
+`spans` is [start, end, field path] for the encoder tagger (see spans.py), or null when alignment is incomplete;
+`nested` lists fields printed inside another field's span, which the tagger's decoder derives rather than tags.
 The same arguments always produce byte-identical files.
 """
 
@@ -18,6 +20,7 @@ from ..generator.build import generate
 from ..metrics import score_document
 from ..schema import schema_errors
 from ..splits import exclude_test
+from .spans import align
 
 ROOT = Path(__file__).resolve().parents[3]
 PILOT = ROOT / "data" / "pilot" / "pilot-20.jsonl"
@@ -88,16 +91,21 @@ def prepare(records: list[dict]) -> tuple[list[dict], dict]:
     n_test = len(records) - len(kept)
     pilot = pilot_text_hashes()
     clean = [r for r in kept if r["meta"]["text_sha256"] not in pilot]
-    out, not_exact = [], []
+    out, not_exact, unaligned = [], [], []
     for r in clean:
+        a = align(r["label"], r["text"])
+        if not a.complete:
+            unaligned.append(r["id"])
         t = target(r["label"])
         back = expand(json.loads(t))
         if schema_errors(back) or not score_document(r["id"], r["label"], back).exact:
             not_exact.append(r["id"])
         out.append({"id": r["id"], "text": r["text"], "target": t,
+                    "spans": sorted([s, e, p] for p, (s, e) in a.spans.items()) if a.complete else None,
+                    "nested": sorted([s, e, p] for p, (s, e) in a.nested.items()) if a.complete else None,
                     "meta": {k: r["meta"][k] for k in ("locale", "layout", "features", "text_sha256")}})
     return out, {"generated": len(records), "dropped_test": n_test, "dropped_pilot": len(kept) - len(clean),
-                 "kept": len(out), "targets_not_exact": not_exact}
+                 "kept": len(out), "targets_not_exact": not_exact, "spans_incomplete": unaligned}
 
 
 def lengths(rows: list[dict]) -> dict:
@@ -130,11 +138,12 @@ def main(argv: list[str] | None = None) -> int:
         stats[name] = {**cfg, "n": n, **counts, **lengths(rows), "sha256": write(rows, args.out / f"{name}.jsonl")}
         print(f"{name}: kept {counts['kept']}/{counts['generated']} (dropped {counts['dropped_test']} test, "
               f"{counts['dropped_pilot']} pilot); targets exact {counts['kept'] - len(counts['targets_not_exact'])}"
-              f"/{counts['kept']}")
+              f"/{counts['kept']}; spans complete {counts['kept'] - len(counts['spans_incomplete'])}/{counts['kept']}")
     stats["train_dev_shared_texts"] = len(ids["train"] & ids["dev"])
     (args.out / "stats.json").write_text(json.dumps(stats, indent=2) + "\n", encoding="utf-8")
     print(f"train/dev shared texts: {stats['train_dev_shared_texts']}")
     bad = stats["train"]["targets_not_exact"] or stats["dev"]["targets_not_exact"] or stats["train_dev_shared_texts"]
+    # Incomplete alignments are reported, not fatal: those documents are left out of tagger training only.
     return 1 if bad else 0
 
 
