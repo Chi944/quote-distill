@@ -8,8 +8,8 @@ from quote_distill.student.tokens import DOC_LABELS, IGNORE, LABEL_ID, LABELS, S
 
 ROOT = Path(__file__).resolve().parents[1]
 # Stand-ins for a real tokenizer: byte-level BPE keeps a leading space on words and numbers. The first isolates every
-# punctuation mark (what the training notebook configures); the second keeps punctuation runs such as "$." together.
-ISOLATED = re.compile(r" ?[A-Za-z]+| ?\d+|[^\s\w]|\s+|\S")
+# ASCII punctuation mark (what the training notebook configures); the second keeps punctuation runs such as "$." together.
+ISOLATED = re.compile(r"[!-/:-@\[-`{-~]| ?[^\W\d_]+| ?\d+| ?[^\s\w]+|\s+(?!\S)|\s+|\S")
 RUNS = re.compile(r" ?[A-Za-z]+| ?\d+| ?[^\s\w]+|\s+(?!\S)|\s+|\S")
 
 

@@ -26,12 +26,12 @@ I measured this on the 1,000 validation documents with stand-in tokenizers. The 
 
 | Stand-in tokenizer | Documents exact |
 |---|---|
-| Words, numbers and each punctuation mark split apart | 1,000/1,000 |
+| GPT-2-style, each ASCII punctuation mark split apart | 1,000/1,000 |
 | GPT-2-style, punctuation runs kept together | 922/1,000 |
 
 The 78 losses are currency (64) and discount descriptions (16).
 
-So `load_tokenizer` adds one pre-tokenizer step: every punctuation mark becomes its own piece before byte-level BPE. The vocabulary is unchanged, because every single character is already a token. The step is saved in `tokenizer.json`, so the browser tokenizes the same way. The notebook measures the ceiling again with the real tokenizer before training.
+So `load_tokenizer` adds one pre-tokenizer step: every ASCII punctuation mark becomes its own piece before byte-level BPE. The step is limited to ASCII because Python's tokenizer library and transformers.js disagree about which non-ASCII characters count as letters, and the browser has to produce the same tokens. The vocabulary is unchanged, because every single character is already a token. The step is saved in `tokenizer.json`, so the browser tokenizes the same way. The notebook measures the ceiling again with the real tokenizer before training.
 
 ## Model
 
