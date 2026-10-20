@@ -1,6 +1,6 @@
 # Teacher pilot plan (20 samples)
 
-Status: **ready to run, not run.** Documents, prompt, scoring and spend guard are built and tested. No API call has been made. On 20 October 2026 we decided to run the teacher in a Claude Code cloud session paid from cloud session credits, not through the API: see [teacher-session.md](teacher-session.md). The API path below stays as the reference and fallback. Prices were read from the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) on 18 October 2026.
+Status: **run 20 October 2026: Haiku passed all five gates** (job `pilot-session-haiku-1`, report in `results/teacher/pilot-session-haiku-1/report.md`; 18/20 documents exact). Sonnet is not needed. Before the run: Documents, prompt, scoring and spend guard are built and tested. No API call has been made. On 20 October 2026 we decided to run the teacher in a Claude Code cloud session paid from cloud session credits, not through the API: see [teacher-session.md](teacher-session.md). The API path below stays as the reference and fallback. Prices were read from the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) on 18 October 2026.
 
 ## The step and how we will know it worked
 

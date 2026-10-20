@@ -6,5 +6,6 @@ Every job gets a row before submission (estimate) and is completed after (actual
 
 | Date | Job | Model | Mode | Requests | Input tokens | Output tokens | Est. cost | Actual cost | Running total | Pricing checked |
 |---|---|---|---|---|---|---|---|---|---|---|
+| 2026-10-20 | pilot-session-haiku-1 | Haiku subagents (Claude Code) | cloud session | 20 | ~1.8M incl. Claude Code overhead (session report) | n/a | a few dollars (estimate) | pending meter reading |  | 2026-10-18 |
 
-No jobs yet. Running total: **$0.00**.
+Running total: **$0.0000** of US$100.
