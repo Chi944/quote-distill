@@ -35,7 +35,8 @@ def load_tokenizer(name: str):
 
 
 def isolate_punctuation(tok) -> None:
-    backend = tok.backend_tokenizer
+    """Works on a transformers fast tokenizer or a plain tokenizers.Tokenizer."""
+    backend = getattr(tok, "backend_tokenizer", tok)
     from tokenizers import Regex, pre_tokenizers
 
     split = pre_tokenizers.Split(Regex(PUNCTUATION), behavior="isolated")
