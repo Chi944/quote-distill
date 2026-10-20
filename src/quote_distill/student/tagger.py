@@ -18,7 +18,9 @@ from .data import expand
 from .tokens import IGNORE, LABEL_ID, LABELS, encode, read, round_trip
 
 MAX_LENGTH = 1024
-PUNCTUATION = r"[^\w\s]"
+# ASCII punctuation only: Rust (Python tokenizers) and JavaScript (transformers.js) agree on this class, while their
+# `\w` differ for non-ASCII letters, which would tokenise the same text differently in the browser.
+PUNCTUATION = r"[!-/:-@\[-`{-~]"
 
 
 def load_tokenizer(name: str):
