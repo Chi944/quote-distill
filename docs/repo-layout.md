@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), the demo's TypeScript post-processing ([demo.md](demo.md)), tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -35,7 +35,8 @@ quote-distill/
 │   │   ├── decode.py            # tagged spans + two document classes back to a schema label
 │   │   ├── tokens.py            # spans to per-token labels and back (no tokenizer needed)
 │   │   ├── tagger.py            # train, predict, score and export the tagger (needs the train extra)
-│   │   └── generative.py        # prompt, train, generate, score and export the generative student
+│   │   ├── generative.py        # prompt, train, generate, score and export the generative student
+│   │   └── fixtures.py          # Python results the demo's TypeScript port must match
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
 │   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
 ├── students/
@@ -52,6 +53,8 @@ quote-distill/
 │   ├── test/                    # 300 hand-checked, frozen: docs, labels, MANIFEST.sha256
 │   └── generated/               # dev and train output (git-ignored, reproducible from a seed)
 ├── demo/                        # TypeScript + Vite static site
+│   ├── src/core/                # TypeScript port of decode, expand, token reading, arithmetic (docs/demo.md)
+│   ├── test/                    # vitest: parity with Python on every dev and pilot document
 │   ├── src/                     # transformers.js inference, schema validation, arithmetic badges
 │   ├── public/models/           # quantised ONNX weights (git-ignored; fetched from Hugging Face Hub)
 │   └── package.json

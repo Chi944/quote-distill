@@ -228,3 +228,4 @@ models/
 demo/node_modules/
 demo/dist/
 demo/public/models/
+demo/fixtures/
