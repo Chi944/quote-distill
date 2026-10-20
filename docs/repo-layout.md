@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -34,7 +34,8 @@ quote-distill/
 │   │   ├── spans.py             # where each gold value is printed, for the encoder tagger
 │   │   ├── decode.py            # tagged spans + two document classes back to a schema label
 │   │   ├── tokens.py            # spans to per-token labels and back (no tokenizer needed)
-│   │   └── tagger.py            # train, predict, score and export the tagger (needs the train extra)
+│   │   ├── tagger.py            # train, predict, score and export the tagger (needs the train extra)
+│   │   └── generative.py        # prompt, train, generate, score and export the generative student
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
 │   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
 ├── students/
@@ -42,7 +43,8 @@ quote-distill/
 │   └── generative/              # small seq2seq / decoder (< ~500M) emitting compact JSON that student/data.py expands to the schema
 │       └── (each has train.py, export_onnx.py, and a Colab/Kaggle notebook)
 ├── notebooks/
-│   └── train_tagger.ipynb       # Colab/Kaggle: train, score on dev, export ONNX (docs/tagger.md)
+│   ├── train_tagger.ipynb       # Colab/Kaggle: train, score on dev, export ONNX (docs/tagger.md)
+│   └── train_generative.ipynb   # Colab/Kaggle: same for the generative student (docs/generative.md)
 ├── data/
 │   ├── seeds/                   # the five hand-authored hard cases (committed)
 │   ├── samples/                 # small committed generator sample for review
