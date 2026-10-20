@@ -101,9 +101,9 @@ def _f1(x) -> str:
 def _latency(ms: list[float], n: int) -> str:
     if not ms:
         return "not measured"
-    if len(ms) != n:
-        return f"{statistics.median(ms) / 1000:.2f} s median ({len(ms)} of {n} timed)"
-    return f"{statistics.median(ms) / 1000:.2f} s median"
+    m = statistics.median(ms)
+    shown = f"{m:.0f} ms median" if m < 1000 else f"{m / 1000:.1f} s median"
+    return shown if len(ms) == n else f"{shown} ({len(ms)} of {n} timed)"
 
 
 def per_field(report: dict) -> Ratio:

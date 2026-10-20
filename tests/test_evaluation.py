@@ -59,7 +59,7 @@ def test_writes_evaluation_and_readme_between_markers(docs, tmp_path):
     assert readme.split(evaluation.START)[0] == readme_before.split(evaluation.START)[0]
     assert readme.split(evaluation.END)[1] == readme_before.split(evaluation.END)[1]
     rows = [line for line in readme.splitlines() if line.startswith("| Student")]
-    assert rows == ["| Student: encoder tagger (in browser) | 100.0% | 1.000 | 100.0% | 100.0% | 0.25 s median"
+    assert rows == ["| Student: encoder tagger (in browser) | 100.0% | 1.000 | 100.0% | 100.0% | 250 ms median"
                     " | $0 (runs in the browser) |",
                     "| Student: generative (in browser) | 0.0% | 0.000 | 0.0% | 0.0% | not measured"
                     " | $0 (runs in the browser) |"]
@@ -107,6 +107,13 @@ def test_refuses_a_test_set_that_differs_from_its_manifest(docs, tmp_path):
     write(test_dir / "docs.jsonl", records)
     with pytest.raises(Refusal, match="differs from its manifest"):
         run({"tagger": perfect(tmp_path)}, test_dir=test_dir)
+
+
+def test_latency_reads_in_ms_below_a_second_and_flags_partial_timing():
+    assert evaluation._latency([5.2, 4.8, 6.0], 3) == "5 ms median"
+    assert evaluation._latency([12_400.0, 9_800.0], 2) == "11.1 s median"
+    assert evaluation._latency([300.0], 2) == "300 ms median (1 of 2 timed)"
+    assert evaluation._latency([], 2) == "not measured"
 
 
 def test_marker_and_cost_helpers():
