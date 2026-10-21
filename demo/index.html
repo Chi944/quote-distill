@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quote Distill</title>
+    <meta name="description" content="Two small models extract supplier quotations in your browser, with no key and no server." />
+  </head>
+  <body>
+    <header>
+      <h1>Quote Distill</h1>
+      <p>Two small open models read a supplier quotation and pull out its fields, entirely in your browser. Nothing is sent anywhere. All quotations here are synthetic.</p>
+    </header>
+    <main>
+      <section class="input">
+        <label for="sample">Pick a sample quotation, or paste your own below</label>
+        <select id="sample"></select>
+        <textarea id="text" rows="16" spellcheck="false" aria-label="Quotation text"></textarea>
+        <div class="actions">
+          <button id="run" type="button">Extract with both models</button>
+          <span id="note"></span>
+        </div>
+      </section>
+      <section class="results">
+        <article class="student" id="tagger" data-kind="tagger">
+          <h2>Tagger <small>Ettin 32M, marks spans in the text</small></h2>
+          <p class="status">Not run yet.</p>
+          <div class="out"></div>
+        </article>
+        <article class="student" id="generative" data-kind="generative">
+          <h2>Generative <small>SmolLM2 360M, writes the JSON</small></h2>
+          <p class="status">Not run yet.</p>
+          <div class="out"></div>
+        </article>
+      </section>
+    </main>
+    <footer>
+      <p>Models download once (the generative one is a few hundred MB) and then run on your device. <a href="https://github.com/Chi944/quote-distill">Code, method and results</a>.</p>
+    </footer>
+    <script type="module" src="./src/page/main.ts"></script>
+  </body>
+</html>
