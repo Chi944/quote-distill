@@ -89,10 +89,18 @@ def _require_yes(args, what: str) -> None:
         sys.exit(f"{what} calls the API. Re-run with --yes once the estimate has been approved.")
 
 
+def check_split(docs: list[dict], evaluation: bool) -> None:
+    """Test documents reach the teacher only in an evaluation job, and an evaluation job holds nothing else."""
+    has_test = any(d.get("split") == "test" or str(d["id"]).startswith("test") for d in docs)
+    if has_test and not evaluation:
+        sys.exit("refusing: test-set documents go to the teacher only for the final evaluation (--evaluation)")
+    if evaluation and not all(d.get("split") == "test" for d in docs):
+        sys.exit("refusing: an --evaluation job contains only frozen test-set documents")
+
+
 def cmd_plan(args) -> None:
     docs = [json.loads(line) for line in open(args.docs, encoding="utf-8")]
-    if any(d.get("split") == "test" or str(d["id"]).startswith("test") for d in docs):
-        sys.exit("refusing: test-set documents never go to the teacher during development")
+    check_split(docs, args.evaluation)
     requests = build_requests(docs, args.model, args.effort, args.max_tokens)
     est = estimate(requests, docs, args.model)
     out = _job_dir(args.job)
@@ -100,7 +108,7 @@ def cmd_plan(args) -> None:
     with open(out / "requests.jsonl", "w", encoding="utf-8") as f:
         for r in requests:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    plan = {"job": args.job, "model": args.model, "effort": args.effort, "max_tokens": args.max_tokens,
+    plan = {"job": args.job, "evaluation": args.evaluation, "model": args.model, "effort": args.effort, "max_tokens": args.max_tokens,
             "docs": str(args.docs), "prompt_sha256": prompt_sha256(),
             **{k: (str(v) if isinstance(v, Decimal) else v) for k, v in est.items()}}
     (out / "plan.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
@@ -212,6 +220,8 @@ def main(argv: list[str] | None = None) -> int:
             sp.add_argument("--model", choices=sorted(spend.BATCH_PRICES), default="claude-haiku-5-5")
             sp.add_argument("--effort", default="low")
             sp.add_argument("--max-tokens", type=int, default=8000)
+            sp.add_argument("--evaluation", action="store_true",
+                            help="final teacher baseline on the frozen test set; never for prompt tuning")
         if name in ("count", "submit"):
             sp.add_argument("--yes", action="store_true")
     args = ap.parse_args(argv)

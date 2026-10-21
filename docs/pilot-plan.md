@@ -1,6 +1,6 @@
 # Teacher pilot plan (20 samples)
 
-Status: **ready to run, not run.** Documents, prompt, scoring and spend guard are built and tested. No API call has been made. Prices were read from the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) on 18 October 2026.
+Status: **run 20 October 2026: Haiku passed all five gates** (job `pilot-session-haiku-1`, report in `results/teacher/pilot-session-haiku-1/report.md`; 18/20 documents exact). Sonnet is not needed. Before the run: Documents, prompt, scoring and spend guard are built and tested. No API call has been made. On 20 October 2026 we decided to run the teacher in a Claude Code cloud session paid from cloud session credits, not through the API: see [teacher-session.md](teacher-session.md). The API path below stays as the reference and fallback. Prices were read from the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) on 18 October 2026.
 
 ## The step and how we will know it worked
 
@@ -86,10 +86,9 @@ The gates are coded in [`metrics.py`](../src/quote_distill/metrics.py) (`PILOT_G
 ## Sequence
 
 1. Freeze the prompt, gold, sample list and gates in a commit. **Done.**
-2. Count tokens for the 20 requests with the token-counting endpoint and update the estimate above (needs your go-ahead, as it is an API call, though it is not billed).
-3. Submit the Haiku batch; log it in `docs/spend.md` before and after (estimate, then actual usage and cost).
-4. Score locally. Pass: stop here and report. Fail: report the failing gates first, then run Sonnet on the same 20 and log it.
-5. If a failure is clearly a rule our prompt never stated (for example a normalisation rule), I will say so and propose one Haiku rerun with the fixed prompt as a new logged job before escalating. You decide.
+2. Run the 20 documents through Haiku subagents in a cloud session ([teacher-session.md](teacher-session.md)). Log the job in `docs/spend.md` with the credit meter read before and after.
+3. Score locally. Pass: stop here and report. Fail: report the failing gates first, then run Sonnet on the same 20 and log it.
+4. If a failure is clearly a rule our prompt never stated (for example a normalisation rule), I will say so and propose one Haiku rerun with the fixed prompt as a new logged job before escalating. You decide.
 
 ## Commands
 
