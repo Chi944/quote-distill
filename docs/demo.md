@@ -51,7 +51,7 @@ pip install -e ".[generative]" && python tests/demo_models.py generative   # opt
 cd demo && npm ci --ignore-scripts && npm test
 ```
 
-The real tokenizers (Ettin's and SmolLM2's) are checked the same way once the notebooks' exports are attached.
+The real tokenizers (Ettin's and SmolLM2's) are checked the same way once the notebooks' exports are attached: `python -m quote_distill.student.fixtures ... --tokenizer <unpacked export>`, then `npm test`. They can't be fetched in the build environment, where Hugging Face downloads are blocked.
 
 ## Part 3: the page
 

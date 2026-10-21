@@ -1,5 +1,6 @@
 // The browser's tokenizer must produce the ids Python produced in training, and offsets that cover the same text.
-// Uses the stand-in tokenizer the fixtures script writes (same shape as the tagger's, punctuation isolated).
+// Uses the tokenizer the fixtures script writes: a stand-in shaped like the tagger's (punctuation isolated), or a real
+// model's tokenizer passed with --tokenizer.
 import { existsSync, readFileSync } from "node:fs";
 import { Tokenizer } from "@huggingface/tokenizers";
 import { describe, expect, it } from "vitest";
@@ -10,8 +11,10 @@ const DIR = new URL("../fixtures/tokenizer/", import.meta.url);
 const FIXTURES = new URL("../fixtures/dev.jsonl", import.meta.url);
 if (!existsSync(new URL("tokenizer.json", DIR))) throw new Error("Missing demo/fixtures/tokenizer; run the fixtures script with tokenizers installed.");
 
-const tokenizer = new Tokenizer(JSON.parse(readFileSync(new URL("tokenizer.json", DIR), "utf-8")), JSON.parse(readFileSync(new URL("tokenizer_config.json", DIR), "utf-8")));
-const special = new Set(["[CLS]", "[SEP]", "[PAD]", "[UNK]", "[MASK]"]);
+const tokenizerJSON = JSON.parse(readFileSync(new URL("tokenizer.json", DIR), "utf-8"));
+const tokenizer = new Tokenizer(tokenizerJSON, JSON.parse(readFileSync(new URL("tokenizer_config.json", DIR), "utf-8")));
+// Whichever tokenizer the fixtures were built with: the stand-in, or a real model's (fixtures --tokenizer).
+const special = new Set<string>(tokenizerJSON.added_tokens.filter((t: { special: boolean }) => t.special).map((t: { content: string }) => t.content));
 const rows: { id: string; text: string; token_ids: number[]; token_offsets: Offset[] }[] = readFileSync(FIXTURES, "utf-8")
   .trim()
   .split("\n")
@@ -37,7 +40,7 @@ describe(`tokenisation matches Python on ${rows.length} documents`, () => {
     expect(bad.map((r) => r.id)).toEqual([]);
   });
 
-  it("isolates punctuation, so \" S$.\" is three tokens", () => {
+  it.skipIf(!tokenizerJSON.pre_tokenizer?.pretokenizers?.[0]?.pattern)("isolates punctuation, so \" S$.\" is three tokens", () => {
     expect(tokenizer.encode("Amounts are in S$.", { add_special_tokens: false }).tokens.slice(-3)).toEqual(["ĠS", "$", "."]);
   });
 });
