@@ -1,0 +1,31 @@
+{
+  "job": "pilot-session-haiku-1",
+  "runner": "claude-code-session",
+  "subagent_model": "haiku",
+  "evaluation": false,
+  "docs": "data/pilot/pilot-20.jsonl",
+  "ids": [
+    "seed-01",
+    "seed-02",
+    "seed-03",
+    "seed-04",
+    "seed-05",
+    "dev-s7-000155",
+    "dev-s7-000529",
+    "dev-s7-000559",
+    "dev-s7-000199",
+    "dev-s7-000281",
+    "dev-s7-000824",
+    "dev-s7-000953",
+    "dev-s7-001238",
+    "dev-s7-001733",
+    "dev-s7-000989",
+    "dev-s7-001587",
+    "dev-s7-000169",
+    "dev-s7-000013",
+    "dev-s7-001245",
+    "dev-s7-000025"
+  ],
+  "prompt_sha256": "ce5021cd37bf2c59f3c7e3e76f1c2de3aed318b997950023d5e9ae49e7a2ced2",
+  "prepared": "2026-10-20"
+}
