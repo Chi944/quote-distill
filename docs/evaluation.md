@@ -32,7 +32,7 @@ Read the meter again and log the job in [`spend.md`](spend.md). The teacher's la
 
 ## 2. Students
 
-Both run on CPU through onnxruntime with the same model files the page loads (int8 tagger, 4-bit generative), one document at a time ([`student/evaluate.py`](../src/quote_distill/student/evaluate.py), [student-eval.md](student-eval.md)):
+Both run on CPU through onnxruntime with the same model files the page loads (float32 tagger, 4-bit generative), one document at a time ([`student/evaluate.py`](../src/quote_distill/student/evaluate.py), [student-eval.md](student-eval.md)):
 
 ```bash
 python -m quote_distill.student.evaluate --docs data/test/docs.jsonl --evaluation --tagger out/tagger-onnx --out results/students/tagger

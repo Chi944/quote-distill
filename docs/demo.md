@@ -62,7 +62,7 @@ The real tokenizers (Ettin's and SmolLM2's) are checked the same way once the no
 Model files are static files next to the page, which the page fetches once:
 
 ```
-demo/public/models/tagger/        config.json, tokenizer files, onnx/model_quantized.onnx   (from tagger-onnx.zip)
+demo/public/models/tagger/        config.json, tokenizer files, onnx/model.onnx             (from tagger-onnx.zip)
 demo/public/models/generative/    config.json, tokenizer files, onnx/model_q4.onnx          (from generative-onnx.zip)
 ```
 

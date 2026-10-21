@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Dec, decimalValue, moneyValue, priceValue } from "../src/core/decimal";
 import { parseDate } from "../src/core/dates";
+import { byteLevelOffsets } from "../src/core/offsets";
 import { LABELS, SPAN_LABELS, read } from "../src/core/tokens";
 
 describe("Dec matches Python's Decimal", () => {
@@ -53,5 +54,18 @@ describe("read", () => {
     expect(label.gst.treatment).toBe("not_charged");
     expect(SPAN_LABELS.length).toBe(39);
     expect(LABELS.length).toBe(47);
+  });
+});
+
+describe("byteLevelOffsets", () => {
+  it("reads byte-level tokens and literal added tokens such as whitespace runs", () => {
+    // Ettin encodes "Qty   Unit é" as Q, ty, a literal three-space added token, Unit, then Ġ and é's two bytes.
+    const tokens = ["[CLS]", "Q", "ty", "   ", "Unit", "Ġ", "Ã©", "[SEP]"];
+    const special = new Set(["[CLS]", "[SEP]"]);
+    expect(byteLevelOffsets("Qty   Unit é", tokens, special)).toEqual([[0, 0], [0, 1], [1, 3], [3, 6], [6, 10], [10, 11], [11, 12], [0, 0]]);
+  });
+
+  it("throws when the tokens don't spell the text", () => {
+    expect(() => byteLevelOffsets("Qty Unit", ["Q", "ty", "   ", "Unit"], new Set())).toThrow();
   });
 });

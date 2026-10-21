@@ -50,7 +50,7 @@ describe.skipIf(!ready)("the page in a browser", () => {
       if (process.env.SCREENSHOT) await page.screenshot({ path: process.env.SCREENSHOT, fullPage: true });
 
       expect(await page.textContent("#tagger .status")).toBe("Done.");
-      expect(JSON.parse(tagger!)).toEqual((await (await loadTagger("tiny-tagger", "q8")).extract(sample.text)).label);
+      expect(JSON.parse(tagger!)).toEqual((await (await loadTagger("tiny-tagger", "fp32")).extract(sample.text)).label);
       expect(output).toBe((await (await loadGenerative("tiny-generative", "q4")).extract(sample.text)).output);
       expect(await page.textContent("#tagger .meta")).toMatch(/values match the answer key/);
       expect(outside).toEqual([]);

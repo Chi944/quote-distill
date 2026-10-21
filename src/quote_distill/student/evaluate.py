@@ -22,7 +22,7 @@ from pathlib import Path
 
 from ..metrics import DOC_FIELDS, Ratio, aggregate, format_report, score_document
 
-FILES = {"tagger": "model_quantized.onnx", "generative": "model_q4.onnx"}  # what the demo page loads
+FILES = {"tagger": "model.onnx", "generative": "model_q4.onnx"}  # what the demo page loads; the int8 tagger scored 32/1000 on dev
 
 
 def run_tagger(model_dir: str, records: list[dict]) -> tuple[list[dict], list[float]]:
