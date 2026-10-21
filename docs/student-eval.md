@@ -1,6 +1,6 @@
 # Scoring the students
 
-**Step.** Score both exported students exactly as the teacher is scored. The scoring runs the same ONNX files the demo page loads (the tagger's int8 `model_quantized.onnx` and the generative student's 4-bit `model_q4.onnx`) through `metrics.py`, and prints the README row.
+**Step.** Score both exported students exactly as the teacher is scored. The scoring runs the same ONNX files the demo page loads (the tagger's float32 `model.onnx` and the generative student's 4-bit `model_q4.onnx`; the tagger's int8 file scored 32/1000 exact on dev against 1000/1000 for float32, so the page doesn't use it) through `metrics.py`, and prints the README row.
 
 **It worked when** a run gives a report, predictions and a README row with every number over its denominator, and the frozen test set can only be scored as the final evaluation. **Result:** done and tested on dev documents with the tiny test models. The real scores wait for the trained exports.
 

@@ -44,6 +44,10 @@ Default: [`jhu-clsp/ettin-encoder-32m`](https://huggingface.co/jhu-clsp/ettin-en
 
 Recommendation: start with 32M, and move to 68M only if the validation score falls short. The swap is one line in the notebook, `BASE`.
 
+## First run (2026-10-21, RTX 3050)
+
+On the 1,000 dev documents: PyTorch 1000/1000 exact, float32 ONNX 1000/1000 (27 ms median per document on CPU), int8 ONNX 32/1000. Dynamic int8 quantisation breaks this model, so the page and `student/evaluate.py` use the float32 `model.onnx` (128 MB download) instead of the int8 file (32 MB). Dev documents come from the same generator as training, so the honest score is the test set's.
+
 ## What was checked here
 
 The build environment has no GPU and can't reach the Hugging Face Hub, so it can't train the real model. It ran everything else.

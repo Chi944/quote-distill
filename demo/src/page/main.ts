@@ -79,7 +79,7 @@ async function runTagger(text: string, key: Label | undefined) {
   p.show("");
   p.say("Loading the model…");
   try {
-    tagger ??= loadTagger("tagger", "q8", progress(p));
+    tagger ??= loadTagger("tagger", "fp32", progress(p));
     const model = await tagger;
     p.say("Extracting…");
     const t0 = performance.now();
