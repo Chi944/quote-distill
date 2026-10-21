@@ -5,8 +5,9 @@
 
 For the frozen test set, pass its file with --evaluation, as for the teacher (docs/test-set.md): a job is either all
 test documents with --evaluation or none. Each student is optional, since they need different extras (`train` for the
-tagger, `generative` for the generative student). Writes per student a report (report-<student>.md), predictions in
-the format `quote-distill-score --pred` reads (predictions-<student>.jsonl), and summary.json with the README row.
+tagger, `generative` for the generative student). Writes per student a report (report-<student>.md), predictions with
+a latency_ms per row (predictions-<student>.jsonl, read by `quote-distill-score --pred` and quote_distill.evaluation),
+and summary.json with the model file's SHA-256 and the README row.
 
 Latency is wall time per document on this machine's CPU through onnxruntime, one document at a time, model loading
 excluded. It is not browser latency, which the demo page shows per run.
@@ -55,13 +56,23 @@ def run_generative(model_dir: str, records: list[dict], max_new_tokens: int) -> 
     return preds, times
 
 
-def summarise(name: str, records: list[dict], preds: list, times: list[float], out: Path) -> dict:
+def sha256(path: Path) -> str:
+    import hashlib
+
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def summarise(name: str, records: list[dict], preds: list, times: list[float], out: Path, model_dir: str | None = None) -> dict:
     scores = [score_document(r["id"], r["label"], p) for r, p in zip(records, preds, strict=True)]
     report = aggregate(scores)
     (out / f"report-{name}.md").write_text(f"# {name} student\n\n" + format_report(report, scores), encoding="utf-8")
     with open(out / f"predictions-{name}.jsonl", "w", encoding="utf-8") as f:
-        for r, p in zip(records, preds, strict=True):
-            f.write(json.dumps({"id": r["id"], "output": p}, ensure_ascii=False) + "\n")
+        for r, p, t in zip(records, preds, times, strict=True):
+            f.write(json.dumps({"id": r["id"], "output": p, "latency_ms": round(t * 1000, 1)}, ensure_ascii=False) + "\n")
     fields = sum((report["fields"][k] for k in DOC_FIELDS), Ratio(0, 0))
     qs = statistics.quantiles(times, n=10) if len(times) > 1 else times * 9
     li = report["line_items"]["f1"]
@@ -75,6 +86,8 @@ def summarise(name: str, records: list[dict], preds: list, times: list[float], o
         "parsed": str(report["parsed"]),
         "latency_s": {"median": round(statistics.median(times), 3), "p90": round(qs[8], 3)},
     }
+    if model_dir:
+        summary["model_file"] = {"name": FILES[name], "sha256": sha256(Path(model_dir) / "onnx" / FILES[name])}
     summary["readme_row"] = (f"| Student: {name} (CPU, onnxruntime) | {fields} | {summary['line_item_f1']} | "
                              f"{report['arithmetic_consistent']} | {report['exact_documents']} | "
                              f"{summary['latency_s']['median']} s median | $0 |")
@@ -107,10 +120,10 @@ def main(argv: list[str] | None = None) -> int:
     args.out.mkdir(parents=True, exist_ok=True)
     summary = {"docs": str(args.docs), "evaluation": args.evaluation, "students": {}}
     if args.tagger:
-        summary["students"]["tagger"] = summarise("tagger", records, *run_tagger(args.tagger, records), args.out)
+        summary["students"]["tagger"] = summarise("tagger", records, *run_tagger(args.tagger, records), args.out, args.tagger)
     if args.generative:
         preds, times = run_generative(args.generative, records, args.max_new_tokens)
-        summary["students"]["generative"] = summarise("generative", records, preds, times, args.out)
+        summary["students"]["generative"] = summarise("generative", records, preds, times, args.out, args.generative)
     (args.out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     for name, s in summary["students"].items():
         print(f"{name}: {s['per_field_exact']} fields exact, {s['exact_documents']} documents exact, "

@@ -42,3 +42,12 @@ def test_summary_counts_with_denominators(tmp_path, records):
     lines = (tmp_path / "predictions-tagger.jsonl").read_text(encoding="utf-8").splitlines()
     assert [json.loads(line)["output"] is None for line in lines] == [False, False, False, True]
     assert "Whole document exact | 3/4 (75.0%)" in (tmp_path / "report-tagger.md").read_text(encoding="utf-8")
+
+
+def test_predictions_feed_the_final_evaluation(tmp_path, records):
+    from quote_distill.evaluation import load_predictions
+
+    summarise("tagger", records, [r["label"] for r in records], [0.012, 0.02, 0.03, 0.04], tmp_path)
+    preds, latencies = load_predictions(tmp_path / "predictions-tagger.jsonl", [r["id"] for r in records])
+    assert preds == {r["id"]: r["label"] for r in records}
+    assert latencies == [12.0, 20.0, 30.0, 40.0]

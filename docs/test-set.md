@@ -25,9 +25,12 @@
 
 ## Hand check
 
-Status: **not started.** The generator's labels are machine-checked; the hand check is the independent evidence that the generator, the checker and the shared rounding helper are not wrong together.
+Status: **done, 300 of 300 checked, no problems found** (21 October 2026). The generator's labels are machine-checked; the hand check is the independent evidence that the generator, the checker and the shared rounding helper are not wrong together.
 
-The check is done on a private review page that shows each document beside its gold label (hovering a value highlights the text it came from) and records a verdict and note per document. Verdicts are read back from that page into the table below; the page itself holds no data the repository does not.
+The check is done on a private review page that shows each document beside its gold label (hovering a value highlights the text it came from) and records a verdict and note per document. Verdicts are read back from that page, or taken from the owner's report, into the table below; the page itself holds no data the repository does not.
 
 | Date | Documents checked | Problems found | Corrections (id: field, reason) |
 |---|---|---|---|
+| 2026-10-21 | 300 | 0 | none |
+
+The owner reported this check in the project thread ("all checked", then "no problems"). The review page's shared record held no saved verdicts when it was read, so no per-document record exists; the row above rests on that report.

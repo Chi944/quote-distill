@@ -14,7 +14,7 @@ python -m quote_distill.student.evaluate --docs data/generated/dev/docs.jsonl --
     --generative out/generative-onnx --out runs/students-dev-gen
 ```
 
-Each run writes `report-<student>.md` (the same tables as the teacher's report, failing documents listed), `predictions-<student>.jsonl` (readable by `quote-distill-score --pred`) and `summary.json` with the README row.
+Each run writes `report-<student>.md` (the same tables as the teacher's report, failing documents listed), `predictions-<student>.jsonl` with each document's `latency_ms` (readable by `quote-distill-score --pred` and by the final evaluation) and `summary.json` with the model file's SHA-256.
 
 ## The final evaluation
 
@@ -27,7 +27,7 @@ The order once the exports are attached:
 
 1. Check the real tokenizers in the browser: `python -m quote_distill.student.fixtures ... --tokenizer <unpacked export>`, then `npm test` in `demo/`. Ids and offsets must match Python on all 1,020 dev and pilot documents, as they do for the stand-in.
 2. Score on dev, to compare with the notebooks' own dev numbers.
-3. Record the hand check, then score the 300 test documents with `--evaluation` and put the rows in the README.
+3. Record the hand check, then score the 300 test documents with `--evaluation`. `python -m quote_distill.evaluation` puts both students beside the teacher in [evaluation.md](evaluation.md) and the README table.
 
 ## Latency
 
