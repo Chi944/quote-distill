@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Sri Kenanga Trading",
+    "raw": "Sri Kenanga Trading"
+  },
+  "quote_number": {
+    "state": "not_stated"
+  },
+  "date": {
+    "state": "not_stated"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "MYR",
+    "raw": "RM"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Galvinised pipe 25mm x 6m",
+        "raw": "Galvinised pipe 25mm x 6m"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "40",
+        "raw": "40"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "length",
+        "raw": "lengths"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "38.50",
+        "raw": "RM 38.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1540.00",
+        "raw": "RM 1,540.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Elbow 90deg 25mm (galv)",
+        "raw": "Elbow 90deg 25mm (galv)"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "60",
+        "raw": "60"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "pcs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "2.15",
+        "raw": "RM 2.15"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "129.00",
+        "raw": "RM 129.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1669.00",
+    "raw": "RM 1,669.00"
+  },
+  "validity": {
+    "state": "not_stated"
+  },
+  "payment_terms": {
+    "state": "not_stated"
+  }
+}

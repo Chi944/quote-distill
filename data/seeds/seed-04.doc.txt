@@ -1,0 +1,20 @@
+HARROWGATE INSTRUMENTS INC.
+2210 Wexley Avenue, Suite 400, Columbus OH 43215, USA
+
+PROFORMA QUOTATION                         Quote: HI-26-1015-B
+                                           Date:  October 15, 2026
+Bill to: Pinecrest Utilities (Singapore)
+All amounts in US$.
+
+Line  Part        Description                      Qty   Unit price     Total
+ 1    DM-400      Digital multimeter, CAT IV         4 ea     142.00     568.00
+ 2    TL-KIT2     Test leads kit                      4 ea      18.75      76.00
+ 3    CC-400      Hard carry case                     4 ea        FOC       0.00
+ 4    TRADE-IN    Credit: return of old DM-200       2 ea     -40.00     -80.00
+ 5    FRT         Freight (DHL Express)              1         45.00      45.00
+
+                                              Subtotal          609.00
+                                              GST/VAT           Not applicable (export)
+                                              TOTAL USD         609.00
+
+Validity: 60 days.   Payment terms: 100% T/T in advance.

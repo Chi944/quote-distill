@@ -1,0 +1,20 @@
+Bramblewood Civil Supplies Pty Ltd  |  ABN 00 000 000 000
+Lot 7 Quarry Rd, Toowoomba QLD 4350
+
+QUOTE  #  BCS-26/1182
+Date issued: 17/10/2026        Currency: AUD
+Customer: Ridgeback Builders – Job 44 Banksia St
+
+| Item | Description                         | Qty  | UoM | Rate      | Disc   | Ext (ex GST) |
+|------|-------------------------------------|------|-----|-----------|--------|--------------|
+| 1    | Pre-mix concrete 32MPa, 20mm agg.   | 6.5  | m³  | $285.00   |        | $1,852.50    |
+| 2    | Reinforcing mesh SL82 6.0 x 2.4     | 14   | sht | $96.40    | 10%    | $1,214.64    |
+| 3    | Formwork ply 17mm F14 2400x1200     | 20   | sh  | $68.75    | $50.00 | $1,325.00    |
+| 4    | Line pump hire incl. operator (4hr) |      | L/S |           |        | $1,450.00    |
+
+                                       Subtotal (ex GST)   $5,842.14
+                                       GST 10%               $584.21
+                                       Total inc GST       $6,426.35
+
+Prices valid until 30 November 2026. Terms: 30 days end of month.
+Pump booking subject to availability.
