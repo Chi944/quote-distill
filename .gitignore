@@ -224,7 +224,8 @@ __marimo__/
 !.env.example
 data/generated/
 runs/
-models/
+/models/
 demo/node_modules/
 demo/dist/
 demo/public/models/
+demo/fixtures/

@@ -77,4 +77,4 @@ The decoder groups line items and discounts by their descriptions, using the sam
 
 **Ceiling check.** Gold spans and gold classes, decoded, reproduce the gold label exactly for every document: 10,000/10,000 train and 1,000/1,000 dev, and all 20 pilot documents, including the five hand-written seeds. So any mistake in the tagger's results is the tagger's own, not the decoder's. Without the date-order class, guessing month-first from US-dollar currency alone gets 9,946/10,000 train and 993/1,000 dev, because a US quotation with a bare `$` has ambiguous dates. That's why date order is a class.
 
-Next: convert spans to token tags in the training notebook, which needs a tokenizer.
+Token labels, training and export are in [tagger.md](tagger.md).
