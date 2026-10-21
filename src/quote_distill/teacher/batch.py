@@ -89,13 +89,18 @@ def _require_yes(args, what: str) -> None:
         sys.exit(f"{what} calls the API. Re-run with --yes once the estimate has been approved.")
 
 
+def check_split(docs: list[dict], evaluation: bool) -> None:
+    """Test documents reach the teacher only in an evaluation job, and an evaluation job holds nothing else."""
+    has_test = any(d.get("split") == "test" or str(d["id"]).startswith("test") for d in docs)
+    if has_test and not evaluation:
+        sys.exit("refusing: test-set documents go to the teacher only for the final evaluation (--evaluation)")
+    if evaluation and not all(d.get("split") == "test" for d in docs):
+        sys.exit("refusing: an --evaluation job contains only frozen test-set documents")
+
+
 def cmd_plan(args) -> None:
     docs = [json.loads(line) for line in open(args.docs, encoding="utf-8")]
-    has_test = any(d.get("split") == "test" or str(d["id"]).startswith("test") for d in docs)
-    if has_test and not args.evaluation:
-        sys.exit("refusing: test-set documents go to the teacher only for the final evaluation (--evaluation)")
-    if args.evaluation and not all(d.get("split") == "test" for d in docs):
-        sys.exit("refusing: an --evaluation job contains only frozen test-set documents")
+    check_split(docs, args.evaluation)
     requests = build_requests(docs, args.model, args.effort, args.max_tokens)
     est = estimate(requests, docs, args.model)
     out = _job_dir(args.job)
