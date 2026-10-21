@@ -1,6 +1,6 @@
 # Repository layout for Chi944/quote-distill
 
-Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand check pending), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), tests and CI. Everything else below is planned.
+Built so far: schema, seeds, checks, generator, scoring metrics, teacher pilot tooling (not yet run), the 20 pilot documents, the frozen 300-document test set (hand-checked, no corrections), student training data with compact generative targets and tagger spans ([student-data.md](student-data.md)), the tagger's labels, training and export code and notebook ([tagger.md](tagger.md)), the same for the generative student ([generative.md](generative.md)), the demo's TypeScript post-processing, model runners and page ([demo.md](demo.md)), student scoring ([student-eval.md](student-eval.md)), the final evaluation command, not yet run ([evaluation.md](evaluation.md)), tests and CI. Everything else below is planned.
 
 Python owns data, teacher jobs, training and metrics; TypeScript owns the static demo. The demo folder builds to plain static files and never needs a key or server.
 
@@ -34,15 +34,19 @@ quote-distill/
 │   │   ├── spans.py             # where each gold value is printed, for the encoder tagger
 │   │   ├── decode.py            # tagged spans + two document classes back to a schema label
 │   │   ├── tokens.py            # spans to per-token labels and back (no tokenizer needed)
-│   │   └── tagger.py            # train, predict, score and export the tagger (needs the train extra)
+│   │   ├── tagger.py            # train, predict, score and export the tagger (needs the train extra)
+│   │   ├── generative.py        # prompt, train, generate, score and export the generative student
+│   │   ├── fixtures.py          # Python results the demo's TypeScript port must match
+│   │   └── evaluate.py          # scores the exported students like the teacher (docs/student-eval.md)
 │   ├── metrics.py               # per-field exact match, line-item F1, arithmetic, whole-doc match, pilot gates
-│   └── report.py                # results tables and failure gallery (metrics.py prints a first version)
+│   └── evaluation.py            # teacher and students on the test set: docs/evaluation.md and the README table
 ├── students/
 │   ├── encoder/                 # token tagger: BIO labels from `raw` spans + deterministic assembly
 │   └── generative/              # small seq2seq / decoder (< ~500M) emitting compact JSON that student/data.py expands to the schema
 │       └── (each has train.py, export_onnx.py, and a Colab/Kaggle notebook)
 ├── notebooks/
-│   └── train_tagger.ipynb       # Colab/Kaggle: train, score on dev, export ONNX (docs/tagger.md)
+│   ├── train_tagger.ipynb       # Colab/Kaggle: train, score on dev, export ONNX (docs/tagger.md)
+│   └── train_generative.ipynb   # Colab/Kaggle: same for the generative student (docs/generative.md)
 ├── data/
 │   ├── seeds/                   # the five hand-authored hard cases (committed)
 │   ├── samples/                 # small committed generator sample for review
@@ -50,6 +54,10 @@ quote-distill/
 │   ├── test/                    # 300 hand-checked, frozen: docs, labels, MANIFEST.sha256
 │   └── generated/               # dev and train output (git-ignored, reproducible from a seed)
 ├── demo/                        # TypeScript + Vite static site
+│   ├── src/core/                # TypeScript port of decode, expand, token reading, arithmetic, offsets (docs/demo.md)
+│   ├── src/models/              # tagger and generative runners on transformers.js
+│   ├── src/page/                # the page: samples, rendering, wiring
+│   ├── test/                    # vitest: parity with Python on every dev and pilot document
 │   ├── src/                     # transformers.js inference, schema validation, arithmetic badges
 │   ├── public/models/           # quantised ONNX weights (git-ignored; fetched from Hugging Face Hub)
 │   └── package.json
