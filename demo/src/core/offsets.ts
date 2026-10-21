@@ -20,13 +20,16 @@ const CHAR_TO_BYTE: Map<string, number> = (() => {
   return new Map(bytes.map((b, i) => [String.fromCodePoint(chars[i]!), b]));
 })();
 
-function byteLength(token: string): number {
-  let n = 0;
+/** The UTF-8 bytes a token stands for. Byte-level characters map back through the table; any other character is
+ * literal text, as in added tokens such as Ettin's whitespace runs ("   "), and stands for its own UTF-8 bytes. */
+function tokenBytes(token: string): number[] {
+  const out: number[] = [];
   for (const ch of token) {
-    if (!CHAR_TO_BYTE.has(ch)) throw new Error(`not a byte-level token: ${JSON.stringify(token)}`);
-    n++;
+    const b = CHAR_TO_BYTE.get(ch);
+    if (b !== undefined) out.push(b);
+    else out.push(...new TextEncoder().encode(ch));
   }
-  return n;
+  return out;
 }
 
 /** Offsets in `text` (string indices) for each token; special tokens get [0, 0]. Throws if the tokens don't spell
@@ -52,9 +55,10 @@ export function byteLevelOffsets(text: string, tokens: string[], special: Set<st
       out.push([0, 0]);
       continue;
     }
-    const n = byteLength(t);
-    for (const [k, ch] of [...t].entries()) {
-      if (utf8[pos + k] !== CHAR_TO_BYTE.get(ch)) throw new Error(`token ${JSON.stringify(t)} does not match the text at byte ${pos + k}`);
+    const bytes = tokenBytes(t);
+    const n = bytes.length;
+    for (const [k, byte] of bytes.entries()) {
+      if (utf8[pos + k] !== byte) throw new Error(`token ${JSON.stringify(t)} does not match the text at byte ${pos + k}`);
     }
     const start = charAt[pos]!;
     const last = charAt[pos + n - 1]!;
