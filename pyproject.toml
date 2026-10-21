@@ -12,6 +12,11 @@ dependencies = ["jsonschema>=4.21"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.6"]
+# Training and ONNX export (notebooks/). Tested with torch 2.14; the tagger with transformers 4.57 and 5.20.
+# optimum-onnx (ONNX export with a KV cache) needs transformers below 4.58.
+train = ["torch>=2.4", "transformers>=4.56,<6", "accelerate>=1.0", "onnx>=1.17", "onnxruntime>=1.20"]
+generative = ["torch>=2.4", "transformers>=4.56,<4.58", "accelerate>=1.0", "onnx>=1.17", "onnxruntime>=1.20",
+              "optimum-onnx[onnxruntime]==0.1.0"]
 
 [project.scripts]
 quote-distill-generate = "quote_distill.generator.build:main"

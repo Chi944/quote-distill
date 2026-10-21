@@ -83,7 +83,7 @@ def test_spend_log_round_trip(tmp_path):
         spend.log_estimate(row, path)
     spend.log_actual("pilot-haiku-1", 80_000, 40_000, Decimal("0.014"), path)
     text = path.read_text()
-    assert "| $0.0140 | $0.0140 |" in text and "Running total: **$0.0140** of US$50." in text
+    assert "| $0.0140 | $0.0140 |" in text and "Running total: **$0.0140** of US$100." in text
     assert "No jobs yet" not in text
     with pytest.raises(ValueError):
         spend.log_actual("never-logged", 1, 1, Decimal("0"), path)
@@ -122,3 +122,33 @@ def test_test_set_reaches_the_teacher_only_as_an_evaluation_job(monkeypatch, tmp
         batch.main(["plan", "--job", "x", "--docs", str(PILOT / "pilot-20.jsonl"), "--evaluation"])
     batch.main(["plan", "--job", "eval", "--docs", test_docs, "--evaluation"])
     assert json.loads((tmp_path / "eval" / "plan.json").read_text())["evaluation"] is True
+
+
+def test_session_runner_prepares_collects_and_guards(monkeypatch, tmp_path):
+    from quote_distill.teacher import prompt, session
+
+    monkeypatch.setattr(session, "RUNS", tmp_path / "runs")
+    monkeypatch.setattr(session, "RESULTS", tmp_path / "results")
+    test_docs = ROOT / "data" / "test" / "docs.jsonl"
+    with pytest.raises(SystemExit, match="only for the final evaluation"):
+        session.prepare("x", test_docs, "haiku", evaluation=False)
+
+    docs = pilot_docs()
+    plan = session.prepare("p", PILOT / "pilot-20.jsonl", "haiku", evaluation=False)
+    assert plan["ids"] == [d["id"] for d in docs] and plan["runner"] == "claude-code-session"
+    task = (tmp_path / "runs" / "p" / "tasks" / "seed-02.txt").read_text()
+    assert task.startswith(system_prompt()) and docs[1]["text"] in task
+
+    out = tmp_path / "results" / "p" / "outputs"
+    (out / "seed-02.txt").write_text(json.dumps(docs[1]["label"]) + "\n")
+    (out / "seed-01.txt").write_text('```json\n{}\n```')
+    r = session.collect("p")
+    assert r == {"n": 20, "parsed": 1, "missing": [d["id"] for d in docs if d["id"] not in ("seed-01", "seed-02")]}
+    preds = {p["id"]: p for p in map(json.loads, open(tmp_path / "results" / "p" / "predictions.jsonl"))}
+    assert score_document("seed-02", docs[1]["label"], preds["seed-02"]["output"]).exact
+    assert preds["seed-01"]["problem"] == "wrapped in a code fence"
+
+    monkeypatch.setattr(session, "prompt_sha256", lambda: "changed")
+    with pytest.raises(SystemExit, match="prompt changed"):
+        session.collect("p")
+    assert prompt.prompt_sha256() != "changed"
