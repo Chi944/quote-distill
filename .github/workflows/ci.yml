@@ -37,14 +37,17 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: demo/package-lock.json
-      - run: pip install -e .
+      - run: pip install -e . tokenizers
       - name: Parity fixtures from the Python code
         run: |
           python -m quote_distill.student.data --out data/generated/student --n-train 1
           python -m quote_distill.student.fixtures --data data/generated/student/dev.jsonl --out demo/fixtures/dev.jsonl
-      - run: npm ci
+      # --ignore-scripts: onnxruntime-node ships its CPU binaries; its install script only fetches GPU extras.
+      - run: npm ci --ignore-scripts
         working-directory: demo
       - run: npm run typecheck
         working-directory: demo
       - run: npm test
+        working-directory: demo
+      - run: npm run build
         working-directory: demo
