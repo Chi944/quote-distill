@@ -48,7 +48,7 @@ def test_exclude_test_drops_test_texts():
 
 
 def test_only_evaluation_code_reads_the_test_set():
-    allowed = {"splits.py"}
+    allowed = {"splits.py", "evaluation.py"}  # the frozen set itself, and the one command that scores against it
     for path in (ROOT / "src").rglob("*.py"):
         text = path.read_text(encoding="utf-8")
         if path.name in allowed:
