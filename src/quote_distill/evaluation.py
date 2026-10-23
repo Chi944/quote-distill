@@ -91,10 +91,6 @@ def teacher_name(path: Path) -> str:
     return SYSTEMS["teacher"].format(model=str(job.get("subagent_model", "(model not recorded)")).title())
 
 
-def _pct(r: Ratio) -> str:
-    return f"{r.n / r.d:.1%}" if r.d else "n/a"
-
-
 def _f1(x) -> str:
     return "n/a" if x is None else f"{x:.3f}"
 
@@ -147,11 +143,11 @@ def _gallery(name: str, scores: list) -> list[str]:
 
 def readme_table(systems: list[System], reports: dict) -> list[str]:
     out = ["| Model | Per-field exact match | Line-item F1 | Arithmetic agrees with gold | Whole document exact"
-           " | Latency per doc | Cost per doc |", "|---|---|---|---|---|---|---|"]
+           " | Latency per doc (CPU) | Cost per doc |", "|---|---|---|---|---|---|---|"]
     for s in systems:
         r = reports[s.key]
-        out.append(f"| {s.name} | {_pct(per_field(r))} | {_f1(r['line_items']['f1'])} | {_pct(r['arithmetic_agrees'])}"
-                   f" | {_pct(r['exact_documents'])} | {_latency(s.latency_ms, r['documents'])} | {s.cost} |")
+        out.append(f"| {s.name} | {per_field(r)} | {_f1(r['line_items']['f1'])} | {r['arithmetic_agrees']}"
+                   f" | {r['exact_documents']} | {_latency(s.latency_ms, r['documents'])} | {s.cost} |")
     return out
 
 
@@ -167,7 +163,8 @@ def render(systems: list[System], gold: list[dict], manifest: str, draft: bool) 
             "### Summary", "", *readme_table(systems, reports), "",
             "Per-field exact match counts every document-level field and every line-item field by position. Line-item F1"
             " counts a line only when all six of its fields match. Latency is the median per document from the run's"
-            " own timing.", ""]
+            " own timing; the students' runs are onnxruntime on a CPU, and in a browser (one CPU thread) the generative"
+            " student is several times slower.", ""]
 
     def row(label, get):
         return f"| {label} | " + " | ".join(str(get(reports[s.key])) for s in systems) + " |"
