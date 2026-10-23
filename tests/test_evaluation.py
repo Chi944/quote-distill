@@ -59,10 +59,9 @@ def test_writes_evaluation_and_readme_between_markers(docs, tmp_path):
     assert readme.split(evaluation.START)[0] == readme_before.split(evaluation.START)[0]
     assert readme.split(evaluation.END)[1] == readme_before.split(evaluation.END)[1]
     rows = [line for line in readme.splitlines() if line.startswith("| Student")]
-    assert rows == ["| Student: encoder tagger (in browser) | 100.0% | 1.000 | 100.0% | 100.0% | 250 ms median"
-                    " | $0 (runs in the browser) |",
-                    "| Student: generative (in browser) | 0.0% | 0.000 | 0.0% | 0.0% | not measured"
-                    " | $0 (runs in the browser) |"]
+    assert [r.split(" | ")[3:5] for r in rows] == [["300/300 (100.0%)", "300/300 (100.0%)"], ["0/300 (0.0%)", "0/300 (0.0%)"]]
+    assert rows[0].endswith("| 1.000 | 300/300 (100.0%) | 300/300 (100.0%) | 250 ms median | $0 (runs in the browser) |")
+    assert rows[1].endswith("| 0.000 | 0/300 (0.0%) | 0/300 (0.0%) | not measured | $0 (runs in the browser) |")
     report = evaluation.EVALUATION_DOC.read_text(encoding="utf-8")
     assert "| Whole document exact | 300/300 (100.0%) | 0/300 (0.0%) |" in report
     assert "Student: generative (in browser): 300 of 300 documents not exact" in report
@@ -95,8 +94,9 @@ def test_teacher_job_must_be_an_evaluation_job_and_names_its_model(docs, tmp_pat
         run({"teacher": preds})
     (preds.parent / "plan.json").write_text(json.dumps({"evaluation": True, "subagent_model": "sonnet"}), encoding="utf-8")
     run({"teacher": preds}, teacher_usd="6.00")
-    assert ("| Teacher: Claude Sonnet in a Claude Code subagent | 100.0% | 1.000 | 100.0% | 100.0% | not measured"
-            " | $0.0200 ($6.00 of cloud credits / 300) |") in evaluation.README.read_text(encoding="utf-8")
+    assert ("| Teacher: Claude Sonnet in a Claude Code subagent | 11208/11208 (100.0%) | 1.000 | 300/300 (100.0%)"
+            " | 300/300 (100.0%) | not measured | $0.0200 ($6.00 of cloud credits / 300) |"
+            ) in evaluation.README.read_text(encoding="utf-8")
 
 
 def test_refuses_a_test_set_that_differs_from_its_manifest(docs, tmp_path):
