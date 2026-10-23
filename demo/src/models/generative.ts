@@ -15,7 +15,14 @@ export const prompt = (text: string) => PROMPT.replace("{text}", () => text);
 
 export async function loadGenerative(path: string, dtype: Dtype, progress?: ProgressCallback): Promise<Generative> {
   const tokenizer = await AutoTokenizer.from_pretrained(path, { progress_callback: progress });
-  const model = await AutoModelForCausalLM.from_pretrained(path, { dtype, progress_callback: progress });
+  // The 4-bit weights come in their own file (onnx/model_q4.onnx_data) and aren't repacked at load: together that keeps
+  // the tab near 1.3 GB instead of 2 GB, which crashed it on smaller devices. Same weights and outputs either way.
+  const model = await AutoModelForCausalLM.from_pretrained(path, {
+    dtype,
+    use_external_data_format: dtype === "q4",
+    session_options: { extra: { session: { disable_prepacking: "1" } } },
+    progress_callback: progress,
+  });
   return {
     async extract(text, { maxNewTokens = MAX_NEW_TOKENS, onText } = {}) {
       const enc = tokenizer(prompt(text), { add_special_tokens: false, return_token_type_ids: false });
