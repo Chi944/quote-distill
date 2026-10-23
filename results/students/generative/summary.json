@@ -1,0 +1,24 @@
+{
+  "docs": "data\\test\\docs.jsonl",
+  "evaluation": true,
+  "students": {
+    "generative": {
+      "documents": 300,
+      "per_field_exact": "3256/3300 (98.7%)",
+      "line_item_f1": 0.989,
+      "arithmetic_consistent": "267/300 (89.0%)",
+      "arithmetic_agrees": "293/300 (97.7%)",
+      "exact_documents": "278/300 (92.7%)",
+      "parsed": "297/300 (99.0%)",
+      "latency_s": {
+        "median": 12.496,
+        "p90": 20.794
+      },
+      "model_file": {
+        "name": "model_q4.onnx",
+        "sha256": "272b9485aa3c96f6c13a3e268dfb61f50abd9bd35504cef5c985b6994a91058f"
+      },
+      "readme_row": "| Student: generative (CPU, onnxruntime) | 3256/3300 (98.7%) | 0.989 | 267/300 (89.0%) | 278/300 (92.7%) | 12.496 s median | $0 |"
+    }
+  }
+}

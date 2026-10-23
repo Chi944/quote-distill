@@ -1,0 +1,185 @@
+{
+ "base": "HuggingFaceTB/SmolLM2-360M-Instruct",
+ "local_run": "RTX 3050 8 GB; batch 2 x grad_accum 8 (notebook: 4 x 4); checkpoint/resume every 50 steps",
+ "ref": "main",
+ "commit": "7a10dece4cc4170a09165a569888bb7ee593fbb4",
+ "seed": 0,
+ "epochs": 2,
+ "max_length": 1536,
+ "data_sha256_12": {
+  "train": "7bde65f87aa2",
+  "dev": "c15dc3f9e84e"
+ },
+ "train_documents": 10000,
+ "dev_documents": 1000,
+ "train_left_out_for_length": "0/10000 (0.0%)",
+ "dev_tokens": {
+  "prompt": {
+   "median": 312,
+   "p95": 571,
+   "max": 778
+  },
+  "target": {
+   "median": 254,
+   "p95": 449,
+   "max": 560
+  }
+ },
+ "pytorch": {
+  "exact_documents": "994/1000 (99.4%)",
+  "parsed": "1000/1000 (100.0%)",
+  "schema_valid": "1000/1000 (100.0%)",
+  "critical_fields": "8995/9000 (99.9%)",
+  "invented": "3/7854 (0.0%)",
+  "arithmetic_agrees": "999/1000 (99.9%)",
+  "line_items_f1": 0.9998898557109814,
+  "fields": {
+   "supplier": "1000/1000 (100.0%)",
+   "quote_number": "1000/1000 (100.0%)",
+   "date": "995/1000 (99.5%)",
+   "currency": "1000/1000 (100.0%)",
+   "subtotal": "1000/1000 (100.0%)",
+   "total": "1000/1000 (100.0%)",
+   "validity": "1000/1000 (100.0%)",
+   "payment_terms": "1000/1000 (100.0%)",
+   "gst.treatment": "1000/1000 (100.0%)",
+   "gst.rate": "1000/1000 (100.0%)",
+   "gst.amount": "1000/1000 (100.0%)"
+  },
+  "line_fields": {
+   "description": "4535/4540 (99.9%)",
+   "quantity": "4535/4540 (99.9%)",
+   "unit": "4535/4540 (99.9%)",
+   "unit_price": "4535/4540 (99.9%)",
+   "discount": "4538/4540 (100.0%)",
+   "line_total": "4535/4540 (99.9%)"
+  }
+ },
+ "failing_documents": [
+  "dev-s2-000252",
+  "dev-s2-000326",
+  "dev-s2-000552",
+  "dev-s2-000561",
+  "dev-s2-000597",
+  "dev-s2-000729"
+ ],
+ "gpu_seconds_for_dev": 2560,
+ "onnx": {
+  "pytorch_same_100": {
+   "exact_documents": "100/100 (100.0%)",
+   "parsed": "100/100 (100.0%)",
+   "schema_valid": "100/100 (100.0%)",
+   "critical_fields": "900/900 (100.0%)",
+   "invented": "0/752 (0.0%)",
+   "arithmetic_agrees": "100/100 (100.0%)",
+   "line_items_f1": 1.0,
+   "fields": {
+    "supplier": "100/100 (100.0%)",
+    "quote_number": "100/100 (100.0%)",
+    "date": "100/100 (100.0%)",
+    "currency": "100/100 (100.0%)",
+    "subtotal": "100/100 (100.0%)",
+    "total": "100/100 (100.0%)",
+    "validity": "100/100 (100.0%)",
+    "payment_terms": "100/100 (100.0%)",
+    "gst.treatment": "100/100 (100.0%)",
+    "gst.rate": "100/100 (100.0%)",
+    "gst.amount": "100/100 (100.0%)"
+   },
+   "line_fields": {
+    "description": "412/412 (100.0%)",
+    "quantity": "412/412 (100.0%)",
+    "unit": "412/412 (100.0%)",
+    "unit_price": "412/412 (100.0%)",
+    "discount": "412/412 (100.0%)",
+    "line_total": "412/412 (100.0%)"
+   }
+  },
+  "model_q4.onnx": {
+   "report": {
+    "exact_documents": "95/100 (95.0%)",
+    "parsed": "100/100 (100.0%)",
+    "schema_valid": "100/100 (100.0%)",
+    "critical_fields": "895/900 (99.4%)",
+    "invented": "1/752 (0.1%)",
+    "arithmetic_agrees": "98/100 (98.0%)",
+    "line_items_f1": 0.9963636363636363,
+    "fields": {
+     "supplier": "100/100 (100.0%)",
+     "quote_number": "100/100 (100.0%)",
+     "date": "100/100 (100.0%)",
+     "currency": "100/100 (100.0%)",
+     "subtotal": "99/100 (99.0%)",
+     "total": "99/100 (99.0%)",
+     "validity": "100/100 (100.0%)",
+     "payment_terms": "100/100 (100.0%)",
+     "gst.treatment": "99/100 (99.0%)",
+     "gst.rate": "99/100 (99.0%)",
+     "gst.amount": "99/100 (99.0%)"
+    },
+    "line_fields": {
+     "description": "410/413 (99.3%)",
+     "quantity": "410/413 (99.3%)",
+     "unit": "410/413 (99.3%)",
+     "unit_price": "410/413 (99.3%)",
+     "discount": "412/413 (99.8%)",
+     "line_total": "409/413 (99.0%)"
+    }
+   },
+   "same_output_as_pytorch": 95,
+   "cpu_ms_per_document": {
+    "median": 13239,
+    "p95": 28589,
+    "n": 100
+   }
+  },
+  "model_quantized.onnx": {
+   "report": {
+    "exact_documents": "69/100 (69.0%)",
+    "parsed": "99/100 (99.0%)",
+    "schema_valid": "98/100 (98.0%)",
+    "critical_fields": "867/900 (96.3%)",
+    "invented": "1/752 (0.1%)",
+    "arithmetic_agrees": "96/100 (96.0%)",
+    "line_items_f1": 0.9793438639125152,
+    "fields": {
+     "supplier": "98/100 (98.0%)",
+     "quote_number": "98/100 (98.0%)",
+     "date": "98/100 (98.0%)",
+     "currency": "99/100 (99.0%)",
+     "subtotal": "88/100 (88.0%)",
+     "total": "92/100 (92.0%)",
+     "validity": "97/100 (97.0%)",
+     "payment_terms": "97/100 (97.0%)",
+     "gst.treatment": "99/100 (99.0%)",
+     "gst.rate": "97/100 (97.0%)",
+     "gst.amount": "98/100 (98.0%)"
+    },
+    "line_fields": {
+     "description": "406/416 (97.6%)",
+     "quantity": "407/416 (97.8%)",
+     "unit": "405/416 (97.4%)",
+     "unit_price": "406/416 (97.6%)",
+     "discount": "407/416 (97.8%)",
+     "line_total": "407/416 (97.8%)"
+    }
+   },
+   "same_output_as_pytorch": 69,
+   "cpu_ms_per_document": {
+    "median": 11507,
+    "p95": 26259,
+    "n": 100
+   }
+  }
+ },
+ "file_bytes": {
+  "model.onnx": 1448591846,
+  "model_q4.onnx": 386942359,
+  "model_quantized.onnx": 364106587
+ },
+ "gpu": "NVIDIA GeForce RTX 3050",
+ "versions": {
+  "torch": "2.11.0+cu128",
+  "transformers": "4.57.6"
+ }
+}
