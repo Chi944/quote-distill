@@ -76,6 +76,16 @@ npm run dev
 
 The browser test runs with `npm test` when the tiny models and Chromium (`CHROMIUM_PATH`) are present; CI has neither, so it builds the page and skips that test.
 
+## Part 4: publishing
+
+**Step.** GitHub Pages serves the built page ([`.github/workflows/pages.yml`](../.github/workflows/pages.yml)), and the models come from a public Hugging Face repo. GitHub can't hold them: the float32 tagger is 128 MB, over GitHub's 100 MB file limit, and Pages doesn't serve Git LFS files. Hugging Face serves model files to any page, free and without a key.
+
+The build reads `VITE_MODEL_BASE`, the URL above the two model folders, for example `https://huggingface.co/<user>/<repo>/resolve/main/`. The page then fetches `<base>tagger/...` and `<base>generative/...` instead of `models/` next to itself. Without it, the page reads `models/` as before. The workflow takes the URL from the repository variable `MODEL_BASE`.
+
+To publish, once: make the model repo public; under Settings > Pages set the source to GitHub Actions; under Settings > Secrets and variables > Actions > Variables add `MODEL_BASE`. Then run the workflow, or push to main.
+
+**It worked when** a build with `VITE_MODEL_BASE` loads both models from under that URL in a browser. **Result: passes** with the tiny models served from a stand-in path ([`demo/test/page.test.ts`](../demo/test/page.test.ts)). The live check is opening the published page.
+
 ## Next part
 
 - **Publishing:** put the trained models where the page can fetch them, deploy to GitHub Pages, and link it from the README.

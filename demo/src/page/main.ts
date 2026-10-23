@@ -9,11 +9,21 @@ import ortWasm from "onnxruntime-web/ort-wasm-simd-threaded.asyncify.wasm?url";
 import { badges, checkArithmetic, escape, fields, summary } from "./view";
 import "./style.css";
 
-// Model files are static files next to the page: models/tagger/ and models/generative/ (see docs/demo.md).
-// A path, not a full URL: transformers.js only fetches "local" models from paths on the page's own host.
-env.localModelPath = new URL("models/", location.href).pathname;
-env.allowLocalModels = true;
-env.allowRemoteModels = false;
+// Model files are models/tagger/ and models/generative/ under one base (see docs/demo.md): next to the page by
+// default, or under VITE_MODEL_BASE when the build sets it, such as a Hugging Face repo's resolve/main/ URL.
+const modelBase: string | undefined = import.meta.env.VITE_MODEL_BASE;
+if (modelBase) {
+  const base = new URL(modelBase.endsWith("/") ? modelBase : `${modelBase}/`);
+  env.remoteHost = `${base.origin}/`;
+  env.remotePathTemplate = `${base.pathname.slice(1)}{model}/`;
+  env.allowLocalModels = false;
+  env.allowRemoteModels = true;
+} else {
+  // A path, not a full URL: transformers.js only fetches "local" models from paths on the page's own host.
+  env.localModelPath = new URL("models/", location.href).pathname;
+  env.allowLocalModels = true;
+  env.allowRemoteModels = false;
+}
 // The ONNX runtime from this page too; transformers.js would otherwise fetch it from a CDN.
 env.backends.onnx.wasm!.wasmPaths = { mjs: ortMjs, wasm: ortWasm };
 
