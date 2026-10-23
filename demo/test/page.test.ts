@@ -60,4 +60,37 @@ describe.skipIf(!ready)("the page in a browser", () => {
       await new Promise((r) => server.httpServer.close(r));
     }
   }, 300_000);
+
+  it("loads the models from VITE_MODEL_BASE when the build sets it", async () => {
+    // Stands in for a Hugging Face repo: the model folders under <base>/{tagger,generative}/ on another path.
+    const port = 4179;
+    const base = `http://localhost:${port}/hub/user/repo/resolve/main/`;
+    process.env.VITE_MODEL_BASE = base;
+    try {
+      await build({ root: ROOT, logLevel: "warn", build: { outDir: out, emptyOutDir: true } });
+    } finally {
+      delete process.env.VITE_MODEL_BASE;
+    }
+    const hub = join(out, "hub", "user", "repo", "resolve", "main");
+    cpSync(join(MODELS, "tiny-tagger"), join(hub, "tagger"), { recursive: true });
+    cpSync(join(MODELS, "tiny-generative"), join(hub, "generative"), { recursive: true });
+    const server = await preview({ root: ROOT, logLevel: "warn", build: { outDir: out }, preview: { port, strictPort: true } });
+    const browser = await chromium.launch({ executablePath: CHROMIUM });
+    try {
+      const page = await browser.newPage();
+      const models: string[] = [];
+      page.on("request", (r) => {
+        if (r.url().includes("/hub/")) models.push(new URL(r.url()).pathname);
+      });
+      await page.goto(`http://localhost:${port}/`);
+      await page.click("#run");
+      await page.waitForSelector("#generative .status.done, #generative .status.bad", { timeout: 120_000 });
+      expect(await page.textContent("#tagger .status")).toBe("Done.");
+      expect(models).toContain("/hub/user/repo/resolve/main/tagger/onnx/model.onnx");
+      expect(models).toContain("/hub/user/repo/resolve/main/generative/onnx/model_q4.onnx");
+    } finally {
+      await browser.close();
+      await new Promise((r) => server.httpServer.close(r));
+    }
+  }, 300_000);
 });

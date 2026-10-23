@@ -1,0 +1,50 @@
+name: pages
+
+# Builds the demo and publishes it with GitHub Pages. The page loads its models from MODEL_BASE (a repository
+# variable, e.g. https://huggingface.co/<user>/<repo>/resolve/main/), which must be public and hold tagger/ and
+# generative/ folders. Needs Settings > Pages > Source: GitHub Actions.
+
+on:
+  push:
+    branches: [main]
+    paths: ["demo/**", "data/pilot/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: demo/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: demo
+      - run: npm run build
+        working-directory: demo
+        env:
+          VITE_MODEL_BASE: ${{ vars.MODEL_BASE }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: demo/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
