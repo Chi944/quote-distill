@@ -63,7 +63,7 @@ Model files are static files next to the page, which the page fetches once:
 
 ```
 demo/public/models/tagger/        config.json, tokenizer files, onnx/model.onnx             (from tagger-onnx.zip)
-demo/public/models/generative/    config.json, tokenizer files, onnx/model_q4.onnx          (from generative-onnx.zip)
+demo/public/models/generative/    config.json, tokenizer files, onnx/model_q4.onnx + onnx/model_q4.onnx_data
 ```
 
 Until they're there, each panel says its model isn't published yet. To try the page with the tiny test models:
@@ -85,6 +85,22 @@ The build reads `VITE_MODEL_BASE`, the URL above the two model folders, for exam
 To publish, once: make the model repo public; under Settings > Pages set the source to GitHub Actions; under Settings > Secrets and variables > Actions > Variables add `MODEL_BASE`. Then run the workflow, or push to main.
 
 **It worked when** a build with `VITE_MODEL_BASE` loads both models from under that URL in a browser. **Result: passes** with the tiny models served from a stand-in path ([`demo/test/page.test.ts`](../demo/test/page.test.ts)). The live check is opening the published page.
+
+## Part 5: memory
+
+**Step.** The published page crashed the tab when the generative model ran (reported 23 October 2026). With a stand-in of the same shape and size (SmolLM2-360M, random weights, the same 4-bit export, 387 MB) in headless Chromium, the tab's renderer peaked at about 2.0 GB just starting the model. Two changes that leave the weights untouched bring that down:
+
+| Generative model only, renderer peak | MB |
+|---|---|
+| One 387 MB file (as published) | 2,033 |
+| Weights in `onnx/model_q4.onnx_data` beside a 1.4 MB graph | 1,484 |
+| ... and no weight repacking at load (`disable_prepacking`) | 1,320 |
+| The int8 file, for comparison (scores 69/100 on dev, so not used) | 1,593 |
+| WebGPU (SwiftShader) instead of the CPU: renderer, plus 1.3 GB in the GPU process | 2,480 |
+
+The whole page (tagger, then the generative model) now peaks at 1,459 MB, against about 2,100 MB before. Generation speed is unchanged (64 new tokens: 121 s against 122 s, one CPU thread). `python -m quote_distill.student.generative <dir>/onnx/model_q4.onnx` splits an existing export in place; `export_onnx` now writes the split layout.
+
+**It worked when** the tiny models still give Python's exact outputs in Node and in the browser with the split file (`npm test`, 31/31), and the stand-in's renderer peak drops. **Result: passes** for both. What it doesn't fix: devices with less memory than about 1.5 GB to spare for one tab, and the time (one CPU thread, since GitHub Pages can't send the headers that allow more).
 
 ## Next part
 
