@@ -1,8 +1,14 @@
 # Quote Distill
 
-A supplier-quotation extractor distilled from Claude into a small open model that runs entirely in your browser, with an honest teacher-versus-student evaluation.
+[![CI](https://github.com/Chi944/quote-distill/actions/workflows/ci.yml/badge.svg)](https://github.com/Chi944/quote-distill/actions/workflows/ci.yml)
+[![Demo](https://github.com/Chi944/quote-distill/actions/workflows/pages.yml/badge.svg)](https://chi944.github.io/quote-distill/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**Demo:** [chi944.github.io/quote-distill](https://chi944.github.io/quote-distill/). It's a static page with no API key, no server and no paid service. The models download once (the tagger is 128 MB, the generative model 387 MB) and then run on your device.
+A supplier-quotation extractor distilled from Claude into small open models that run entirely in your browser, with an honest teacher-versus-student evaluation.
+
+**Live demo:** [chi944.github.io/quote-distill](https://chi944.github.io/quote-distill/). It's a static page with no API key, no server and no paid service. The models download once from [Hugging Face](https://huggingface.co/werty3684/quote-distill-students) (the tagger is 128 MB, the generative model 387 MB) and then run on your device.
+
+## Results
 
 <!-- results:start -->
 | Model | Per-field exact match | Line-item F1 | Arithmetic agrees with gold | Whole document exact | Latency per doc (CPU) | Cost per doc |
@@ -24,10 +30,17 @@ quote-distill-generate --n 500 --seed 1 --split dev --out data/generated/dev
 
 ## Docs
 
-- [Schema rules](docs/schema.md) and [JSON Schema](schema/quotation.schema.json)
-- [Synthetic generator](docs/generator.md)
-- [Teacher pilot plan](docs/pilot-plan.md) and [API spend log](docs/spend.md)
-- [Final evaluation](docs/evaluation.md)
-- [Repository layout](docs/repo-layout.md)
+| Topic | Read |
+|---|---|
+| Final evaluation, results by hard case, and failure gallery | [docs/evaluation.md](docs/evaluation.md) |
+| Output schema and its rules | [docs/schema.md](docs/schema.md), [JSON Schema](schema/quotation.schema.json) |
+| Synthetic quotation generator | [docs/generator.md](docs/generator.md) |
+| Frozen test set and hand check | [docs/test-set.md](docs/test-set.md) |
+| Students: training data, tagger, generative model, scoring | [docs/student-data.md](docs/student-data.md), [docs/tagger.md](docs/tagger.md), [docs/generative.md](docs/generative.md), [docs/student-eval.md](docs/student-eval.md) |
+| Teacher runs and API spend | [docs/pilot-plan.md](docs/pilot-plan.md), [docs/teacher-session.md](docs/teacher-session.md), [docs/spend.md](docs/spend.md) |
+| Browser demo and publishing | [docs/demo.md](docs/demo.md) |
+| Repository layout | [docs/repo-layout.md](docs/repo-layout.md) |
 
-Extends [FieldOps](https://github.com/Chi944/fieldops), which compares supplier quotations with the source document beside every value. All data here is synthetic: no real suppliers, prices or documents.
+## About
+
+Quote Distill extends [FieldOps](https://github.com/Chi944/fieldops), which compares supplier quotations with the source document beside every value. All data is synthetic: no real suppliers, prices or documents. Released under the [MIT licence](LICENSE).
