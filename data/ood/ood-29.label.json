@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Northfield Byteworks Inc.",
+    "raw": "Northfield Byteworks Inc."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "Q-2026-1187",
+    "raw": "Q-2026-1187"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-06",
+    "raw": "November 6, 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "USD",
+    "raw": "USD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Onboarding and data migration",
+        "raw": "Onboarding and data migration"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "lot",
+        "raw": "lot"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "1200.00",
+        "raw": "$1,200.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1200.00",
+        "raw": "$1,200.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Helpdesk seat licence, first month",
+        "raw": "Helpdesk seat licence, first month"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "10",
+        "raw": "10"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "each"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "45.00",
+        "raw": "$45.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "450.00",
+        "raw": "$450.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Backup storage add-on, first month",
+        "raw": "Backup storage add-on, first month"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "10",
+        "raw": "10"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "each"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "18.00",
+        "raw": "$18.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "180.00",
+        "raw": "$180.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1830.00",
+    "raw": "$1,830.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1830.00",
+    "raw": "1,830.00"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P30D",
+    "raw": "Valid for 30 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "monthly in advance, net 15",
+    "raw": "monthly in advance, net 15."
+  }
+}

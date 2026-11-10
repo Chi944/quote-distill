@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Fernglade Consulting Limited",
+    "raw": "Fernglade Consulting Limited"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "FGC-P-118",
+    "raw": "FGC-P-118"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-05",
+    "raw": "5 November 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "NZD",
+    "raw": "NZD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Stage 1 workshop facilitation",
+        "raw": "Stage 1 workshop facilitation"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "2",
+        "raw": "2"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "day",
+        "raw": "days"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "1125.00",
+        "raw": "$1,125.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "2250.00",
+        "raw": "$2,250.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Travel and materials",
+        "raw": "Travel and materials"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "lot",
+        "raw": "lot"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "389.00",
+        "raw": "$389.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "389.00",
+        "raw": "$389.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "15",
+      "raw": "15%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "395.85",
+      "raw": "$395.85"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "2639.00",
+    "raw": "$2,639.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "3034.85",
+    "raw": "$3,034.85"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P30D",
+    "raw": "open for 30 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "invoices are payable on the 20th of the month following",
+    "raw": "Invoices are payable on the 20th of the month following."
+  }
+}

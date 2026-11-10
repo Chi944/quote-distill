@@ -1,0 +1,32 @@
+PEARLSHORE PRINT STUDIO PTE LTD
+Estimate no. PS-EST-55102
+Issued: 09/11/2026
+Currency: SGD
+
+-- Item A --
+Product: A1 foam board posters, full colour
+Qty: 4
+Unit: pcs
+Price each: 129.00
+Line amount: 516.00
+
+-- Item B --
+Product: Roll-up banner stand 85x200cm
+Qty: 2
+Unit: sets
+Price each: 58.40
+Line amount: 116.80
+
+-- Item C --
+Product: Name card printing, 100 per box
+Qty: 10
+Unit: boxes
+Price each: 6.85
+Line amount: 68.50
+
+Items total ........ 701.30
+Loyalty discount 3% ........ 21.04
+GST 9% ........ 61.22
+Grand total ........ 741.48
+
+Estimate good until 30/11/2026. Terms: cash or PayNow on collection.

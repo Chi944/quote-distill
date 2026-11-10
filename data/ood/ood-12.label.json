@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "KOOKABURRA CLEANING CO PTY LTD",
+    "raw": "KOOKABURRA CLEANING CO PTY LTD"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "KCC-2210",
+    "raw": "KCC-2210"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-01",
+    "raw": "01/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "AUD",
+    "raw": "A$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Floor scrubber pads",
+        "raw": "Floor scrubber pads"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "5",
+        "raw": "5"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "box",
+        "raw": "box"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "74.90",
+        "raw": "74.90"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "374.50",
+        "raw": "374.50"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Microfibre cloths",
+        "raw": "Microfibre cloths"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "5",
+        "raw": "5"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "pack",
+        "raw": "pk"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "19.90",
+        "raw": "19.90"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "99.50",
+        "raw": "99.50"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Callout fee",
+        "raw": "Callout fee"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "45.00",
+        "raw": "45.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "45.00",
+        "raw": "45.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "10",
+      "raw": "10%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "51.90",
+      "raw": "51.90"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "519.00",
+    "raw": "519.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "570.90",
+    "raw": "570.90"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P7D",
+    "raw": "Valid 7 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "eft on order",
+    "raw": "EFT on order."
+  }
+}

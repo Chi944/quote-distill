@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Rimu Valley Auto Electrical Ltd",
+    "raw": "Rimu Valley Auto Electrical Ltd"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "RVA-0087",
+    "raw": "RVA-0087"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-10",
+    "raw": "10 November 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "NZD",
+    "raw": "NZ$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Alternator rebuild",
+        "raw": "Alternator rebuild"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "6",
+        "raw": "6"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "each"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "310.00",
+        "raw": "310.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1860.00",
+        "raw": "1,860.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Labour",
+        "raw": "Labour"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "6",
+        "raw": "6"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "hour",
+        "raw": "hrs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "45.00",
+        "raw": "45.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "270.00",
+        "raw": "270.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Diagnostics",
+        "raw": "Diagnostics"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "lot",
+        "raw": "flat"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "180.00",
+        "raw": "180.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "180.00",
+        "raw": "180.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "15",
+      "raw": "15%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "346.50",
+      "raw": "346.50"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "2310.00",
+    "raw": "2,310.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "2656.50",
+    "raw": "2,656.50"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P14D",
+    "raw": "valid 14 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "account customers 20th of month",
+    "raw": "Account customers 20th of month."
+  }
+}

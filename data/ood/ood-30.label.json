@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Ridgeline Safety Footwear Inc.",
+    "raw": "Ridgeline Safety Footwear Inc."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "RSF-EXP-0442",
+    "raw": "RSF-EXP-0442"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-12",
+    "raw": "November 12, 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "USD",
+    "raw": "US$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Steel-toe boot, size run 7-12",
+        "raw": "Steel-toe boot, size run 7-12"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "pair",
+        "raw": "pairs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "575.00",
+        "raw": "575.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1725.00",
+        "raw": "1,725.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Replacement insoles",
+        "raw": "Replacement insoles"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "pair",
+        "raw": "pairs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "62.25",
+        "raw": "62.25"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "186.75",
+        "raw": "186.75"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_charged",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1911.75",
+    "raw": "1,911.75"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1911.75",
+    "raw": "1,911.75"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P30D",
+    "raw": "Valid 30 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "wire transfer in advance",
+    "raw": "wire transfer in advance."
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Pohutukawa Signs Limited",
+    "raw": "Pohutukawa Signs Limited"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "PS-2026-552",
+    "raw": "PS-2026-552"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-06",
+    "raw": "6 November 2026"
+  },
+  "currency": {
+    "state": "not_stated"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Shopfront lightbox 2400 x 600",
+        "raw": "Shopfront lightbox 2400 x 600"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "860.00",
+        "raw": "$860.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "860.00",
+        "raw": "$860.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Vinyl window graphics",
+        "raw": "Vinyl window graphics"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "215.00",
+        "raw": "$215.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "645.00",
+        "raw": "$645.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "A-frame footpath sign",
+        "raw": "A-frame footpath sign"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "2",
+        "raw": "2"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "64.50",
+        "raw": "$64.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "129.00",
+        "raw": "$129.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1634.00",
+    "raw": "$1,634.00"
+  },
+  "validity": {
+    "state": "not_stated"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "payment 50% upfront, 50% on install",
+    "raw": "Payment 50% upfront, 50% on install."
+  }
+}

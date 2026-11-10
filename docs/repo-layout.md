@@ -50,6 +50,7 @@ quote-distill/
 │   └── train_generative.ipynb   # Colab/Kaggle: same for the generative student (docs/generative.md)
 ├── data/
 │   ├── seeds/                   # the five hand-authored hard cases (committed)
+│   ├── ood/                     # 30 hand-written out-of-distribution quotations, author.py (docs/ood.md)
 │   ├── samples/                 # small committed generator sample for review
 │   ├── pilot/                   # the 20 frozen pilot documents with gold, and their manifest
 │   ├── test/                    # 300 hand-checked, frozen: docs, labels, MANIFEST.sha256

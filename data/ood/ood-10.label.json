@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Tea Tree Office Furniture Pty Ltd",
+    "raw": "Tea Tree Office Furniture Pty Ltd"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "TT-77310",
+    "raw": "TT-77310"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-03",
+    "raw": "03/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "AUD",
+    "raw": "AUD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Desk cable tray",
+        "raw": "Desk cable tray"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "40",
+        "raw": "40"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "ea"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "12.40",
+        "raw": "12.40"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "496.00",
+        "raw": "496.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Cable tie mount",
+        "raw": "Cable tie mount"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "40",
+        "raw": "40"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "ea"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "3.95",
+        "raw": "3.95"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "158.00",
+        "raw": "158.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Mobile pedestal, 3 drawer",
+        "raw": "Mobile pedestal, 3 drawer"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "2",
+        "raw": "2"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "ea"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "185.00",
+        "raw": "185.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "370.00",
+        "raw": "370.00"
+      }
+    }
+  ],
+  "discounts": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Volume discount 5%",
+        "raw": "Volume discount 5%"
+      },
+      "kind": "percent",
+      "rate": {
+        "state": "stated",
+        "value": "5",
+        "raw": "5%"
+      },
+      "amount": {
+        "state": "stated",
+        "value": "51.20",
+        "raw": "51.20"
+      }
+    }
+  ],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "10",
+      "raw": "10%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "97.28",
+      "raw": "97.28"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1024.00",
+    "raw": "1,024.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1070.08",
+    "raw": "1,070.08"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P60D",
+    "raw": "valid 60 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "30 days; 2% off if paid within 7 days",
+    "raw": "30 days; 2% off if paid within 7 days."
+  }
+}

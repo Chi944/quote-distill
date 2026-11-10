@@ -1,0 +1,306 @@
+{
+  "description": "Out-of-distribution quotations, written by hand in layouts and wording the generator never produces (docs/ood.md). All suppliers, people, addresses and prices are fictional. Never used for training or prompt tuning.",
+  "seeds": [
+    {
+      "id": "ood-01",
+      "layout": "plain email reply, prices in sentences",
+      "hard_cases": [
+        "prices inside sentences, no table",
+        "GST added in a sentence"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-02",
+      "layout": "key: value blocks per item",
+      "hard_cases": [
+        "one item per block of key: value lines",
+        "document discount as a percentage line"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-03",
+      "layout": "semicolon-separated rows",
+      "hard_cases": [
+        "CSV-like rows with a header line",
+        "GST-inclusive prices"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-04",
+      "layout": "totals first, items after",
+      "hard_cases": [
+        "summary box above the line items",
+        "service rows in days and hours"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-05",
+      "layout": "chat message",
+      "hard_cases": [
+        "informal chat text",
+        "no GST mentioned",
+        "no quote number"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-06",
+      "layout": "boxed table with SKU column",
+      "hard_cases": [
+        "SKU column to leave out of descriptions",
+        "fixed-amount document discount"
+      ],
+      "locale": "SG",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-07",
+      "layout": "letter with numbered paragraphs",
+      "hard_cases": [
+        "items in numbered paragraphs",
+        "'plus GST' wording"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-08",
+      "layout": "trade quote with decimal metres",
+      "hard_cases": [
+        "decimal quantity in metres",
+        "two-line header"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-09",
+      "layout": "markdown bullet list, GST inclusive",
+      "hard_cases": [
+        "bullet list with bold prices",
+        "GST included in prices"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-10",
+      "layout": "wide table with columns in a new order",
+      "hard_cases": [
+        "amount column first",
+        "early-payment discount is conditional"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-11",
+      "layout": "export quote, GST-free",
+      "hard_cases": [
+        "GST-free export wording",
+        "monthly service row"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-12",
+      "layout": "receipt-style narrow columns",
+      "hard_cases": [
+        "narrow receipt layout",
+        "quantity after the price"
+      ],
+      "locale": "AU",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-13",
+      "layout": "proposal with a fee table",
+      "hard_cases": [
+        "consulting fees in days",
+        "GST line labelled 'Add GST'"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-14",
+      "layout": "pipe table, GST inclusive",
+      "hard_cases": [
+        "prices include GST",
+        "number words for quantity"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-15",
+      "layout": "two-column layout with notes",
+      "hard_cases": [
+        "notes column beside items",
+        "percentage discount on the whole quote"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-16",
+      "layout": "plant nursery list, rates per unit in cents",
+      "hard_cases": [
+        "many small unit prices",
+        "GST line starts with the rate"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-17",
+      "layout": "email, no GST mentioned",
+      "hard_cases": [
+        "GST never mentioned",
+        "bare $ with NZ address"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-18",
+      "layout": "tabbed columns, labour and parts",
+      "hard_cases": [
+        "labour hours and parts mixed",
+        "'Grand Total' label"
+      ],
+      "locale": "NZ",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-19",
+      "layout": "bilingual headings",
+      "hard_cases": [
+        "Malay and English headings",
+        "no tax line"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-20",
+      "layout": "machinery quote with fixed discount",
+      "hard_cases": [
+        "fixed-amount discount",
+        "'Nett Total' label"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-21",
+      "layout": "stationery list with kg and rolls",
+      "hard_cases": [
+        "weight and roll units",
+        "currency as a word"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-22",
+      "layout": "export quote, tax not applicable",
+      "hard_cases": [
+        "tax explicitly not applicable",
+        "lump-sum installation"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-23",
+      "layout": "food supplier price confirmation",
+      "hard_cases": [
+        "'price confirmation' instead of quotation",
+        "litre units"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-24",
+      "layout": "dash-separated rows, no headers",
+      "hard_cases": [
+        "rows without column headers",
+        "unit word inside the description"
+      ],
+      "locale": "MY",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-25",
+      "layout": "web-store style cart quote",
+      "hard_cases": [
+        "cart layout",
+        "subtotal and total both printed"
+      ],
+      "locale": "US",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-26",
+      "layout": "fasteners list with sub-dollar prices",
+      "hard_cases": [
+        "sub-dollar unit prices",
+        "MM/DD/YYYY date"
+      ],
+      "locale": "US",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-27",
+      "layout": "contractor bid",
+      "hard_cases": [
+        "'bid' instead of quotation",
+        "fractional percent discount"
+      ],
+      "locale": "US",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-28",
+      "layout": "medical supply quote, no tax line",
+      "hard_cases": [
+        "case and box units",
+        "dates spelled 'Nov 10, 2026'"
+      ],
+      "locale": "US",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-29",
+      "layout": "software and services quote",
+      "hard_cases": [
+        "monthly licences",
+        "one-off onboarding"
+      ],
+      "locale": "US",
+      "expected_check_failures": []
+    },
+    {
+      "id": "ood-30",
+      "layout": "export quote to Singapore, tax not charged",
+      "hard_cases": [
+        "export wording",
+        "'pairs' unit"
+      ],
+      "locale": "US",
+      "expected_check_failures": []
+    }
+  ]
+}

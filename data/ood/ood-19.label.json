@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Cendana Lab Glassware Sdn. Bhd.",
+    "raw": "Cendana Lab Glassware Sdn. Bhd."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "CLG-SH-26-212",
+    "raw": "CLG-SH-26-212"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-05",
+    "raw": "05-11-2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "MYR",
+    "raw": "RM"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Beaker 500 ml, borosilicate",
+        "raw": "Beaker 500 ml, borosilicate"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "10",
+        "raw": "10"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "pcs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "38.50",
+        "raw": "38.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "385.00",
+        "raw": "385.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Measuring cylinder 100 ml",
+        "raw": "Measuring cylinder 100 ml"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "10",
+        "raw": "10"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "pcs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "12.20",
+        "raw": "12.20"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "122.00",
+        "raw": "122.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Burette with PTFE stopcock",
+        "raw": "Burette with PTFE stopcock"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "4",
+        "raw": "4"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "pcs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "88.00",
+        "raw": "88.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "352.00",
+        "raw": "352.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "859.00",
+    "raw": "RM 859.00"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "2026-12-05",
+    "raw": "05-12-2026"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "30 hari / 30 days",
+    "raw": "30 hari / 30 days"
+  }
+}

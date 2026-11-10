@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Quartzline Scientific Pte Ltd",
+    "raw": "Quartzline Scientific Pte Ltd"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "QS/26/0331",
+    "raw": "QS/26/0331"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-02",
+    "raw": "02/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "SGD",
+    "raw": "S$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Benchtop fume hood, 1.2 m",
+        "raw": "Benchtop fume hood, 1.2 m"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "ea"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "2980.00",
+        "raw": "2,980.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "2980.00",
+        "raw": "2,980.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Pipette pump set",
+        "raw": "Pipette pump set"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "set",
+        "raw": "set"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "145.00",
+        "raw": "145.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "435.00",
+        "raw": "435.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Installation and calibration",
+        "raw": "Installation and calibration"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "lot",
+        "raw": "lot"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "320.00",
+        "raw": "320.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "320.00",
+        "raw": "320.00"
+      }
+    }
+  ],
+  "discounts": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Special discount",
+        "raw": "Special discount"
+      },
+      "kind": "amount",
+      "rate": {
+        "state": "not_stated"
+      },
+      "amount": {
+        "state": "stated",
+        "value": "200.00",
+        "raw": "200.00"
+      }
+    }
+  ],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "9",
+      "raw": "9%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "318.15",
+      "raw": "318.15"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "3735.00",
+    "raw": "3,735.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "3853.15",
+    "raw": "S$3,853.15"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "2026-12-31",
+    "raw": "31 Dec 2026"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "100% within 30 days of installation",
+    "raw": "100% within 30 days of installation."
+  }
+}

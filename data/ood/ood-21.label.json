@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Teratai Stationery & Packaging Enterprise",
+    "raw": "Teratai Stationery & Packaging Enterprise"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "TSP-1904",
+    "raw": "TSP-1904"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-11",
+    "raw": "11/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "MYR",
+    "raw": "Ringgit"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Packing string, natural jute",
+        "raw": "Packing string, natural jute"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "50",
+        "raw": "50"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "kg",
+        "raw": "kg"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "7.60",
+        "raw": "7.60"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "380.00",
+        "raw": "380.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Bubble wrap 1m x 50m",
+        "raw": "Bubble wrap 1m x 50m"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "20",
+        "raw": "20"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "roll",
+        "raw": "roll"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "15.25",
+        "raw": "15.25"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "305.00",
+        "raw": "305.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "685.00",
+    "raw": "685.00"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P7D",
+    "raw": "valid 7 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "cash or cheque upon delivery",
+    "raw": "Cash or cheque upon delivery."
+  }
+}

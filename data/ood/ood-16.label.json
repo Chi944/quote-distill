@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Matai Grove Nursery Limited",
+    "raw": "Matai Grove Nursery Limited"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "MGN/2611/04",
+    "raw": "MGN/2611/04"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-12",
+    "raw": "12/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "NZD",
+    "raw": "NZD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Seedlings, flax (Phormium), 1 L pots",
+        "raw": "Seedlings, flax (Phormium), 1 L pots"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "120",
+        "raw": "120"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "pcs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "2.35",
+        "raw": "2.35"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "282.00",
+        "raw": "282.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Native grass plugs, tray of 10",
+        "raw": "Native grass plugs, tray of 10"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "60",
+        "raw": "60"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "pcs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "4.10",
+        "raw": "4.10"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "246.00",
+        "raw": "246.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "15",
+      "raw": "15%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "79.20",
+      "raw": "79.20"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "528.00",
+    "raw": "528.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "607.20",
+    "raw": "607.20"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "2026-12-12",
+    "raw": "12/12/2026"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "payment 7 days",
+    "raw": "Payment 7 days."
+  }
+}

@@ -1,0 +1,13 @@
+Mintleaf Catering Supplies Pte. Ltd. ; Quotation ; MCS-Q-0918
+Date ; 12 November 2026
+Prices in S$, inclusive of GST 9%
+
+description;qty;uom;unit price;amount
+Disposable lunch boxes, 50 per pack;12;pk;18.90;226.80
+Insulated food carrier 20L;6;each;42.00;252.00
+Chafing dish fuel, carton;1;box;150.00;150.00
+
+Total (GST inclusive);628.80
+GST included;51.92
+
+Quote validity: 14 days. Payment within 7 days of delivery.
