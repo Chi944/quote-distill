@@ -1,5 +1,6 @@
 import json
 import shutil
+from decimal import Decimal
 
 import pytest
 
@@ -123,6 +124,9 @@ def test_marker_and_cost_helpers():
         replace_between("no markers", "x")
     assert teacher_cost(None, 300) == "not measured"
     assert teacher_cost("4.20", 300) == "$0.0140 ($4.20 of cloud credits / 300)"
+    assert teacher_cost("4.20", 300, Decimal("0.24")) == "$0.0140 ($4.20 of cloud credits / 300)"
+    assert teacher_cost(None, 300, Decimal("0.24")) == \
+        "~$0.0008 (estimate at Haiku batch API prices, 2026-10-18)"
 
 
 def test_committed_docs_carry_one_pair_of_markers():

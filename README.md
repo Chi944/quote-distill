@@ -13,12 +13,12 @@ A supplier-quotation extractor distilled from Claude into small open models that
 <!-- results:start -->
 | Model | Per-field exact match | Line-item F1 | Arithmetic agrees with gold | Whole document exact | Latency per doc (CPU) | Cost per doc |
 |---|---|---|---|---|---|---|
-| Teacher: Claude Haiku in a Claude Code subagent | 11172/11208 (99.7%) | 0.997 | 299/300 (99.7%) | 260/300 (86.7%) | not measured | not measured |
+| Teacher: Claude Haiku in a Claude Code subagent | 11172/11208 (99.7%) | 0.997 | 299/300 (99.7%) | 260/300 (86.7%) | not measured | ~$0.0008 (estimate at Haiku batch API prices, 2026-10-18) |
 | Student: encoder tagger (in browser) | 11208/11208 (100.0%) | 1.000 | 300/300 (100.0%) | 299/300 (99.7%) | 30 ms median | $0 (runs in the browser) |
 | Student: generative (in browser) | 11066/11208 (98.7%) | 0.989 | 293/300 (97.7%) | 278/300 (92.7%) | 12.5 s median | $0 (runs in the browser) |
 <!-- results:end -->
 
-Every result is reported against the frozen 300-document test set, with its denominator, in [docs/evaluation.md](docs/evaluation.md).
+Every result is reported against the frozen 300-document test set, with its denominator, in [docs/evaluation.md](docs/evaluation.md). That set comes from the same generator the students trained on, so it favours them; see [Reading the results](docs/evaluation.md#reading-the-results).
 
 ## Run locally
 
