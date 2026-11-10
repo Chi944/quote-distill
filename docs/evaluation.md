@@ -16,12 +16,12 @@ The teacher and both students on the frozen 300-document [test set](test-set.md)
 
 ## 1. Teacher
 
-The teacher runs in a cloud session, as the pilot did ([teacher-session.md](teacher-session.md), added by PR #5; until #5 is merged it is on the `build/teacher-session` branch). Read the credit meter, then paste:
+The teacher runs in a cloud session, as the pilot did ([teacher-session.md](teacher-session.md)). Read the credit meter, then paste:
 
 ```text
 Run the Quote Distill teacher evaluation. Follow docs/teacher-session.md exactly; do not change any file under src/ or docs/schema.md.
 
-1. git checkout build/teacher-session (until PR #5 is merged, that branch has the session runner), pip install -e ".[dev]" and run: python -m quote_distill.teacher.session prepare --job test-session-haiku-1 --docs data/test/docs.jsonl --evaluation
+1. pip install -e ".[dev]" and run: python -m quote_distill.teacher.session prepare --job test-session-haiku-1 --docs data/test/docs.jsonl --evaluation
 2. For every file runs/test-session-haiku-1/tasks/<id>.txt, start one Agent subagent with model "haiku" whose prompt is the file's full contents, unchanged. Run them in parallel batches of 5. Do not read data/test labels or give the subagent anything else.
 3. Save each subagent's final reply verbatim, with no edits or reformatting, to results/teacher/test-session-haiku-1/outputs/<id>.txt. If a subagent errors, save nothing for that id and say which.
 4. Run: python -m quote_distill.teacher.session collect --job test-session-haiku-1. Do not run the score command or look at the scores.
@@ -48,7 +48,7 @@ python -m quote_distill.evaluation \
   --teacher results/teacher/test-session-haiku-1/predictions.jsonl \
   --tagger results/students/tagger/predictions-tagger.jsonl \
   --generative results/students/generative/predictions-generative.jsonl \
-  --teacher-cost-usd <the teacher job's credit draw from spend.md>
+  --scored-on 2026-10-23
 ```
 
 It refuses when the test set differs from its manifest, when the hand check is short of 300, when a file's ids aren't exactly the 300 test ids, or when the teacher job wasn't prepared with `--evaluation`. Then it writes the section below and the README table. `--draft PATH` writes the same report to PATH alone without the hand-check refusal, to check the pipeline; a draft is never quoted as a result.
@@ -65,7 +65,7 @@ Every rate is numerator/denominator; a missing or unparseable output counts as w
 
 | Model | Per-field exact match | Line-item F1 | Arithmetic agrees with gold | Whole document exact | Latency per doc (CPU) | Cost per doc |
 |---|---|---|---|---|---|---|
-| Teacher: Claude Haiku in a Claude Code subagent | 11172/11208 (99.7%) | 0.997 | 299/300 (99.7%) | 260/300 (86.7%) | not measured | not measured |
+| Teacher: Claude Haiku in a Claude Code subagent | 11172/11208 (99.7%) | 0.997 | 299/300 (99.7%) | 260/300 (86.7%) | not measured | ~$0.0008 (estimate at Haiku batch API prices, 2026-10-18) |
 | Student: encoder tagger (in browser) | 11208/11208 (100.0%) | 1.000 | 300/300 (100.0%) | 299/300 (99.7%) | 30 ms median | $0 (runs in the browser) |
 | Student: generative (in browser) | 11066/11208 (98.7%) | 0.989 | 293/300 (97.7%) | 278/300 (92.7%) | 12.5 s median | $0 (runs in the browser) |
 
@@ -254,5 +254,6 @@ Whole-document exact match among the test documents with each feature.
 - **Where the students' labels came from.** Both students trained on the generator's gold labels, not on Claude's outputs ([teacher role A](student-data.md), decided 19 October 2026). So Claude here is the system the students are compared with, not their source, and a student scoring above it is possible.
 - **Claude's retries.** The first collect had 19 documents with no reply saved; those were re-run in four retry batches (280 → 299 parsed of 300). One reply that came back with prose before its JSON (000817) was re-run once with the unchanged prompt (PR #20). With that document's first reply, Claude scores 259/300 whole documents exact instead of 260/300. The students had one try per document.
 - **Latency.** The students' times are onnxruntime on a CPU in Python. In the browser the page has one CPU thread (GitHub Pages can't send the headers that allow more), so the generative student takes minutes per document there; see [demo.md](demo.md), Part 5.
-- **Cost.** Claude's cost per document comes from the credit meter readings around its session, logged in [spend.md](spend.md).
+- **Cost.** Claude ran in Claude Code cloud sessions whose credits were shared with other sessions, so its own cost couldn't be isolated ([spend.md](spend.md)). The table instead gives what the same 300 prompts would cost through the Message Batches API on Haiku, from `teacher/batch.py`'s estimator (input from prompt length, output from the label length plus a thinking allowance) at the pricing page's rates on 2026-10-18: about $0.24 for 300 documents. It is an estimate, not a bill. If a measured credit draw is ever known, `--teacher-cost-usd` replaces it.
+- **The test set is in-distribution.** It was drawn from the same generator as the students' training data (its own random streams, no shared texts, but the same templates, vocabulary and suppliers' styles). That favours the students, and is the most likely reason the tagger scores 299/300 where Claude scores 260/300. Read these numbers as "how well each model learned this generator's quotations", not as accuracy on real-world documents.
 

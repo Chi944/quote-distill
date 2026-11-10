@@ -25,6 +25,7 @@ from pathlib import Path
 
 from . import splits
 from .metrics import CRITICAL_FIELDS, Ratio, aggregate, score_document
+from .teacher import batch, spend
 
 ROOT = Path(__file__).resolve().parents[2]
 TEST_SET_DOC = ROOT / "docs" / "test-set.md"
@@ -151,14 +152,14 @@ def readme_table(systems: list[System], reports: dict) -> list[str]:
     return out
 
 
-def render(systems: list[System], gold: list[dict], manifest: str, draft: bool) -> tuple[str, str]:
+def render(systems: list[System], gold: list[dict], manifest: str, draft: bool, scored_on: date) -> tuple[str, str]:
     """(evaluation.md results section, README table), both without their markers."""
     reports, scored = {}, {}
     for s in systems:
         reports[s.key], scored[s.key] = score(s, gold)
     n = len(gold)
     out = ["**Draft: a pipeline check, not a reported result.**", ""] if draft else []
-    out += [f"Scored {date.today().isoformat()} on all {n} test documents (`docs.jsonl` SHA-256 `{manifest[:12]}`).",
+    out += [f"Scored {scored_on.isoformat()} on all {n} test documents (`docs.jsonl` SHA-256 `{manifest[:12]}`).",
             "Every rate is numerator/denominator; a missing or unparseable output counts as wrong in every field.", "",
             "### Summary", "", *readme_table(systems, reports), "",
             "Per-field exact match counts every document-level field and every line-item field by position. Line-item F1"
@@ -208,14 +209,26 @@ def replace_between(text: str, body: str) -> str:
     return before + START + "\n" + body + END + rest.split(END, 1)[1]
 
 
-def teacher_cost(total_usd: str | None, n: int) -> str:
-    if total_usd is None:
-        return "not measured"
-    return f"${Decimal(total_usd) / n:.4f} (${Decimal(total_usd):.2f} of cloud credits / {n})"
+def teacher_cost(total_usd: str | None, n: int, estimate_usd: Decimal | None = None) -> str:
+    """Measured credit draw per document; else the Batches API estimate, marked as one; else not measured."""
+    if total_usd is not None:
+        return f"${Decimal(total_usd) / n:.4f} (${Decimal(total_usd):.2f} of cloud credits / {n})"
+    if estimate_usd is not None:
+        return f"~${estimate_usd / n:.4f} (estimate at Haiku batch API prices, {spend.PRICING_CHECKED})"
+    return "not measured"
+
+
+def teacher_api_estimate(gold: list[dict]) -> Decimal:
+    """What the same prompts would cost through the Message Batches API on Haiku, by teacher/batch.py's estimator.
+
+    The real run used Claude Code cloud credits shared with other sessions, so its own cost can't be isolated
+    (docs/spend.md); this is the honest per-document number a reader can compare with the students' $0."""
+    requests = batch.build_requests(gold, "claude-haiku-5-5", "low", 8000)
+    return batch.estimate(requests, gold, "claude-haiku-5-5")["cost"]
 
 
 def run(paths: dict[str, Path], teacher_usd: str | None = None, draft: Path | None = None,
-        test_dir: Path = splits.TEST_DIR) -> list[str]:
+        test_dir: Path = splits.TEST_DIR, scored_on: date | None = None) -> list[str]:
     """Score, write, and return the paths written."""
     if not paths:
         raise Refusal("give at least one of --teacher, --tagger, --generative")
@@ -234,10 +247,11 @@ def run(paths: dict[str, Path], teacher_usd: str | None = None, draft: Path | No
             continue
         name = teacher_name(paths[key]) if key == "teacher" else SYSTEMS[key]
         preds, latency = load_predictions(paths[key], test_ids)
-        cost = teacher_cost(teacher_usd, len(gold)) if key == "teacher" else STUDENT_COST
+        cost = (teacher_cost(teacher_usd, len(gold), teacher_api_estimate(gold)) if key == "teacher"
+                else STUDENT_COST)
         systems.append(System(key, name, paths[key], preds, latency, cost))
     manifest = (test_dir / "MANIFEST.sha256").read_text(encoding="utf-8").split()[0]
-    section, table = render(systems, gold, manifest, draft is not None)
+    section, table = render(systems, gold, manifest, draft is not None, scored_on or date.today())
     if draft is not None:
         draft.parent.mkdir(parents=True, exist_ok=True)
         draft.write_text("# Evaluation (draft)\n\n" + section, encoding="utf-8")
@@ -253,10 +267,12 @@ def main(argv: list[str] | None = None) -> int:
         ap.add_argument(f"--{key}", type=Path, help=f"predictions.jsonl for the {key}")
     ap.add_argument("--teacher-cost-usd", help="the teacher job's whole credit draw in US$, from docs/spend.md")
     ap.add_argument("--draft", type=Path, help="write a draft report here and touch nothing else")
+    ap.add_argument("--scored-on", type=date.fromisoformat,
+                    help="the date the outputs were scored, when re-rendering an earlier evaluation (default today)")
     args = ap.parse_args(argv)
     paths = {k: getattr(args, k) for k in SYSTEMS if getattr(args, k) is not None}
     try:
-        written = run(paths, args.teacher_cost_usd, args.draft)
+        written = run(paths, args.teacher_cost_usd, args.draft, scored_on=args.scored_on)
     except Refusal as e:
         print(f"refusing: {e}")
         return 1
