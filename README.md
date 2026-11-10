@@ -33,7 +33,7 @@ quote-distill-generate --n 500 --seed 1 --split dev --out data/generated/dev
 The test set above comes from the generator the students trained on. These are 30 quotations written by hand in layouts the generator never produces, plus the 5 hand-written seeds ([docs/ood.md](docs/ood.md)):
 
 <!-- ood:start -->
-Not run yet: waiting for the hand check.
+Not run yet: the set is checked and frozen; waiting for the scoring run.
 <!-- ood:end -->
 
 ## Docs

@@ -24,6 +24,7 @@ The 5 hand-written seeds in [`data/seeds/`](../data/seeds/) are scored too. They
 
 | Date | Documents checked | Problems found | Corrections |
 |---|---|---|---|
+| 2026-11-10 | 30/30 | 0/30 | None |
 
 ## Running it
 
@@ -38,5 +39,5 @@ It refuses unless `data/ood` matches its frozen manifest. The teacher can't be r
 ## Results
 
 <!-- ood:start -->
-Not run yet: waiting for the hand check.
+Not run yet: the set is checked and frozen; waiting for the scoring run.
 <!-- ood:end -->
