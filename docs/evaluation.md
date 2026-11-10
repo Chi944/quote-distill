@@ -69,7 +69,7 @@ Every rate is numerator/denominator; a missing or unparseable output counts as w
 | Student: encoder tagger (in browser) | 11208/11208 (100.0%) | 1.000 | 300/300 (100.0%) | 299/300 (99.7%) | 30 ms median | $0 (runs in the browser) |
 | Student: generative (in browser) | 11066/11208 (98.7%) | 0.989 | 293/300 (97.7%) | 278/300 (92.7%) | 12.5 s median | $0 (runs in the browser) |
 
-Per-field exact match counts every document-level field and every line-item field by position. Line-item F1 counts a line only when all six of its fields match. Latency is the median per document from the run's own timing; the students' runs are onnxruntime on a CPU, and in a browser (one CPU thread) the generative student is several times slower.
+Per-field exact match counts every document-level field and every line-item field by position. Line-item F1 counts a line only when all six of its fields match. Latency is the median per document from the run's own timing; the students' runs are onnxruntime on a CPU, and in a browser (up to 4 CPU threads) the generative student is several times slower.
 
 ### Measures
 
@@ -253,7 +253,7 @@ Whole-document exact match among the test documents with each feature.
 
 - **Where the students' labels came from.** Both students trained on the generator's gold labels, not on Claude's outputs ([teacher role A](student-data.md), decided 19 October 2026). So Claude here is the system the students are compared with, not their source, and a student scoring above it is possible.
 - **Claude's retries.** The first collect had 19 documents with no reply saved; those were re-run in four retry batches (280 → 299 parsed of 300). One reply that came back with prose before its JSON (000817) was re-run once with the unchanged prompt (PR #20). With that document's first reply, Claude scores 259/300 whole documents exact instead of 260/300. The students had one try per document.
-- **Latency.** The students' times are onnxruntime on a CPU in Python. In the browser the page has one CPU thread (GitHub Pages can't send the headers that allow more), so the generative student takes minutes per document there; see [demo.md](demo.md), Part 5.
+- **Latency.** The students' times are onnxruntime on a CPU in Python. In the browser the page now uses up to 4 CPU threads through a service worker that adds the isolation headers GitHub Pages can't send; the generative student is still much slower there than in Python. See [demo.md](demo.md), Parts 5 and 6.
 - **Cost.** Claude ran in Claude Code cloud sessions whose credits were shared with other sessions, so its own cost couldn't be isolated ([spend.md](spend.md)). The table instead gives what the same 300 prompts would cost through the Message Batches API on Haiku, from `teacher/batch.py`'s estimator (input from prompt length, output from the label length plus a thinking allowance) at the pricing page's rates on 2026-10-18: about $0.24 for 300 documents. It is an estimate, not a bill. If a measured credit draw is ever known, `--teacher-cost-usd` replaces it.
 - **The test set is in-distribution.** It was drawn from the same generator as the students' training data (its own random streams, no shared texts, but the same templates, vocabulary and suppliers' styles). That favours the students, and is the most likely reason the tagger scores 299/300 where Claude scores 260/300. Read these numbers as "how well each model learned this generator's quotations", not as accuracy on real-world documents.
 

@@ -1,0 +1,42 @@
+{
+  "docs": "runs/ood/ood.jsonl",
+  "evaluation": false,
+  "students": {
+    "tagger": {
+      "documents": 30,
+      "per_field_exact": "240/330 (72.7%)",
+      "line_item_f1": 0.452,
+      "arithmetic_consistent": "22/30 (73.3%)",
+      "arithmetic_agrees": "22/30 (73.3%)",
+      "exact_documents": "0/30 (0.0%)",
+      "parsed": "30/30 (100.0%)",
+      "latency_s": {
+        "median": 0.05,
+        "p90": 0.078
+      },
+      "model_file": {
+        "name": "model.onnx",
+        "sha256": "be1f612950e968991a77c8131871883e08c09b396024282630c419e70c3d1798"
+      },
+      "readme_row": "| Student: tagger (CPU, onnxruntime) | 240/330 (72.7%) | 0.452 | 22/30 (73.3%) | 0/30 (0.0%) | 0.05 s median | $0 |"
+    },
+    "generative": {
+      "documents": 30,
+      "per_field_exact": "173/330 (52.4%)",
+      "line_item_f1": 0.524,
+      "arithmetic_consistent": "10/30 (33.3%)",
+      "arithmetic_agrees": "10/30 (33.3%)",
+      "exact_documents": "0/30 (0.0%)",
+      "parsed": "21/30 (70.0%)",
+      "latency_s": {
+        "median": 10.706,
+        "p90": 16.263
+      },
+      "model_file": {
+        "name": "model_q4.onnx",
+        "sha256": "82c26fafcb718fce64373f2f9bfc9d6e20b078350e1489bfbd94e3279a150caf"
+      },
+      "readme_row": "| Student: generative (CPU, onnxruntime) | 173/330 (52.4%) | 0.524 | 10/30 (33.3%) | 0/30 (0.0%) | 10.706 s median | $0 |"
+    }
+  }
+}
