@@ -33,7 +33,20 @@ quote-distill-generate --n 500 --seed 1 --split dev --out data/generated/dev
 The test set above comes from the generator the students trained on. These are 30 quotations written by hand in layouts the generator never produces, plus the 5 hand-written seeds ([docs/ood.md](docs/ood.md)):
 
 <!-- ood:start -->
-Not run yet: the set is checked and frozen; waiting for the scoring run.
+**Hand-written, out-of-distribution (30 documents)**
+
+| Model | Per-field exact match | Line-item F1 | Arithmetic agrees with gold | Whole document exact | Latency per doc (CPU) |
+|---|---|---|---|---|---|
+| Student: encoder tagger | 565/888 (63.6%) | 0.452 | 22/30 (73.3%) | 0/30 (0.0%) | 50 ms median |
+| Student: generative | 450/780 (57.7%) | 0.524 | 10/30 (33.3%) | 0/30 (0.0%) | 10.7 s median |
+
+**Hand-written seeds (5 documents)**
+
+| Model | Per-field exact match | Line-item F1 | Arithmetic agrees with gold | Whole document exact | Latency per doc (CPU) |
+|---|---|---|---|---|---|
+| Teacher: Claude Haiku (pilot run) | 156/157 (99.4%) | 1.000 | 5/5 (100.0%) | 3/5 (60.0%) | not measured |
+| Student: encoder tagger | 108/193 (56.0%) | 0.800 | 4/5 (80.0%) | 1/5 (20.0%) | 58 ms median |
+| Student: generative | 80/157 (51.0%) | 0.615 | 2/5 (40.0%) | 1/5 (20.0%) | 14.9 s median |
 <!-- ood:end -->
 
 ## Docs
