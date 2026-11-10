@@ -1,6 +1,6 @@
 """Build the student's training and validation sets from generator gold, with every test and pilot document removed.
 
-    python -m quote_distill.student.data --out data/generated/student
+    python -m quote_distill.student.data --out data/generated/student [--generator v2]
 
 Output: <out>/train.jsonl and <out>/dev.jsonl, one {id, text, target, spans, nested, classes, meta} per line, and <out>/stats.json.
 `target` is the string the generative student learns to write: the gold label in the compact form below, which
@@ -25,10 +25,34 @@ from .spans import align
 
 ROOT = Path(__file__).resolve().parents[3]
 PILOT = ROOT / "data" / "pilot" / "pilot-20.jsonl"
+# The hand-written out-of-distribution set is only ever scored, never trained on. (The seeds are not listed: the
+# generator's vocabulary was first drawn from them, so v1 already shares an address line with one.)
+HELD_OUT_DIRS = [ROOT / "data" / "ood"]
+SHARED_LINE_MIN = 30
 
 # Seeds differ from the pilot pool (dev seed 7) and the test pool (test-candidates seed 1).
-TRAIN = {"n": 10_000, "seed": 1, "split": "train"}
-DEV = {"n": 1_000, "seed": 2, "split": "dev"}
+TRAIN = {"n": 10_000, "seed": 1, "split": "train", "style": "v1"}
+DEV = {"n": 1_000, "seed": 2, "split": "dev", "style": "v1"}
+# Generator v2: wider layouts and wording (generator/vocab_v2.py). Its style already includes the five v1 layouts.
+TRAIN_V2 = {"n": 12_000, "seed": 3, "split": "train", "style": "v2"}
+DEV_V2 = {"n": 1_000, "seed": 4, "split": "dev", "style": "v2"}
+CONFIGS = {"v1": (TRAIN, DEV), "v2": (TRAIN_V2, DEV_V2)}
+
+
+def held_out_lines(dirs: list[Path] = HELD_OUT_DIRS) -> set[str]:
+    """Every line of 30+ characters in the hand-written documents, whitespace collapsed and case folded."""
+    out = set()
+    for d in dirs:
+        for path in sorted(d.glob("*.doc.txt")):
+            for line in path.read_text(encoding="utf-8").splitlines():
+                key = " ".join(line.split()).casefold()
+                if len(key) >= SHARED_LINE_MIN:
+                    out.add(key)
+    return out
+
+
+def shares_held_out_line(text: str, banned: set[str]) -> bool:
+    return any(" ".join(line.split()).casefold() in banned for line in text.splitlines())
 
 
 LINE_ORDER = ("description", "quantity", "unit", "unit_price", "discount", "line_total")
@@ -92,6 +116,9 @@ def prepare(records: list[dict]) -> tuple[list[dict], dict]:
     n_test = len(records) - len(kept)
     pilot = pilot_text_hashes()
     clean = [r for r in kept if r["meta"]["text_sha256"] not in pilot]
+    banned = held_out_lines()
+    held_out = [r["id"] for r in clean if shares_held_out_line(r["text"], banned)]
+    clean = [r for r in clean if r["id"] not in set(held_out)]
     out, not_exact, unaligned = [], [], []
     for r in clean:
         a = align(r["label"], r["text"])
@@ -106,7 +133,8 @@ def prepare(records: list[dict]) -> tuple[list[dict], dict]:
                     "nested": sorted([s, e, p] for p, (s, e) in a.nested.items()) if a.complete else None,
                     "classes": {"gst_treatment": r["label"]["gst"]["treatment"], "month_first": r["meta"]["locale"] == "US"},
                     "meta": {k: r["meta"][k] for k in ("locale", "layout", "features", "text_sha256")}})
-    return out, {"generated": len(records), "dropped_test": n_test, "dropped_pilot": len(kept) - len(clean),
+    return out, {"generated": len(records), "dropped_test": n_test, "dropped_pilot": len(kept) - len(clean) - len(held_out),
+                 "dropped_shares_hand_written_line": len(held_out),
                  "kept": len(out), "targets_not_exact": not_exact, "spans_incomplete": unaligned}
 
 
@@ -127,19 +155,23 @@ def write(rows: list[dict], path: Path) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--n-train", type=int, default=TRAIN["n"])
-    parser.add_argument("--n-dev", type=int, default=DEV["n"])
+    parser.add_argument("--generator", choices=sorted(CONFIGS), default="v1",
+                        help="v1: the original generator (the published students); v2: wider layouts and wording")
+    parser.add_argument("--n-train", type=int)
+    parser.add_argument("--n-dev", type=int)
     args = parser.parse_args(argv)
+    train_cfg, dev_cfg = CONFIGS[args.generator]
 
     args.out.mkdir(parents=True, exist_ok=True)
     stats, ids = {}, {}
-    for name, cfg, n in (("train", TRAIN, args.n_train), ("dev", DEV, args.n_dev)):
-        records, _ = generate(n, cfg["seed"], cfg["split"])
+    for name, cfg, n in (("train", train_cfg, args.n_train or train_cfg["n"]), ("dev", dev_cfg, args.n_dev or dev_cfg["n"])):
+        records, _ = generate(n, cfg["seed"], cfg["split"], cfg["style"])
         rows, counts = prepare(records)
         ids[name] = {r["meta"]["text_sha256"] for r in rows}
         stats[name] = {**cfg, "n": n, **counts, **lengths(rows), "sha256": write(rows, args.out / f"{name}.jsonl")}
         print(f"{name}: kept {counts['kept']}/{counts['generated']} (dropped {counts['dropped_test']} test, "
-              f"{counts['dropped_pilot']} pilot); targets exact {counts['kept'] - len(counts['targets_not_exact'])}"
+              f"{counts['dropped_pilot']} pilot, {counts['dropped_shares_hand_written_line']} sharing a hand-written line); "
+              f"targets exact {counts['kept'] - len(counts['targets_not_exact'])}"
               f"/{counts['kept']}; spans complete {counts['kept'] - len(counts['spans_incomplete'])}/{counts['kept']}")
     stats["train_dev_shared_texts"] = len(ids["train"] & ids["dev"])
     (args.out / "stats.json").write_text(json.dumps(stats, indent=2) + "\n", encoding="utf-8")

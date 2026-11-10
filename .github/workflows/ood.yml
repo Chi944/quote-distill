@@ -1,11 +1,24 @@
 name: ood
 
-# Scores both published students on the hand-written out-of-distribution set and the seeds (docs/ood.md), on the
-# runner's CPU with the same ONNX files the demo loads, and pushes the predictions to a results/ood-<run> branch for a
-# pull request. Started by hand, after the hand check has frozen data/ood.
+# Scores both students on the hand-written out-of-distribution set and the seeds (docs/ood.md), on the runner's CPU
+# with the same ONNX files the demo loads, and pushes the predictions to a results/ood-<run> branch for a pull request.
+# Started by hand, after the hand check has frozen data/ood.
+#
+# By default it scores the published students (tagger/ and generative/ in the Hugging Face repo). To score retrained
+# candidates before they replace those, upload them under a folder such as v2/ and set `folder` to "v2"
+# (docs/generator-v2.md). Set `test_set` to also score the frozen in-distribution test set.
 
 on:
   workflow_dispatch:
+    inputs:
+      folder:
+        description: 'Folder in the Hugging Face repo that holds tagger/ and generative/ ("" = the published students)'
+        default: ""
+        type: string
+      test_set:
+        description: "Also score the 300-document test set (adds about an hour)"
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -13,7 +26,7 @@ permissions:
 jobs:
   score:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,26 +40,38 @@ jobs:
         run: |
           python -m quote_distill.checks data/ood
           python -m quote_distill.ood verify
-      - name: Download the published students
+      - name: Download the students
+        env:
+          FOLDER: ${{ inputs.folder }}
         run: |
+          [[ -z "$FOLDER" || "$FOLDER" =~ ^[A-Za-z0-9_-]+$ ]] || { echo "folder must be letters, digits, - or _"; exit 1; }
+          p="${FOLDER:+$FOLDER/}"
           hf download werty3684/quote-distill-students --local-dir models \
-            --include "tagger/*.json" "tagger/onnx/model.onnx" \
-                      "generative/*.json" "generative/*.txt" "generative/*.jinja" \
-                      "generative/onnx/model_q4.onnx" "generative/onnx/model_q4.onnx_data"
+            --include "${p}tagger/*.json" "${p}tagger/onnx/model.onnx" \
+                      "${p}generative/*.json" "${p}generative/*.txt" "${p}generative/*.jinja" \
+                      "${p}generative/onnx/model_q4.onnx" "${p}generative/onnx/model_q4.onnx_data"
+          echo "MODELS=models/${p%/}" >> "$GITHUB_ENV"
+          echo "RESULTS=results/${FOLDER:-ood}" >> "$GITHUB_ENV"
       - run: python -m quote_distill.ood export --out runs/ood
       - name: Score
         run: |
           for set in ood seeds; do
             python -m quote_distill.student.evaluate --docs runs/ood/$set.jsonl \
-              --tagger models/tagger --generative models/generative --out results/ood/$set
+              --tagger "$MODELS/tagger" --generative "$MODELS/generative" --out "$RESULTS/$set"
           done
+      - name: Score the test set
+        if: ${{ inputs.test_set }}
+        run: |
+          python -m quote_distill.splits verify
+          python -m quote_distill.student.evaluate --evaluation --docs data/test/docs.jsonl \
+            --tagger "$MODELS/tagger" --generative "$MODELS/generative" --out "$RESULTS/test"
       - name: Push the predictions to a branch
         run: |
           branch="results/ood-${GITHUB_RUN_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add results/ood
+          git add "$RESULTS"
           git commit -m "Out-of-distribution predictions from run ${GITHUB_RUN_ID}"
           git push origin "$branch"
           echo "Pushed $branch" >> "$GITHUB_STEP_SUMMARY"

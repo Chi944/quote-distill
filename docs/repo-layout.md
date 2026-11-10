@@ -20,8 +20,9 @@ quote-distill/
 │   ├── checks.py                # provenance, normalisation and arithmetic checks
 │   ├── generator/
 │   │   ├── vocab.py             # fictional suppliers, items, units, typo tables
+│   │   ├── vocab_v2.py          # style v2: more names, items, terms and header synonyms (generator-v2.md)
 │   │   ├── sample.py            # draw values and their printed forms; build the gold label
-│   │   ├── layouts.py           # five renderers: fixed table, pipe table, item blocks, email list, prose
+│   │   ├── layouts.py           # renderers: five v1 layouts, five more for style v2
 │   │   └── build.py             # CLI; keeps only labels that pass checks.py
 │   ├── splits.py                # dev / train / test assignment by hash; test is frozen
 │   ├── teacher/
