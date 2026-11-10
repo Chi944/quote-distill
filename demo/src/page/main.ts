@@ -26,6 +26,12 @@ if (modelBase) {
 }
 // The ONNX runtime from this page too; transformers.js would otherwise fetch it from a CDN.
 env.backends.onnx.wasm!.wasmPaths = { mjs: ortMjs, wasm: ortWasm };
+// More than one thread only when the page is cross-origin isolated (index.html registers isolate-sw.js for that).
+// Up to 4, leaving one core for the page itself. onnxruntime-web's default is half the cores, which on a 4-core machine
+// decoded a 360M stand-in at 586 ms per token against 376 ms with 4 threads and 952 ms with 1 (docs/demo.md, Part 6).
+const threads = globalThis.crossOriginIsolated ? Math.min(4, Math.max(1, (navigator.hardwareConcurrency || 2) - 1)) : 1;
+env.backends.onnx.wasm!.numThreads = threads;
+const threadNote = ` · ${threads} CPU thread${threads === 1 ? "" : "s"}`;
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const select = $<HTMLSelectElement>("#sample");
@@ -97,7 +103,7 @@ async function runTagger(text: string, key: Label | undefined) {
     const ms = performance.now() - t0;
     p.root.dataset.label = JSON.stringify(r.label);
     p.say(r.truncated ? `Done. The text was ${r.tokens} tokens, so only the first 1,024 were read.` : "Done.", "done");
-    p.show(result(r.label, key, ms, ` · ${r.tokens} tokens`));
+    p.show(result(r.label, key, ms, ` · ${r.tokens} tokens${threadNote}`));
   } catch (e) {
     tagger = null;
     failed(p, "tagger", e);
@@ -121,12 +127,12 @@ async function runGenerative(text: string, key: Label | undefined) {
     const raw = `<details><summary>Raw output</summary><pre>${escape(r.output)}</pre></details>`;
     if (r.label === null) {
       p.say("Done, but the output isn't valid quotation JSON, so nothing could be read from it.", "bad");
-      p.show(`<p class="meta">${(ms / 1000).toFixed(2)} s</p>${raw}`);
+      p.show(`<p class="meta">${(ms / 1000).toFixed(2)} s${threadNote}</p>${raw}`);
       return;
     }
     p.root.dataset.label = JSON.stringify(r.label);
     p.say("Done.", "done");
-    p.show(result(r.label, key, ms, "") + raw);
+    p.show(result(r.label, key, ms, threadNote) + raw);
   } catch (e) {
     generative = null;
     failed(p, "generative", e);

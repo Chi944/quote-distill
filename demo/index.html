@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Quote Distill</title>
     <meta name="description" content="Two small models extract supplier quotations in your browser, with no key and no server." />
+    <script>
+      // Multi-threaded WebAssembly needs cross-origin isolation, which isolate-sw.js adds on hosts that can't send
+      // the headers (GitHub Pages). The first visit reloads once, after the worker takes control; if anything here
+      // fails the page still works, on one thread.
+      (() => {
+        if (window.crossOriginIsolated || !window.isSecureContext || !("serviceWorker" in navigator)) return;
+        let tried = false;
+        try {
+          tried = sessionStorage.getItem("qd-isolate") === "1";
+          sessionStorage.setItem("qd-isolate", "1");
+        } catch {}
+        navigator.serviceWorker.register("./isolate-sw.js").then(
+          (reg) => {
+            if (tried) return;
+            if (navigator.serviceWorker.controller) location.reload();
+            else navigator.serviceWorker.addEventListener("controllerchange", () => location.reload(), { once: true });
+          },
+          () => {},
+        );
+      })();
+    </script>
   </head>
   <body>
     <header>
