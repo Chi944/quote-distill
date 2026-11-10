@@ -39,6 +39,7 @@ quote-distill-generate --n 500 --seed 1 --split dev --out data/generated/dev
 | Training data, the two students and how they are scored | [docs/student-data.md](docs/student-data.md), [docs/tagger.md](docs/tagger.md), [docs/generative.md](docs/generative.md), [docs/student-eval.md](docs/student-eval.md) |
 | Teacher runs and API spend | [docs/pilot-plan.md](docs/pilot-plan.md), [docs/teacher-session.md](docs/teacher-session.md), [docs/spend.md](docs/spend.md) |
 | Browser demo and publishing | [docs/demo.md](docs/demo.md) |
+| Model card for the Hugging Face repo | [hf/README.md](hf/README.md) |
 | Repository layout | [docs/repo-layout.md](docs/repo-layout.md) |
 
 ## About
