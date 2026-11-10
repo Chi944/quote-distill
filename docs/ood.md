@@ -181,4 +181,4 @@ Scored 2026-11-10 by run [42787629414](https://github.com/Chi944/quote-distill/a
 - **The generative model breaks its output.** 21/30 outputs parse as JSON and 15/30 are schema-valid. When it does answer, it invents a value where the document has none in 11/156 cases (the tagger in 15/156).
 - **Seeds agree.** On the 5 hand-written seeds the teacher gets 156/157 fields (99.4%) and 3/5 documents, the tagger 1/5 and the generative model 1/5.
 
-The in-distribution scores measure how well the students copy the generator, not how well they read quotations. The way to improve them is to train on more varied synthetic layouts and wording, then score on this frozen set again. Don't add these 30 documents to training, or the check stops meaning anything.
+The in-distribution scores measure how well the students copy the generator, not how well they read quotations. The way to improve them is to train on more varied synthetic layouts and wording ([generator-v2.md](generator-v2.md)), then score on this frozen set again. Don't add these 30 documents to training, or the check stops meaning anything.
