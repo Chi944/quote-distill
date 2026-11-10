@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Cedar Hollow Medical Supply, LLC",
+    "raw": "Cedar Hollow Medical Supply, LLC"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "CHM-Q-56012",
+    "raw": "CHM-Q-56012"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-10",
+    "raw": "Nov 10, 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "USD",
+    "raw": "US dollars"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Exam gloves, nitrile, case of 10 boxes",
+        "raw": "Exam gloves, nitrile, case of 10 boxes"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "12",
+        "raw": "12"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "box",
+        "raw": "boxes"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "64.80",
+        "raw": "$64.80"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "777.60",
+        "raw": "$777.60"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Sharps container 8 qt",
+        "raw": "Sharps container 8 qt"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "6",
+        "raw": "6"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "each"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "129.50",
+        "raw": "$129.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "777.00",
+        "raw": "$777.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1554.60",
+    "raw": "$1,554.60"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "2026-12-10",
+    "raw": "Dec 10, 2026"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "net 45",
+    "raw": "Net 45."
+  }
+}

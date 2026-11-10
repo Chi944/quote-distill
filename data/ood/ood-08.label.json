@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "GUMLEAF FENCING CONTRACTORS PTY LTD",
+    "raw": "GUMLEAF FENCING CONTRACTORS PTY LTD"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "Q-26-889",
+    "raw": "Q-26-889"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-04",
+    "raw": "04/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "AUD",
+    "raw": "AUD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Colorbond fence panel supply & install",
+        "raw": "Colorbond fence panel supply & install"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "18.5",
+        "raw": "18.5"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "m",
+        "raw": "lm"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "64.00",
+        "raw": "64.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1184.00",
+        "raw": "1,184.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Post concreting",
+        "raw": "Post concreting"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "6",
+        "raw": "6"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "ea"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "32.75",
+        "raw": "32.75"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "196.50",
+        "raw": "196.50"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "10",
+      "raw": "10%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "138.05",
+      "raw": "138.05"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1380.50",
+    "raw": "1,380.50"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1518.55",
+    "raw": "1,518.55"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "2026-12-04",
+    "raw": "04/12/2026"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "cod",
+    "raw": "COD."
+  }
+}

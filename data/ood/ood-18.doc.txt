@@ -1,0 +1,10 @@
+Rimu Valley Auto Electrical Ltd
+QUOTE RVA-0087	Date 10 November 2026	NZ$
+Item	Qty	Unit	Rate	Amount
+Alternator rebuild	6	each	310.00	1,860.00
+Labour	6	hrs	45.00	270.00
+Diagnostics	1	flat	180.00	180.00
+Subtotal	2,310.00
+GST 15%	346.50
+Grand Total	2,656.50
+Quote valid 14 days. Account customers 20th of month.

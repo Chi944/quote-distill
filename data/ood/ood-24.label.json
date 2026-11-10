@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Rafflesia Scaffold Rental Enterprise",
+    "raw": "Rafflesia Scaffold Rental Enterprise"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "RSR/26/115",
+    "raw": "RSR/26/115"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-10",
+    "raw": "10-11-2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "MYR",
+    "raw": "MYR"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Frame scaffold set (rental)",
+        "raw": "Frame scaffold set (rental)"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "set",
+        "raw": "set"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "980.00",
+        "raw": "980.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "2940.00",
+        "raw": "2,940.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Safety netting roll (rental)",
+        "raw": "Safety netting roll (rental)"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "roll",
+        "raw": "roll"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "125.00",
+        "raw": "125.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "375.00",
+        "raw": "375.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "3315.00",
+    "raw": "3,315.00"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P10D",
+    "raw": "quote valid 10 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "payment in advance",
+    "raw": "Payment in advance."
+  }
+}

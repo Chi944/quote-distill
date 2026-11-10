@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Greenhook Garden Centre",
+    "raw": "Greenhook Garden Centre"
+  },
+  "quote_number": {
+    "state": "not_stated"
+  },
+  "date": {
+    "state": "not_stated"
+  },
+  "currency": {
+    "state": "not_stated"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "terracotta pot 20cm",
+        "raw": "terracotta pot 20cm"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "25",
+        "raw": "25"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "3.48",
+        "raw": "$3.48"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "87.00",
+        "raw": "$87.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "seedling tray",
+        "raw": "seedling tray"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "40",
+        "raw": "40"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "1.15",
+        "raw": "$1.15"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "46.00",
+        "raw": "$46.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "potting mix 25L bag",
+        "raw": "potting mix 25L bag"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "5",
+        "raw": "5"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "27.60",
+        "raw": "$27.60"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "138.00",
+        "raw": "$138.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "not_stated",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "not_stated"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "271.00",
+    "raw": "$271.00"
+  },
+  "validity": {
+    "state": "not_stated"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "cash on delivery",
+    "raw": "cash on delivery"
+  }
+}

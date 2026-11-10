@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "TUATARA TRAINING SERVICES LTD",
+    "raw": "TUATARA TRAINING SERVICES LTD"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "TTS-6602",
+    "raw": "TTS-6602"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-02",
+    "raw": "02/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "NZD",
+    "raw": "NZD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "First aid level 1",
+        "raw": "First aid level 1"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "8",
+        "raw": "8"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "142.00",
+        "raw": "142.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1136.00",
+        "raw": "1,136.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Fire warden refresher",
+        "raw": "Fire warden refresher"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "8",
+        "raw": "8"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "36.00",
+        "raw": "36.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "288.00",
+        "raw": "288.00"
+      }
+    }
+  ],
+  "discounts": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "10% group discount",
+        "raw": "10% group discount"
+      },
+      "kind": "percent",
+      "rate": {
+        "state": "stated",
+        "value": "10",
+        "raw": "10%"
+      },
+      "amount": {
+        "state": "stated",
+        "value": "142.40",
+        "raw": "142.40"
+      }
+    }
+  ],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "15",
+      "raw": "15%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "192.24",
+      "raw": "192.24"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1424.00",
+    "raw": "1,424.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1473.84",
+    "raw": "1,473.84"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P30D",
+    "raw": "valid for 30 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "booking confirmed on payment",
+    "raw": "Booking confirmed on payment"
+  }
+}

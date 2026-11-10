@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Mintleaf Catering Supplies Pte. Ltd.",
+    "raw": "Mintleaf Catering Supplies Pte. Ltd."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "MCS-Q-0918",
+    "raw": "MCS-Q-0918"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-12",
+    "raw": "12 November 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "SGD",
+    "raw": "S$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Disposable lunch boxes, 50 per pack",
+        "raw": "Disposable lunch boxes, 50 per pack"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "12",
+        "raw": "12"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "pack",
+        "raw": "pk"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "18.90",
+        "raw": "18.90"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "226.80",
+        "raw": "226.80"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Insulated food carrier 20L",
+        "raw": "Insulated food carrier 20L"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "6",
+        "raw": "6"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "each"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "42.00",
+        "raw": "42.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "252.00",
+        "raw": "252.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Chafing dish fuel, carton",
+        "raw": "Chafing dish fuel, carton"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "box",
+        "raw": "box"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "150.00",
+        "raw": "150.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "150.00",
+        "raw": "150.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "inclusive",
+    "rate": {
+      "state": "stated",
+      "value": "9",
+      "raw": "9%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "51.92",
+      "raw": "51.92"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "628.80",
+    "raw": "628.80"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P14D",
+    "raw": "14 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "payment within 7 days of delivery",
+    "raw": "Payment within 7 days of delivery."
+  }
+}

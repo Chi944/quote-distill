@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Novatone AV Rentals Pte. Ltd.",
+    "raw": "Novatone AV Rentals Pte. Ltd."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "NVT/AV/2611-07",
+    "raw": "NVT/AV/2611-07"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-03",
+    "raw": "3 Nov 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "SGD",
+    "raw": "S$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "65-inch interactive display",
+        "raw": "65-inch interactive display"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "3",
+        "raw": "3"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "units"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "412.50",
+        "raw": "S$412.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1237.50",
+        "raw": "S$1,237.50"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "one-time cabling and setup",
+        "raw": "one-time cabling and setup"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "1"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "lot",
+        "raw": "lot"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "86.00",
+        "raw": "S$86.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "86.00",
+        "raw": "S$86.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "9",
+      "raw": "9%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "119.12",
+      "raw": "S$119.12"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1323.50",
+    "raw": "S$1,323.50"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1442.62",
+    "raw": "S$1,442.62"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P21D",
+    "raw": "valid for 21 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "50% deposit, balance on installation",
+    "raw": "50% deposit, balance on installation."
+  }
+}

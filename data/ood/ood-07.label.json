@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Saltbush Event Hire Pty Ltd",
+    "raw": "Saltbush Event Hire Pty Ltd"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "SEH-4471",
+    "raw": "SEH-4471"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-10",
+    "raw": "10/11/2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "AUD",
+    "raw": "AUD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Supply and erect 6x12 m marquee",
+        "raw": "Supply and erect 6x12 m marquee"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "2",
+        "raw": "2"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "day",
+        "raw": "days"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "645.00",
+        "raw": "$645.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "1290.00",
+        "raw": "$1,290.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Trestle tables",
+        "raw": "Trestle tables"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "4",
+        "raw": "4"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "each",
+        "raw": "each"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "88.50",
+        "raw": "$88.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "354.00",
+        "raw": "$354.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Delivery and pick-up",
+        "raw": "Delivery and pick-up"
+      },
+      "quantity": {
+        "state": "not_stated"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "lot",
+        "raw": "flat"
+      },
+      "unit_price": {
+        "state": "not_stated"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "95.00",
+        "raw": "$95.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "not_stated"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "173.90",
+      "raw": "$173.90"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "1739.00",
+    "raw": "$1,739.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "1912.90",
+    "raw": "$1,912.90"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P30D",
+    "raw": "30 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "a 20% deposit confirms the booking; the balance is due 7 days before the event",
+    "raw": "A 20% deposit confirms the booking; the balance is due 7 days before the event."
+  }
+}

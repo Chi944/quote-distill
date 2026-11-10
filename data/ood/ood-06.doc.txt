@@ -1,0 +1,10 @@
++-----------+------------------------------------+-----+------+----------+-----------+
+| SKU       | Item                               | Qty | UOM  | Rate S$  | Amount S$ |
++-----------+------------------------------------+-----+------+----------+-----------+
+| LAB-FH-12 | Benchtop fume hood, 1.2 m          | 1   | ea   | 2,980.00 | 2,980.00  |
+| LAB-PP-50 | Pipette pump set                   | 3   | set  | 145.00   | 435.00    |
+| SVC-INST  | Installation and calibration       | 1   | lot  | 320.00   | 320.00    |
++-----------+------------------------------------+-----+------+----------+-----------+
+Seller: Quartzline Scientific Pte Ltd     Quote No: QS/26/0331     Date: 02/11/2026
+Subtotal 3,735.00 | Special discount -200.00 | GST 9% 318.15 | TOTAL S$3,853.15
+Offer valid until 31 Dec 2026. Payment: 100% within 30 days of installation.

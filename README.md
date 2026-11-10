@@ -28,6 +28,14 @@ pytest -q
 quote-distill-generate --n 500 --seed 1 --split dev --out data/generated/dev
 ```
 
+## Off the generator's distribution
+
+The test set above comes from the generator the students trained on. These are 30 quotations written by hand in layouts the generator never produces, plus the 5 hand-written seeds ([docs/ood.md](docs/ood.md)):
+
+<!-- ood:start -->
+Not run yet: waiting for the hand check.
+<!-- ood:end -->
+
 ## Docs
 
 | Topic | Read |
@@ -36,6 +44,7 @@ quote-distill-generate --n 500 --seed 1 --split dev --out data/generated/dev
 | Output schema and its rules | [docs/schema.md](docs/schema.md), [JSON Schema](schema/quotation.schema.json) |
 | Synthetic quotation generator | [docs/generator.md](docs/generator.md) |
 | Frozen test set and hand check | [docs/test-set.md](docs/test-set.md) |
+| Out-of-distribution check | [docs/ood.md](docs/ood.md) |
 | Training data, the two students and how they are scored | [docs/student-data.md](docs/student-data.md), [docs/tagger.md](docs/tagger.md), [docs/generative.md](docs/generative.md), [docs/student-eval.md](docs/student-eval.md) |
 | Teacher runs and API spend | [docs/pilot-plan.md](docs/pilot-plan.md), [docs/teacher-session.md](docs/teacher-session.md), [docs/spend.md](docs/spend.md) |
 | Browser demo and publishing | [docs/demo.md](docs/demo.md) |

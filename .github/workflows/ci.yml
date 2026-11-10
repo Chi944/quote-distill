@@ -20,6 +20,10 @@ jobs:
       - run: pytest -q
       - name: Seeds pass every check
         run: python -m quote_distill.checks data/seeds
+      - name: Out-of-distribution labels pass every check, and are unchanged once frozen
+        run: |
+          python -m quote_distill.checks data/ood
+          test ! -f data/ood/MANIFEST.sha256 || python -m quote_distill.ood verify
       - name: Frozen test set is unchanged
         run: python -m quote_distill.splits verify data/test
       - name: Generator keeps every document

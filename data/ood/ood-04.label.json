@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Cloudmere IT Services Pte. Ltd.",
+    "raw": "Cloudmere IT Services Pte. Ltd."
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "CLD-2026-1144",
+    "raw": "CLD-2026-1144"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-06",
+    "raw": "Fri, 06 Nov 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "SGD",
+    "raw": "SGD"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Network audit and report",
+        "raw": "Network audit and report"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "2",
+        "raw": "2"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "day",
+        "raw": "days"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "1250.00",
+        "raw": "1,250.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "2500.00",
+        "raw": "2,500.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Engineer on-site support",
+        "raw": "Engineer on-site support"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "8",
+        "raw": "8"
+      },
+      "unit": {
+        "state": "stated",
+        "value": "hour",
+        "raw": "hrs"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "95.00",
+        "raw": "95.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "760.00",
+        "raw": "760.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "exclusive",
+    "rate": {
+      "state": "stated",
+      "value": "9",
+      "raw": "9%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "293.40",
+      "raw": "293.40"
+    }
+  },
+  "subtotal": {
+    "state": "stated",
+    "value": "3260.00",
+    "raw": "3,260.00"
+  },
+  "total": {
+    "state": "stated",
+    "value": "3553.40",
+    "raw": "3,553.40"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P30D",
+    "raw": "Valid for 30 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "30 days from invoice",
+    "raw": "30 days from invoice."
+  }
+}

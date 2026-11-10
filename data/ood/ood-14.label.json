@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0.0",
+  "supplier": {
+    "state": "stated",
+    "value": "Kowhai Kitchenware Ltd",
+    "raw": "Kowhai Kitchenware Ltd"
+  },
+  "quote_number": {
+    "state": "stated",
+    "value": "KK-3020",
+    "raw": "KK-3020"
+  },
+  "date": {
+    "state": "stated",
+    "value": "2026-11-09",
+    "raw": "9 November 2026"
+  },
+  "currency": {
+    "state": "stated",
+    "value": "NZD",
+    "raw": "NZ$"
+  },
+  "line_items": [
+    {
+      "description": {
+        "state": "stated",
+        "value": "Stainless gastronorm pan 1/1",
+        "raw": "Stainless gastronorm pan 1/1"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "30",
+        "raw": "30"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "22.50",
+        "raw": "22.50"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "675.00",
+        "raw": "675.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Silicone spatula",
+        "raw": "Silicone spatula"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "15",
+        "raw": "15"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "9.80",
+        "raw": "9.80"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "147.00",
+        "raw": "147.00"
+      }
+    },
+    {
+      "description": {
+        "state": "stated",
+        "value": "Freight to Napier",
+        "raw": "Freight to Napier"
+      },
+      "quantity": {
+        "state": "stated",
+        "value": "1",
+        "raw": "one"
+      },
+      "unit": {
+        "state": "not_stated"
+      },
+      "unit_price": {
+        "state": "stated",
+        "value": "120.00",
+        "raw": "120.00"
+      },
+      "discount": {
+        "state": "not_stated"
+      },
+      "line_total": {
+        "state": "stated",
+        "value": "120.00",
+        "raw": "120.00"
+      }
+    }
+  ],
+  "discounts": [],
+  "gst": {
+    "treatment": "inclusive",
+    "rate": {
+      "state": "stated",
+      "value": "15",
+      "raw": "15%"
+    },
+    "amount": {
+      "state": "stated",
+      "value": "122.87",
+      "raw": "122.87"
+    }
+  },
+  "subtotal": {
+    "state": "not_stated"
+  },
+  "total": {
+    "state": "stated",
+    "value": "942.00",
+    "raw": "942.00"
+  },
+  "validity": {
+    "state": "stated",
+    "value": "P14D",
+    "raw": "valid for 14 days"
+  },
+  "payment_terms": {
+    "state": "stated",
+    "value": "payment on the 20th of the following month",
+    "raw": "Payment on the 20th of the following month."
+  }
+}

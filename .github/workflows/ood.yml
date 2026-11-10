@@ -1,0 +1,52 @@
+name: ood
+
+# Scores both published students on the hand-written out-of-distribution set and the seeds (docs/ood.md), on the
+# runner's CPU with the same ONNX files the demo loads, and pushes the predictions to a results/ood-<run> branch for a
+# pull request. Started by hand, after the hand check has frozen data/ood.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install (CPU torch; the generative extra pins transformers for optimum-onnx)
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -e ".[generative]" "huggingface_hub>=0.25"
+      - name: The set is as hand-checked and frozen
+        run: |
+          python -m quote_distill.checks data/ood
+          python -m quote_distill.ood verify
+      - name: Download the published students
+        run: |
+          hf download werty3684/quote-distill-students --local-dir models \
+            --include "tagger/*.json" "tagger/onnx/model.onnx" \
+                      "generative/*.json" "generative/*.txt" "generative/*.jinja" \
+                      "generative/onnx/model_q4.onnx" "generative/onnx/model_q4.onnx_data"
+      - run: python -m quote_distill.ood export --out runs/ood
+      - name: Score
+        run: |
+          for set in ood seeds; do
+            python -m quote_distill.student.evaluate --docs runs/ood/$set.jsonl \
+              --tagger models/tagger --generative models/generative --out results/ood/$set
+          done
+      - name: Push the predictions to a branch
+        run: |
+          branch="results/ood-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add results/ood
+          git commit -m "Out-of-distribution predictions from run ${GITHUB_RUN_ID}"
+          git push origin "$branch"
+          echo "Pushed $branch" >> "$GITHUB_STEP_SUMMARY"
