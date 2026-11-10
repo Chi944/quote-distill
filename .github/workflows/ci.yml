@@ -49,5 +49,7 @@ jobs:
         working-directory: demo
       - run: npm test
         working-directory: demo
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome  # preinstalled on ubuntu-latest; runs the browser tests that need no models
       - run: npm run build
         working-directory: demo

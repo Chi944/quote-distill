@@ -102,6 +102,20 @@ The whole page (tagger, then the generative model) now peaks at 1,459 MB, agains
 
 **It worked when** the tiny models still give Python's exact outputs in Node and in the browser with the split file (`npm test`, 31/31), and the stand-in's renderer peak drops. **Result: passes** for both. What it doesn't fix: devices with less memory than about 1.5 GB to spare for one tab, and the time (one CPU thread, since GitHub Pages can't send the headers that allow more).
 
+## Part 6: more than one CPU thread
+
+**Step.** WebAssembly can only use more than one thread on a cross-origin isolated page, which needs two response headers (COOP and COEP) that GitHub Pages can't send. [`public/isolate-sw.js`](../demo/public/isolate-sw.js) is a small service worker that adds them to the page's own responses. A script at the top of `index.html` registers it and reloads once, on the first visit, when it takes control. Requests to Hugging Face don't go through the worker: they are CORS fetches, which COEP `require-corp` allows. The page then gives onnxruntime-web up to 4 threads, leaving one core free (`main.ts`), and each result line says how many it used. If anything fails (an old browser, or storage blocked), the page still works on one thread, as before.
+
+**It worked when** the built page turns `crossOriginIsolated` on after one reload, still fetches from another origin, doesn't reload in a loop (`test/isolation.test.ts`, which CI now runs against the preinstalled Chrome), the tiny models still give Python's exact outputs in the isolated page (`test/page.test.ts`, local), and generation gets faster. **Result: passes.** A stand-in with the published model's shape and size (SmolLM2-360M layout, random weights, the same split 4-bit export), timed in headless Chromium on a 4-core machine: a 300-token prompt, then 32 new tokens.
+
+| Threads | Prompt (300 tokens) | Per new token |
+|---|---|---|
+| 1 (before) | 8.8 s | 952 ms |
+| 2 (onnxruntime-web's default here: half the cores) | 5.8 s | 586 ms |
+| 4 | 4.7 s | 376 ms |
+
+That is about 2.5 times faster on this machine; how much faster on yours depends on its cores. What it doesn't change: memory, and the first visit's single extra reload.
+
 ## Next part
 
 - **Publishing:** put the trained models where the page can fetch them, deploy to GitHub Pages, and link it from the README.
