@@ -45,3 +45,7 @@ The 10,000 documents (44,534 line items) had **0 rejections**: 59,578 arithmetic
 - The checker proves that every stated value is supported by the text. It does not prove that every printed value was labelled. Tests cover the riskiest cases (GST mentioned when not_stated, a currency token in a bare-`$` document, a quote number printed but unlabelled), but the full check is the hand review of the test set.
 - Documents are plain text. Scans, PDFs and OCR noise are out of scope for this version, and typos are the only noise.
 - Supplier names are random word combinations. Any match with a real business is unintended.
+
+## Style v2
+
+`--style v2` adds five layouts and wider wording for retraining the students; v1 output is unchanged. See [generator-v2.md](generator-v2.md).

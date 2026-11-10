@@ -18,15 +18,15 @@ from .layouts import render
 from .sample import sample_quote, to_label
 
 
-def generate(n: int, seed: int, split: str) -> tuple[list[dict], dict]:
+def generate(n: int, seed: int, split: str, style: str = "v1") -> tuple[list[dict], dict]:
     records, features, rejects = [], Counter(), Counter()
     resampled = 0
     for i in range(n):
-        doc_id = f"{split}-s{seed}-{i:06d}"
+        doc_id = f"{split}-s{seed}-{i:06d}" if style == "v1" else f"{split}-{style}-s{seed}-{i:06d}"
         attempt = 0
         while True:
-            rng = random.Random(f"{split}:{seed}:{i}:{attempt}")
-            q = sample_quote(rng, doc_id)
+            rng = random.Random(f"{split}:{seed}:{i}:{attempt}" if style == "v1" else f"{split}:{style}:{seed}:{i}:{attempt}")
+            q = sample_quote(rng, doc_id, style)
             if q.subtotal > 0 and q.total > 0:
                 break
             attempt += 1
@@ -52,6 +52,7 @@ def generate(n: int, seed: int, split: str) -> tuple[list[dict], dict]:
                 "expected_check_failures": q.expected_failures,
                 "checks": {"pass": len(result.passes), "fail": len(result.failures), "skipped": len(result.skips)},
                 "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                **({"style": style} if style != "v1" else {}),
             },
         })
     kept = [r for r in records if not r.get("rejected")]
@@ -64,6 +65,7 @@ def generate(n: int, seed: int, split: str) -> tuple[list[dict], dict]:
         "resampled_nonpositive_totals": resampled,
         "seed": seed,
         "split": split,
+        "style": style,
         "feature_counts": dict(sorted(features.items())),
         "arithmetic_checks": {
             k: sum(r["meta"]["checks"][k] for r in kept) for k in ("pass", "fail", "skipped")
@@ -78,10 +80,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--n", type=int, default=500)
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--split", choices=["dev", "train", "test-candidates"], default="dev")
+    parser.add_argument("--style", choices=["v1", "v2"], default="v1", help="v2 adds layouts and vocabulary; v1 is unchanged")
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args(argv)
 
-    kept, stats = generate(args.n, args.seed, args.split)
+    kept, stats = generate(args.n, args.seed, args.split, args.style)
     args.out.mkdir(parents=True, exist_ok=True)
     with (args.out / "docs.jsonl").open("w", encoding="utf-8") as f:
         for record in kept:

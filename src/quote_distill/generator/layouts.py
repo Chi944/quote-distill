@@ -203,8 +203,178 @@ def prose_email(q: Quote, rng: random.Random) -> str:
     return "\n".join(out) + "\n"
 
 
+# ---------- style v2 layouts ----------
+# Each prints exactly the raw strings sample.py chose, in new arrangements: other header shapes, column orders,
+# separators, totals above the items, and rows without column headings.
+
+def _kv_header(q: Quote, rng: random.Random) -> list[str]:
+    """Header fields as key: value pairs in a shuffled order, the title above or below the supplier."""
+    title = q.h("Quotation")
+    title = rng.choice([title.upper(), title, title.title()])
+    pairs = []
+    if q.quote_no:
+        pairs.append((rng.choice([f"{q.h('Quotation')} no.", "Ref", "Reference", "No.", "Number", "Doc no."]), q.quote_no))
+    if q.date_raw:
+        pairs.append((rng.choice(["Date", "Dated", "Issue date", "Date issued"]), q.date_raw))
+    pairs.append((rng.choice(["Customer", "Bill to", "Prepared for", "Client", "To"]), q.customer))
+    if q.customer_ref:
+        pairs.append((rng.choice(["Your ref", "Customer PO", "Your order ref", "Enquiry"]), q.customer_ref))
+    rng.shuffle(pairs)
+    sep = rng.choice([": ", " - ", "  ", " : "])
+    head = [q.supplier, q.address] if rng.random() < 0.6 else [q.supplier]
+    out = [*head, "", title, *[f"{k}{sep}{v}" for k, v in pairs]] if rng.random() < 0.7 else \
+          [title, "", *head, *[f"{k}{sep}{v}" for k, v in pairs]]
+    if q.currency_line:
+        out.append(q.currency_line)
+    if q.gst["treatment"] == "inclusive":
+        rate = f" {q.gst['rate_raw']}" if q.gst["rate_raw"] else ""
+        out.append(rng.choice([f"All prices include{rate} GST.", f"Prices shown are inclusive of{rate} GST.",
+                               f"GST{rate} is included in all prices."]))
+    out.append("")
+    return out
+
+
+COLUMN_NAMES = {
+    "desc": ["Description", "Item", "Details", "Particulars"],
+    "qty": ["Qty", "Quantity", "Qty.", "No."],
+    "unit": ["Unit", "UOM", "Per", "U/M"],
+    "price": ["Unit Price", "Rate", "Price", "Each", "Unit Cost"],
+    "disc": ["Disc", "Discount", "Less"],
+    "total": ["Amount", "Total", "Line Total", "Ext. Price", "Value"],
+    "code": ["Code", "SKU", "Part No.", "Item No."],
+}
+
+
+def _columns(q: Quote, rng: random.Random) -> list[str]:
+    """Which item columns to print, in which order. Description stays before the numbers; amount is last or second."""
+    numbers = ["qty", "unit", "price"]
+    if rng.random() < 0.4:
+        rng.shuffle(numbers)
+    if rng.random() < 0.5 and numbers.index("unit") != numbers.index("qty") + 1:
+        numbers.remove("unit")
+        numbers.insert(numbers.index("qty") + 1, "unit")
+    cols = ["desc", *numbers]
+    if any(line.disc_raw for line in q.lines):
+        cols.insert(len(cols), "disc")
+    cols.append("total")
+    if any(line.code for line in q.lines):
+        cols.insert(0, "code")
+    return cols
+
+
+def _cell(q: Quote, line, col: str) -> str:
+    return {"desc": line.desc, "qty": line.qty_raw or "", "unit": line.unit_raw or "", "price": line.price_raw or "",
+            "disc": line.disc_raw or "", "total": line.total_raw, "code": line.code or ""}[col]
+
+
+def _footer_lines(q: Quote, rng: random.Random, width: int | None = None) -> list[str]:
+    sep = rng.choice([": ", "  ", " ", " = "])
+    out = []
+    for label, amount in _footer_rows(q):
+        text = f"{label}{sep}{amount}" if amount else label
+        out.append(text.rjust(width) if width else text)
+    return out
+
+
+def kv_table(q: Quote, rng: random.Random) -> str:
+    out = _kv_header(q, rng)
+    cols = _columns(q, rng)
+    names = [rng.choice(COLUMN_NAMES[c]) for c in cols]
+    rows = [[_cell(q, line, c) for c in cols] for line in q.lines]
+    if rng.random() < 0.5:
+        names, rows = ["#", *names], [[str(i), *r] for i, r in enumerate(rows, 1)]
+    widths = [max(len(r[c]) for r in [names, *rows]) for c in range(len(names))]
+    gap = rng.choice(["  ", "   ", " | "])
+    def fmt(row: list[str]) -> str:
+        return gap.join(cell.ljust(w) for cell, w in zip(row, widths, strict=True)).rstrip()
+    out.append(fmt(names))
+    if rng.random() < 0.6:
+        out.append(rng.choice(["-", "=", "_"]) * len(fmt(names)))
+    out.extend(fmt(r) for r in rows)
+    out.append("")
+    out.extend(_footer_lines(q, rng))
+    out.append("")
+    out.extend(_terms(q))
+    return "\n".join(out) + "\n"
+
+
+def _quoted(cell: str, sep: str) -> str:
+    return f'"{cell}"' if sep == ", " and ("," in cell or '"' in cell) else cell
+
+
+def delimited(q: Quote, rng: random.Random) -> str:
+    """Items as comma-space or tab-separated rows under a heading row, as pasted from a spreadsheet."""
+    out = _kv_header(q, rng)
+    sep = rng.choice([", ", "\t"])  # a bare "," would glue numbers together
+    cols = _columns(q, rng)
+    out.append(sep.join(rng.choice(COLUMN_NAMES[c]) for c in cols))
+    out.extend(sep.join(_quoted(_cell(q, line, c), sep) for c in cols) for line in q.lines)
+    out.append("")
+    out.extend(_footer_lines(q, rng))
+    out.append("")
+    out.extend(_terms(q))
+    return "\n".join(out) + "\n"
+
+
+def totals_first(q: Quote, rng: random.Random) -> str:
+    """A summary of the totals above the item breakdown."""
+    out = _kv_header(q, rng)
+    out.append(rng.choice(["SUMMARY", "Summary", "Price summary", "At a glance"]))
+    out.extend(f"  {line}" for line in _footer_lines(q, rng))
+    out.append("")
+    out.append(rng.choice(["Breakdown", "Itemised breakdown", "Details", "What's included"]) + ":")
+    for i, line in enumerate(q.lines, 1):
+        code = f" [{line.code}]" if line.code else ""
+        if line.qty_raw:
+            disc = f" less {line.disc_raw}" if line.disc_raw else ""
+            out.append(f"{i}. {line.desc}{code}: {line.qty_raw} {line.unit_raw} @ {line.price_raw}{disc} -> {line.total_raw}")
+        else:
+            out.append(f"{i}. {line.desc}{code} ({line.unit_raw}): {line.total_raw}")
+    out.append("")
+    out.extend(_terms(q))
+    return "\n".join(out) + "\n"
+
+
+def numbered_lines(q: Quote, rng: random.Random) -> str:
+    """One sentence-like line per item: "1) Desc - 4 ea @ $5.00 = $20.00"."""
+    out = _header_block(q, rng) if rng.random() < 0.5 else _kv_header(q, rng)
+    bullet = rng.choice(["{i})", "{i}.", "({i})", "-", "*"])
+    at, eq = rng.choice([("@", "="), ("x", "="), ("at", "="), ("@", "->"), ("x", ":")])
+    for i, line in enumerate(q.lines, 1):
+        b = bullet.format(i=i)
+        code = f" ({line.code})" if line.code else ""
+        if line.qty_raw:
+            disc = f", {q.h('Discount').lower()} {line.disc_raw}" if line.disc_raw else ""
+            out.append(f"{b} {line.desc}{code} - {line.qty_raw} {line.unit_raw} {at} {line.price_raw}{disc} {eq} {line.total_raw}")
+        else:
+            out.append(f"{b} {line.desc}{code} - {line.unit_raw} {eq} {line.total_raw}")
+    out.append("")
+    out.extend(_footer_lines(q, rng))
+    out.append("")
+    out.extend(_terms(q))
+    return "\n".join(out) + "\n"
+
+
+def bare_columns(q: Quote, rng: random.Random) -> str:
+    """Aligned item columns with no heading row, totals right-aligned under the amounts."""
+    out = _header_block(q, rng) if rng.random() < 0.5 else _kv_header(q, rng)
+    cols = _columns(q, rng)
+    rows = [[_cell(q, line, c) for c in cols] for line in q.lines]
+    widths = [max(len(r[c]) for r in rows) for c in range(len(cols))]
+    lines = ["   ".join(cell.ljust(w) if c in ("desc", "code", "unit") else cell.rjust(w)
+                        for cell, w, c in zip(r, widths, cols, strict=True)).rstrip() for r in rows]
+    out.extend(lines)
+    width = max(len(x) for x in lines)
+    out.append(" " * max(0, width - 12) + "-" * min(12, width))
+    out.extend(_footer_lines(q, rng, width))
+    out.append("")
+    out.extend(_terms(q))
+    return "\n".join(out) + "\n"
+
+
 RENDERERS = {"fixed_table": fixed_table, "pipe_table": pipe_table, "item_blocks": item_blocks,
-             "email_list": email_list, "prose_email": prose_email}
+             "email_list": email_list, "prose_email": prose_email, "kv_table": kv_table, "delimited": delimited,
+             "totals_first": totals_first, "numbered_lines": numbered_lines, "bare_columns": bare_columns}
 
 
 def render(q: Quote, rng: random.Random) -> str:

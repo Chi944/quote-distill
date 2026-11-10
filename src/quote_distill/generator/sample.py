@@ -14,9 +14,13 @@ from ..checks import render_date
 from ..money import decimal_value, grouped, is_half_cent_tie, money_value, price_value, round_money
 from ..normalise import DATE_FORMATS, NUMBER_WORDS, UNIT_SYNONYMS, collapse, normalise_payment_terms
 from .vocab import CUSTOMERS, HEADER_TYPOS, ITEMS, LOCALES, LUMP_SUMS, NAME_FIRST, NAME_SECOND, PAYMENT_TERMS
+from .vocab_v2 import V2, sample_words
 
 LAYOUTS = ["fixed_table", "pipe_table", "item_blocks", "email_list", "prose_email"]
-TABLE_LAYOUTS = {"fixed_table", "pipe_table", "item_blocks"}
+# Style v2 (generator v2) adds these layouts and the wider vocabulary in vocab_v2.py. Style v1 is unchanged.
+LAYOUTS_V2 = ["kv_table", "delimited", "totals_first", "numbered_lines", "bare_columns"]
+TABLE_LAYOUTS = {"fixed_table", "pipe_table", "item_blocks", *LAYOUTS_V2}
+STYLES = ("v1", "v2")
 NUMBER_NAMES = {v: k for k, v in NUMBER_WORDS.items()}
 
 
@@ -67,10 +71,12 @@ class Quote:
     typos: dict[str, str]
     features: set[str]
     expected_failures: list[str]
+    style: str = "v1"
+    words: dict[str, str] = field(default_factory=dict)
 
     def h(self, word: str) -> str:
-        """A header word, possibly with this document's typo."""
-        return self.typos.get(word, word)
+        """A header word: this document's typo, else its style-v2 synonym, else the word itself."""
+        return self.typos.get(word, self.words.get(word, word))
 
 
 def fmt_amount(x: D, prefix: str, group: bool, places: int = 2) -> str:
@@ -110,14 +116,23 @@ def _quantity(rng: random.Random, decimal_ok: bool, max_qty: int) -> D:
     return D(rng.randint(1, max_qty))
 
 
-def sample_quote(rng: random.Random, doc_id: str) -> Quote:
+def sample_quote(rng: random.Random, doc_id: str, style: str = "v1") -> Quote:
+    """Style v1 draws exactly the random numbers it always has, so v1 output stays byte-identical."""
+    if style not in STYLES:
+        raise ValueError(f"unknown style {style!r}")
+    v2 = style == "v2"
+    pool = V2 if v2 else {"NAME_FIRST": NAME_FIRST, "NAME_SECOND": NAME_SECOND, "ITEMS": ITEMS, "LUMP_SUMS": LUMP_SUMS,
+                          "PAYMENT_TERMS": PAYMENT_TERMS, "CUSTOMERS": CUSTOMERS}
     locale = rng.choice(list(LOCALES))
     loc = LOCALES[locale]
-    layout = rng.choices(LAYOUTS, weights=[3, 3, 2, 2, 2])[0]
+    if v2:
+        layout = rng.choices(LAYOUTS + LAYOUTS_V2, weights=[2, 2, 2, 2, 2, 3, 3, 2, 3, 2])[0]
+    else:
+        layout = rng.choices(LAYOUTS, weights=[3, 3, 2, 2, 2])[0]
     table = layout in TABLE_LAYOUTS
     features: set[str] = {f"layout:{layout}", f"locale:{locale}"}
 
-    supplier = f"{rng.choice(NAME_FIRST)} {rng.choice(NAME_SECOND)} {rng.choice(loc['suffixes'])}"
+    supplier = f"{rng.choice(pool['NAME_FIRST'])} {rng.choice(pool['NAME_SECOND'])} {rng.choice(loc['suffixes'])}"
     if rng.random() < 0.3:
         supplier = supplier.upper()
     typos = {}
@@ -151,14 +166,14 @@ def sample_quote(rng: random.Random, doc_id: str) -> Quote:
         r = rng.random()
         if r < 0.12 and lump_sums < 2:
             lump_sums += 1
-            desc = rng.choice([d for d in LUMP_SUMS if d not in used])
+            desc = rng.choice([d for d in pool["LUMP_SUMS"] if d not in used])
             used.add(desc)
             unit_raw = rng.choice(["L/S", "lump sum", "lot"]) if table else "flat"
             amount = D(rng.randint(4, 120)) * 5
             line = Line(desc=desc, unit="lot", unit_raw=unit_raw, total=amount, tags={"lump_sum"})
             lines.append(line)
             continue
-        desc, unit, lo, hi, decimal_ok, max_qty = rng.choice([it for it in ITEMS if it[0] not in used])
+        desc, unit, lo, hi, decimal_ok, max_qty = rng.choice([it for it in pool["ITEMS"] if it[0] not in used])
         used.add(desc)
         if rng.random() < 0.08:
             desc = _description_with_typo(rng, desc)
@@ -306,15 +321,19 @@ def sample_quote(rng: random.Random, doc_id: str) -> Quote:
     quote_date = date(2026, 1, 1) + timedelta(days=rng.randrange(365)) if rng.random() < 0.9 else None
     date_raw = None
     if quote_date is not None:
-        date_raw = render_date(quote_date, rng.choice(DATE_FORMATS[locale][:3]), pad=rng.random() < 0.6)
+        date_raw = render_date(quote_date, rng.choice(DATE_FORMATS[locale][:4 if v2 else 3]), pad=rng.random() < 0.6)
     else:
         features.add("missing:date")
     quote_no = None
     if rng.random() < 0.88:
         yy = (quote_date or date(2026, 6, 1)).strftime("%y")
         code = "".join(w[0] for w in supplier.split()[:2]).upper()
-        quote_no = rng.choice([f"{code}-Q-{yy}-{rng.randint(1, 9999):04d}", f"Q{yy}/{rng.randint(1, 9999):04d}",
-                               f"{code}{rng.randint(10000, 99999)}", f"{code}-{yy}{rng.randint(1, 12):02d}-{rng.randint(1, 999):03d}"])
+        formats = [f"{code}-Q-{yy}-{rng.randint(1, 9999):04d}", f"Q{yy}/{rng.randint(1, 9999):04d}",
+                   f"{code}{rng.randint(10000, 99999)}", f"{code}-{yy}{rng.randint(1, 12):02d}-{rng.randint(1, 999):03d}"]
+        if v2:
+            formats += [f"{rng.randint(100000, 999999)}", f"QT{rng.randint(1000, 99999)}", f"20{yy}-{rng.randint(1, 999):03d}",
+                        f"{code}/{rng.randint(1, 12):02d}/{rng.randint(100, 9999)}", f"E-{rng.randint(1000, 9999)}{rng.choice('ABCDE')}"]
+        quote_no = rng.choice(formats)
     else:
         features.add("missing:quote_number")
     customer_ref = None
@@ -328,13 +347,20 @@ def sample_quote(rng: random.Random, doc_id: str) -> Quote:
     if r < 0.45:
         n = rng.choice([7, 14, 30, 45, 60, 90])
         validity_value = f"P{n}D"
-        validity_raw = rng.choice([f"Valid for {n} days", f"Validity: {n} days", f"This quotation is valid for {n} days"])
+        phrasings = [f"Valid for {n} days", f"Validity: {n} days", f"This quotation is valid for {n} days"]
+        if v2:
+            phrasings += [f"Prices held for {n} days", f"Offer open for {n} days", f"Quote valid {n} days from date",
+                          f"Valid {n} days", f"This offer stands for {n} days", f"Pricing firm for {n} days"]
+        validity_raw = rng.choice(phrasings)
         if "Validity" in validity_raw:
             validity_raw = validity_raw.replace("Validity", q_h(typos, "Validity"))
     elif r < 0.7:
         until = (quote_date or date(2026, 6, 1)) + timedelta(days=rng.randint(7, 60))
         validity_value = until.isoformat()
-        validity_raw = f"Prices valid until {render_date(until, rng.choice(DATE_FORMATS[locale][:3]), pad=rng.random() < 0.6)}"
+        until_raw = render_date(until, rng.choice(DATE_FORMATS[locale][:4 if v2 else 3]), pad=rng.random() < 0.6)
+        lead = rng.choice(["Prices valid until", "Valid until", "Offer expires", "Quote good through", "Valid to"]) if v2 \
+            else "Prices valid until"
+        validity_raw = f"{lead} {until_raw}"
     elif r < 0.82 and quote_date is not None:
         last = quote_date.replace(day=calendar.monthrange(quote_date.year, quote_date.month)[1])
         validity_value = last.isoformat()
@@ -345,7 +371,7 @@ def sample_quote(rng: random.Random, doc_id: str) -> Quote:
 
     payment_raw = None
     if rng.random() < 0.8:
-        payment_raw = rng.choice(PAYMENT_TERMS)
+        payment_raw = rng.choice(pool["PAYMENT_TERMS"])
         if rng.random() < 0.15:
             payment_raw += f"; {rng.choice(['2', '2.5', '3'])}% discount if paid within {rng.choice([7, 10, 14])} days"
             features.add("conditional_discount")
@@ -354,12 +380,13 @@ def sample_quote(rng: random.Random, doc_id: str) -> Quote:
 
     return Quote(
         doc_id=doc_id, locale=locale, layout=layout, supplier=supplier, address=rng.choice(loc["places"]),
-        customer=rng.choice(CUSTOMERS), customer_ref=customer_ref, quote_no=quote_no, date=quote_date, date_raw=date_raw,
+        customer=rng.choice(pool["CUSTOMERS"]), customer_ref=customer_ref, quote_no=quote_no, date=quote_date, date_raw=date_raw,
         currency_raw=currency_raw, currency_line=currency_line, prefix=prefix, group=group, lines=lines, discounts=discounts,
         gst=gst, subtotal=subtotal, subtotal_raw=fmt_amount(subtotal, prefix, group) if subtotal_printed else None,
         total=total, total_raw=fmt_amount(total, prefix, group) if total_printed else None,
         validity_value=validity_value, validity_raw=validity_raw, payment_raw=payment_raw, typos=typos,
-        features=features, expected_failures=expected_failures,
+        features=features | ({"style:v2"} if v2 else set()), expected_failures=expected_failures,
+        style=style, words=sample_words(random.Random(f"words:{doc_id}")) if v2 else {},
     )
 
 

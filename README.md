@@ -55,7 +55,7 @@ The test set above comes from the generator the students trained on. These are 3
 |---|---|
 | Final evaluation, results by hard case, and failure gallery | [docs/evaluation.md](docs/evaluation.md) |
 | Output schema and its rules | [docs/schema.md](docs/schema.md), [JSON Schema](schema/quotation.schema.json) |
-| Synthetic quotation generator | [docs/generator.md](docs/generator.md) |
+| Synthetic quotation generator, and its wider v2 for retraining | [docs/generator.md](docs/generator.md), [docs/generator-v2.md](docs/generator-v2.md) |
 | Frozen test set and hand check | [docs/test-set.md](docs/test-set.md) |
 | Out-of-distribution check | [docs/ood.md](docs/ood.md) |
 | Training data, the two students and how they are scored | [docs/student-data.md](docs/student-data.md), [docs/tagger.md](docs/tagger.md), [docs/generative.md](docs/generative.md), [docs/student-eval.md](docs/student-eval.md) |
