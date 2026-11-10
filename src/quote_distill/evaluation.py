@@ -164,7 +164,7 @@ def render(systems: list[System], gold: list[dict], manifest: str, draft: bool, 
             "### Summary", "", *readme_table(systems, reports), "",
             "Per-field exact match counts every document-level field and every line-item field by position. Line-item F1"
             " counts a line only when all six of its fields match. Latency is the median per document from the run's"
-            " own timing; the students' runs are onnxruntime on a CPU, and in a browser (one CPU thread) the generative"
+            " own timing; the students' runs are onnxruntime on a CPU, and in a browser (up to 4 CPU threads) the generative"
             " student is several times slower.", ""]
 
     def row(label, get):

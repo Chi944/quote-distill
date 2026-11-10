@@ -59,7 +59,8 @@ def test_writes_evaluation_and_readme_between_markers(docs, tmp_path):
     readme = evaluation.README.read_text(encoding="utf-8")
     assert readme.split(evaluation.START)[0] == readme_before.split(evaluation.START)[0]
     assert readme.split(evaluation.END)[1] == readme_before.split(evaluation.END)[1]
-    rows = [line for line in readme.splitlines() if line.startswith("| Student")]
+    section = readme.split(evaluation.START)[1].split(evaluation.END)[0]
+    rows = [line for line in section.splitlines() if line.startswith("| Student")]
     assert [r.split(" | ")[3:5] for r in rows] == [["300/300 (100.0%)", "300/300 (100.0%)"], ["0/300 (0.0%)", "0/300 (0.0%)"]]
     assert rows[0].endswith("| 1.000 | 300/300 (100.0%) | 300/300 (100.0%) | 250 ms median | $0 (runs in the browser) |")
     assert rows[1].endswith("| 0.000 | 0/300 (0.0%) | 0/300 (0.0%) | not measured | $0 (runs in the browser) |")

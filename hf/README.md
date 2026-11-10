@@ -38,7 +38,7 @@ These are scored on the frozen 300-document test set by the project's own metric
 | Tagger | 11208/11208 (100.0%) | 299/300 (99.7%) | 30 ms |
 | Generative (4-bit) | 11066/11208 (98.7%) | 278/300 (92.7%) | 12.5 s |
 
-**Read these with care.** The test set comes from the same synthetic generator as the training data. It has its own random streams and shares no texts with training, but its layouts and wording are the same. That favours the students. A hand-written out-of-distribution check is in [docs/ood.md](https://github.com/Chi944/quote-distill/blob/main/docs/ood.md).
+**Read these with care.** The test set comes from the same synthetic generator as the training data. It has its own random streams and shares no texts with training, but its layouts and wording are the same. That favours the students. On 30 hand-written quotations in new layouts ([docs/ood.md](https://github.com/Chi944/quote-distill/blob/main/docs/ood.md)), both students get 0/30 documents fully right; per-field exact match is 565/888 (63.6%) for the tagger and 450/780 (57.7%) for the generative model.
 
 ## Use
 
