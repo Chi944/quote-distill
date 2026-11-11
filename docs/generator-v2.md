@@ -37,4 +37,29 @@ The demo moves to the v2 models only if they do better on the frozen 30 without 
 
 ## Results
 
+### Tagger (retrained 2026-11-11)
+
+Trained on the v2 data on an RTX 3050 (8 min 41 s). On the v2 validation set the fp32 ONNX file scores 998/1000 whole documents exact. It was then scored by the `ood` workflow (run 42958671532, `folder = v2`, `test_set` ticked) on a GitHub runner's CPU, the same way as the published tagger (run 42787629414). Predictions are in [`results/v2/`](../results/v2).
+
+| Set | Measure | Published tagger (v1 data) | Retrained tagger (v2 data) |
+|---|---|---|---|
+| Hand-written, out-of-distribution (30) | Whole document exact | 0/30 (0.0%) | 1/30 (3.3%) |
+| | Per-field exact | 565/888 (63.6%) | 615/876 (70.2%) |
+| | Document fields exact | 240/330 (72.7%) | 244/330 (73.9%) |
+| | Line-item F1 | 0.452 | 0.675 |
+| | Arithmetic agrees with gold | 22/30 (73.3%) | 24/30 (80.0%) |
+| Hand-written seeds (5) | Whole document exact | 1/5 (20.0%) | 2/5 (40.0%) |
+| | Per-field exact | 108/193 (56.0%) | 126/193 (65.3%) |
+| Frozen test set (300) | Whole document exact | 299/300 (99.7%) | 300/300 (100.0%) |
+
+Per-field exact counts line-item fields by position, so its denominator moves with the number of lines a model predicts (888 against 876).
+
+**What it shows.** Nothing was lost on the generator's own test set, and line items on unseen layouts are found more often (precision 56/91, recall 56/75; F1 0.675 from 0.452). But the headline barely moved: 1 of 30 hand-written documents is fully right, and the document fields are almost unchanged (244/330 from 240/330). The weakest fields on the 30 are payment terms (4/30, unchanged), quote number (15/30, down from 22/30 with the published tagger) and currency (16/30, from 17/30); the gains are in supplier, totals and line items. Wider layouts and wording were not enough on their own; the tagger still misses phrasings and header shapes that neither generator style prints.
+
+By the rule above this is better on the frozen 30 with no loss on the test set, so the v2 tagger qualifies to replace the published one. The gain is small, and the demo has not been switched.
+
+The int8 file scored 68/1000 on the v2 validation set and was not uploaded, as with v1.
+
+### Generative student
+
 Not run yet.

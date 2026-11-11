@@ -1,0 +1,24 @@
+{
+  "docs": "data/test/docs.jsonl",
+  "evaluation": true,
+  "students": {
+    "tagger": {
+      "documents": 300,
+      "per_field_exact": "3300/3300 (100.0%)",
+      "line_item_f1": 1.0,
+      "arithmetic_consistent": "274/300 (91.3%)",
+      "arithmetic_agrees": "300/300 (100.0%)",
+      "exact_documents": "300/300 (100.0%)",
+      "parsed": "300/300 (100.0%)",
+      "latency_s": {
+        "median": 0.057,
+        "p90": 0.106
+      },
+      "model_file": {
+        "name": "model.onnx",
+        "sha256": "faadb4c4f97ba12aa69535038d979dceee516a142384cf4ca29e2087a3a88fe1"
+      },
+      "readme_row": "| Student: tagger (CPU, onnxruntime) | 3300/3300 (100.0%) | 1.0 | 274/300 (91.3%) | 300/300 (100.0%) | 0.057 s median | $0 |"
+    }
+  }
+}
