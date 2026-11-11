@@ -1,0 +1,24 @@
+{
+  "docs": "runs/ood/seeds.jsonl",
+  "evaluation": false,
+  "students": {
+    "tagger": {
+      "documents": 5,
+      "per_field_exact": "49/55 (89.1%)",
+      "line_item_f1": 0.8,
+      "arithmetic_consistent": "3/5 (60.0%)",
+      "arithmetic_agrees": "4/5 (80.0%)",
+      "exact_documents": "2/5 (40.0%)",
+      "parsed": "5/5 (100.0%)",
+      "latency_s": {
+        "median": 0.059,
+        "p90": 0.125
+      },
+      "model_file": {
+        "name": "model.onnx",
+        "sha256": "faadb4c4f97ba12aa69535038d979dceee516a142384cf4ca29e2087a3a88fe1"
+      },
+      "readme_row": "| Student: tagger (CPU, onnxruntime) | 49/55 (89.1%) | 0.8 | 3/5 (60.0%) | 2/5 (40.0%) | 0.059 s median | $0 |"
+    }
+  }
+}
