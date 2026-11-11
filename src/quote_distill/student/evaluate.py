@@ -25,12 +25,21 @@ from ..metrics import DOC_FIELDS, Ratio, aggregate, format_report, score_documen
 FILES = {"tagger": "model.onnx", "generative": "model_q4.onnx"}  # what the demo page loads; the int8 tagger scored 32/1000 on dev
 
 
-def run_tagger(model_dir: str, records: list[dict]) -> tuple[list[dict], list[float]]:
-    from transformers import AutoTokenizer
+def load_tokenizer(model_dir: str):
+    """The student's tokenizer. transformers 5 saves tokenizer_class "TokenizersBackend", which 4.x can't look up by
+    name (the generative extra pins 4.x), so fall back to the fast tokenizer that reads the same tokenizer.json."""
+    from transformers import AutoTokenizer, PreTrainedTokenizerFast
 
+    try:
+        return AutoTokenizer.from_pretrained(model_dir)
+    except ValueError:
+        return PreTrainedTokenizerFast.from_pretrained(model_dir)
+
+
+def run_tagger(model_dir: str, records: list[dict]) -> tuple[list[dict], list[float]]:
     from .tagger import onnx_logits, predict
 
-    tok = AutoTokenizer.from_pretrained(model_dir)
+    tok = load_tokenizer(model_dir)
     logits = onnx_logits(str(Path(model_dir) / "onnx" / FILES["tagger"]))
     preds, times = [], []
     for r in records:
@@ -41,11 +50,9 @@ def run_tagger(model_dir: str, records: list[dict]) -> tuple[list[dict], list[fl
 
 
 def run_generative(model_dir: str, records: list[dict], max_new_tokens: int) -> tuple[list[dict | None], list[float]]:
-    from transformers import AutoTokenizer
-
     from .generative import generate, onnx_model, parse
 
-    tok = AutoTokenizer.from_pretrained(model_dir)
+    tok = load_tokenizer(model_dir)
     model = onnx_model(model_dir, FILES["generative"])
     preds, times = [], []
     for r in records:

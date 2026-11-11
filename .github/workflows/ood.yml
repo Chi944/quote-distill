@@ -50,21 +50,28 @@ jobs:
             --include "${p}tagger/*.json" "${p}tagger/onnx/model.onnx" \
                       "${p}generative/*.json" "${p}generative/*.txt" "${p}generative/*.jinja" \
                       "${p}generative/onnx/model_q4.onnx" "${p}generative/onnx/model_q4.onnx_data"
-          echo "MODELS=models/${p%/}" >> "$GITHUB_ENV"
+          m="models/${p%/}"
+          # Score whichever students the folder holds, so one can be checked before the other is trained.
+          students=""
+          [[ -f "$m/tagger/onnx/model.onnx" ]] && students="$students --tagger $m/tagger"
+          [[ -f "$m/generative/onnx/model_q4.onnx" ]] && students="$students --generative $m/generative"
+          [[ -n "$students" ]] || { echo "no student found under $m"; exit 1; }
+          echo "STUDENTS=$students" >> "$GITHUB_ENV"
           echo "RESULTS=results/${FOLDER:-ood}" >> "$GITHUB_ENV"
+          echo "Scoring:$students" >> "$GITHUB_STEP_SUMMARY"
       - run: python -m quote_distill.ood export --out runs/ood
       - name: Score
         run: |
           for set in ood seeds; do
             python -m quote_distill.student.evaluate --docs runs/ood/$set.jsonl \
-              --tagger "$MODELS/tagger" --generative "$MODELS/generative" --out "$RESULTS/$set"
+              $STUDENTS --out "$RESULTS/$set"
           done
       - name: Score the test set
         if: ${{ inputs.test_set }}
         run: |
           python -m quote_distill.splits verify
           python -m quote_distill.student.evaluate --evaluation --docs data/test/docs.jsonl \
-            --tagger "$MODELS/tagger" --generative "$MODELS/generative" --out "$RESULTS/test"
+            $STUDENTS --out "$RESULTS/test"
       - name: Push the predictions to a branch
         run: |
           branch="results/ood-${GITHUB_RUN_ID}"

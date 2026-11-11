@@ -51,3 +51,21 @@ def test_predictions_feed_the_final_evaluation(tmp_path, records):
     preds, latencies = load_predictions(tmp_path / "predictions-tagger.jsonl", [r["id"] for r in records])
     assert preds == {r["id"]: r["label"] for r in records}
     assert latencies == [12.0, 20.0, 30.0, 40.0]
+
+
+def test_tokenizer_saved_by_a_newer_transformers_still_loads(tmp_path):
+    """The v2 tagger was trained with transformers 5, whose tokenizer_config names a class 4.x does not have."""
+    pytest.importorskip("transformers")
+    tokenizers = pytest.importorskip("tokenizers")
+    from quote_distill.student.evaluate import load_tokenizer
+
+    vocab = {"[PAD]": 0, "[UNK]": 1, "[CLS]": 2, "[SEP]": 3, "quote": 4, "total": 5}
+    tok = tokenizers.Tokenizer(tokenizers.models.WordLevel(vocab, unk_token="[UNK]"))
+    tok.pre_tokenizer = tokenizers.pre_tokenizers.Whitespace()
+    tok.save(str(tmp_path / "tokenizer.json"))
+    (tmp_path / "tokenizer_config.json").write_text(json.dumps({
+        "backend": "tokenizers", "tokenizer_class": "TokenizersBackend", "pad_token": "[PAD]", "unk_token": "[UNK]",
+        "cls_token": "[CLS]", "sep_token": "[SEP]", "model_max_length": 8192}))
+    loaded = load_tokenizer(str(tmp_path))
+    assert loaded("quote total other")["input_ids"] == [4, 5, 1]
+    assert loaded.pad_token_id == 0 and loaded.model_max_length == 8192
