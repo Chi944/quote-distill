@@ -20,6 +20,8 @@ A supplier-quotation extractor distilled from Claude into small open models that
 
 Every result is reported against the frozen 300-document test set, with its denominator, in [docs/evaluation.md](docs/evaluation.md). That set comes from the same generator the students trained on, so it favours them; see [Reading the results](docs/evaluation.md#reading-the-results).
 
+The latency column is Python on a CPU. In the browser, timed on the live demo in Chromium (an i5-12400 using 4 threads, 20 sample quotations), the tagger takes **0.09 s** median per document and the generative student **66.9 s**; see [docs/demo.md](docs/demo.md#part-7-timed-in-a-browser).
+
 ## Run locally
 
 ```bash

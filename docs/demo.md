@@ -116,6 +116,25 @@ The whole page (tagger, then the generative model) now peaks at 1,459 MB, agains
 
 That is about 2.5 times faster on this machine; how much faster on yours depends on its cores. What it doesn't change: memory, and the first visit's single extra reload.
 
+## Part 7: timed in a browser
+
+**Step.** Time both students on the published page in a real browser, not the Python CPU timings in the results table. [`demo/scripts/browser-latency.mjs`](../demo/scripts/browser-latency.mjs) opens the live demo in headless Chromium, runs each of the page's 20 sample quotations one at a time, and reads the seconds the page itself shows. That is the model call only, after the model has loaded once. It writes [`results/students/browser-latency.json`](../results/students/browser-latency.json) with every sample's time, its outcome, the page's thread count, and whether the page was cross-origin isolated.
+
+```bash
+cd demo && CHROMIUM_PATH=<chrome> node scripts/browser-latency.mjs https://chi944.github.io/quote-distill/ ../results/students/browser-latency.json
+```
+
+**It worked when** all 20 samples finish with no page errors and the page reports its thread count. **Result: passes.** The run used Chromium 153 (headless) on d's PC, a 12th Gen Intel Core i5-12400 (6 cores, 12 threads, 32 GB RAM), on 14 November 2026. The page was cross-origin isolated and reported 4 CPU threads on every sample.
+
+| Student | n | Median per document | p95 |
+|---|---|---|---|
+| Encoder tagger | 20 | 0.09 s | 0.18 s |
+| Generative | 20 | 66.9 s | 108.3 s |
+
+Before Part 6, on one thread, an earlier run on the same machine timed 18 of the same 20 samples before it was cut off: the tagger took 0.29 s median and the generative student 222 s. With 4 threads, the same 18 samples took 0.09 s and 65.0 s, about 3.4 times faster. The single-thread rows are in [`results/students/browser-latency-1-thread.jsonl`](../results/students/browser-latency-1-thread.jsonl).
+
+The generative student's output wasn't valid quotation JSON for 2 of the 20 samples, `seed-01` and `seed-04`, two of the five hand-written seeds. `seed-01` fails the same way in Python with the same q4 file, so that failure is the model's, not the browser's. The tagger read all 20.
+
 ## Next part
 
 - **Publishing:** put the trained models where the page can fetch them, deploy to GitHub Pages, and link it from the README.
