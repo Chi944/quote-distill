@@ -1,0 +1,18 @@
+{"id":"seed-01","tagger_s":0.41,"tagger_status":"Done.","generative_s":257.16,"generative_status":"Done, but the output isn't valid quotation JSON, so nothing could be read from it."}
+{"id":"seed-02","tagger_s":0.54,"tagger_status":"Done.","generative_s":277.22,"generative_status":"Done."}
+{"id":"seed-03","tagger_s":0.15,"tagger_status":"Done.","generative_s":132.36,"generative_status":"Done."}
+{"id":"seed-04","tagger_s":0.3,"tagger_status":"Done.","generative_s":222.23,"generative_status":"Done, but the output isn't valid quotation JSON, so nothing could be read from it."}
+{"id":"seed-05","tagger_s":0.25,"tagger_status":"Done.","generative_s":187.48,"generative_status":"Done."}
+{"id":"dev-s7-000155","tagger_s":0.52,"tagger_status":"Done.","generative_s":356.73,"generative_status":"Done."}
+{"id":"dev-s7-000529","tagger_s":0.2,"tagger_status":"Done.","generative_s":174.22,"generative_status":"Done."}
+{"id":"dev-s7-000559","tagger_s":0.6,"tagger_status":"Done.","generative_s":383.73,"generative_status":"Done."}
+{"id":"dev-s7-000199","tagger_s":0.45,"tagger_status":"Done.","generative_s":324.61,"generative_status":"Done."}
+{"id":"dev-s7-000281","tagger_s":0.52,"tagger_status":"Done.","generative_s":325.03,"generative_status":"Done."}
+{"id":"dev-s7-000824","tagger_s":0.21,"tagger_status":"Done.","generative_s":226.32,"generative_status":"Done."}
+{"id":"dev-s7-000953","tagger_s":0.29,"tagger_status":"Done.","generative_s":193.67,"generative_status":"Done."}
+{"id":"dev-s7-001238","tagger_s":0.17,"tagger_status":"Done.","generative_s":171.55,"generative_status":"Done."}
+{"id":"dev-s7-001733","tagger_s":0.37,"tagger_status":"Done.","generative_s":287.71,"generative_status":"Done."}
+{"id":"dev-s7-000989","tagger_s":0.25,"tagger_status":"Done.","generative_s":170.45,"generative_status":"Done."}
+{"id":"dev-s7-001587","tagger_s":0.29,"tagger_status":"Done.","generative_s":186.57,"generative_status":"Done."}
+{"id":"dev-s7-000169","tagger_s":0.22,"tagger_status":"Done.","generative_s":197.27,"generative_status":"Done."}
+{"id":"dev-s7-000013","tagger_s":0.2,"tagger_status":"Done.","generative_s":201.18,"generative_status":"Done."}
