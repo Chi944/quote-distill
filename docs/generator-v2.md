@@ -60,6 +60,26 @@ By the rule above this is better on the frozen 30 with no loss on the test set, 
 
 The int8 file scored 68/1000 on the v2 validation set and was not uploaded, as with v1.
 
-### Generative student
+### Generative student (retrained 2026-11-13)
 
-Not run yet.
+Trained on the v2 data on the same RTX 3050 8 GB (SmolLM2-360M-Instruct, 2 epochs, seed 0, max length 1536). To fit in 8 GB it used batch 2 with gradient accumulation 8 (the notebook uses 4 x 4, so the effective batch of 16 is the same) and saved a checkpoint every 50 steps so it could resume. On the v2 validation set the PyTorch model scores 995/1000 whole documents exact; the q4 ONNX file matches PyTorch on 90 of the first 100 and scores 90/100. Full training numbers are in `v2/generative-results.json` on Hugging Face.
+
+It was then scored by the `ood` workflow (run 43562870507, `folder = v2`, `test_set` ticked) on a GitHub runner's CPU, the same way as the published generative student (run 42787629414). Predictions are in [`results/v2/`](../results/v2).
+
+| Set | Measure | Published generative (v1 data) | Retrained generative (v2 data) |
+|---|---|---|---|
+| Hand-written, out-of-distribution (30) | Whole document exact | 0/30 (0.0%) | 1/30 (3.3%) |
+| | Per-field exact | 450/780 (57.7%) | 570/780 (73.1%) |
+| | Document fields exact | 173/330 (52.4%) | 231/330 (70.0%) |
+| | Line-item F1 | 0.524 | 0.518 |
+| | Arithmetic agrees with gold | 10/30 (33.3%) | 17/30 (56.7%) |
+| | Output parsed as JSON | 21/30 (70.0%) | 26/30 (86.7%) |
+| | CPU latency per document (median) | 10.7 s | 9.0 s |
+| Hand-written seeds (5) | Whole document exact | 1/5 (20.0%) | 1/5 (20.0%) |
+| | Per-field exact | 80/157 (51.0%) | 152/157 (96.8%) |
+| | Document fields exact | 28/55 (50.9%) | 53/55 (96.4%) |
+| Frozen test set (300) | Whole document exact | 278/300 (92.7%) | 275/300 (91.7%) |
+
+**What it shows.** The generative student gained much more than the tagger from the wider generator. On the 30 hand-written documents every document field improved: quote number 19/30 (from 9/30), date 22/30 (from 12/30), supplier 23/30 (from 19/30), validity 24/30 (from 18/30). Fewer outputs are broken JSON (4 of 30 against 9 of 30). On the 5 seeds it now gets 53 of 55 document fields right, close to the teacher. Payment terms is still the weakest field (6/30, from 3/30), and line items did not improve (F1 0.518 against 0.524). Whole documents fully right are still rare: 1 of 30.
+
+On the frozen test set it lost 3 documents (275/300 against 278/300). By the rule above (better on the frozen 30 without a large loss on the test set) it qualifies to replace the published generative student: it loses 1 point on the test set and gains 15 points of per-field accuracy on the hand-written set. The demo has not been switched; that is a separate change.
