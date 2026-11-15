@@ -11,14 +11,32 @@
       "exact_documents": "2/5 (40.0%)",
       "parsed": "5/5 (100.0%)",
       "latency_s": {
-        "median": 0.059,
-        "p90": 0.125
+        "median": 0.049,
+        "p90": 0.1
       },
       "model_file": {
         "name": "model.onnx",
         "sha256": "faadb4c4f97ba12aa69535038d979dceee516a142384cf4ca29e2087a3a88fe1"
       },
-      "readme_row": "| Student: tagger (CPU, onnxruntime) | 49/55 (89.1%) | 0.8 | 3/5 (60.0%) | 2/5 (40.0%) | 0.059 s median | $0 |"
+      "readme_row": "| Student: tagger (CPU, onnxruntime) | 49/55 (89.1%) | 0.8 | 3/5 (60.0%) | 2/5 (40.0%) | 0.049 s median | $0 |"
+    },
+    "generative": {
+      "documents": 5,
+      "per_field_exact": "53/55 (96.4%)",
+      "line_item_f1": 0.882,
+      "arithmetic_consistent": "3/5 (60.0%)",
+      "arithmetic_agrees": "3/5 (60.0%)",
+      "exact_documents": "1/5 (20.0%)",
+      "parsed": "5/5 (100.0%)",
+      "latency_s": {
+        "median": 12.831,
+        "p90": 17.236
+      },
+      "model_file": {
+        "name": "model_q4.onnx",
+        "sha256": "82c26fafcb718fce64373f2f9bfc9d6e20b078350e1489bfbd94e3279a150caf"
+      },
+      "readme_row": "| Student: generative (CPU, onnxruntime) | 53/55 (96.4%) | 0.882 | 3/5 (60.0%) | 1/5 (20.0%) | 12.831 s median | $0 |"
     }
   }
 }

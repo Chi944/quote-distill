@@ -80,7 +80,7 @@ The browser test runs with `npm test` when the tiny models and Chromium (`CHROMI
 
 **Step.** GitHub Pages serves the built page ([`.github/workflows/pages.yml`](../.github/workflows/pages.yml)), and the models come from a public Hugging Face repo. GitHub can't hold them: the float32 tagger is 128 MB, over GitHub's 100 MB file limit, and Pages doesn't serve Git LFS files. Hugging Face serves model files to any page, free and without a key.
 
-The build reads `VITE_MODEL_BASE`, the URL above the two model folders, for example `https://huggingface.co/<user>/<repo>/resolve/main/`. The page then fetches `<base>tagger/...` and `<base>generative/...` instead of `models/` next to itself. Without it, the page reads `models/` as before. The workflow takes the URL from the repository variable `MODEL_BASE`.
+The build reads `VITE_MODEL_BASE`, the URL above the two model folders, for example `https://huggingface.co/<user>/<repo>/resolve/main/`. The page then fetches `<base>tagger/...` and `<base>generative/...` instead of `models/` next to itself. Without it, the page reads `models/` as before. The workflow takes the URL from the repository variable `MODEL_BASE` and adds `MODEL_SET`, set in the workflow: since 2026-11-15 that is `v2/`, so the live page loads the students retrained on generator v2 from `v2/tagger/` and `v2/generative/` ([generator-v2.md](generator-v2.md)). Set it to an empty string to go back to the first published models.
 
 To publish, once: make the model repo public; under Settings > Pages set the source to GitHub Actions; under Settings > Secrets and variables > Actions > Variables add `MODEL_BASE`. Then run the workflow, or push to main.
 

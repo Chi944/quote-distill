@@ -6,7 +6,7 @@
 
 A supplier-quotation extractor distilled from Claude into small open models that run entirely in your browser, with an honest teacher-versus-student evaluation.
 
-**Live demo:** [chi944.github.io/quote-distill](https://chi944.github.io/quote-distill/). It's a static page with no API key, no server and no paid service. The models download once from [Hugging Face](https://huggingface.co/werty3684/quote-distill-students) (the tagger is 128 MB, the generative model 387 MB) and then run on your device.
+**Live demo:** [chi944.github.io/quote-distill](https://chi944.github.io/quote-distill/). It's a static page with no API key, no server and no paid service. The models download once from [Hugging Face](https://huggingface.co/werty3684/quote-distill-students) (the tagger is 128 MB, the generative model 387 MB) and then run on your device. Since 2026-11-15 the demo uses the students retrained on generator v2, which do better on hand-written quotations in new layouts; see [docs/generator-v2.md](docs/generator-v2.md). The table below is the first published students.
 
 ## Results
 
