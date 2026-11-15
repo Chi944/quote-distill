@@ -56,7 +56,7 @@ Per-field exact counts line-item fields by position, so its denominator moves wi
 
 **What it shows.** Nothing was lost on the generator's own test set, and line items on unseen layouts are found more often (precision 56/91, recall 56/75; F1 0.675 from 0.452). But the headline barely moved: 1 of 30 hand-written documents is fully right, and the document fields are almost unchanged (244/330 from 240/330). The weakest fields on the 30 are payment terms (4/30, unchanged), quote number (15/30, down from 22/30 with the published tagger) and currency (16/30, from 17/30); the gains are in supplier, totals and line items. Wider layouts and wording were not enough on their own; the tagger still misses phrasings and header shapes that neither generator style prints.
 
-By the rule above this is better on the frozen 30 with no loss on the test set, so the v2 tagger qualifies to replace the published one. The gain is small, and the demo has not been switched.
+By the rule above this is better on the frozen 30 with no loss on the test set, so the v2 tagger qualifies to replace the published one. The gain is small; the demo was switched to it on 2026-11-15 together with the generative student.
 
 The int8 file scored 68/1000 on the v2 validation set and was not uploaded, as with v1.
 
@@ -82,4 +82,4 @@ It was then scored by the `ood` workflow (run 43562870507, `folder = v2`, `test_
 
 **What it shows.** The generative student gained much more than the tagger from the wider generator. On the 30 hand-written documents every document field improved: quote number 19/30 (from 9/30), date 22/30 (from 12/30), supplier 23/30 (from 19/30), validity 24/30 (from 18/30). Fewer outputs are broken JSON (4 of 30 against 9 of 30). On the 5 seeds it now gets 53 of 55 document fields right, close to the teacher. Payment terms is still the weakest field (6/30, from 3/30), and line items did not improve (F1 0.518 against 0.524). Whole documents fully right are still rare: 1 of 30.
 
-On the frozen test set it lost 3 documents (275/300 against 278/300). By the rule above (better on the frozen 30 without a large loss on the test set) it qualifies to replace the published generative student: it loses 1 point on the test set and gains 15 points of per-field accuracy on the hand-written set. The demo has not been switched; that is a separate change.
+On the frozen test set it lost 3 documents (275/300 against 278/300). By the rule above (better on the frozen 30 without a large loss on the test set) it qualifies to replace the published generative student: it loses 1 point on the test set and gains 15 points of per-field accuracy on the hand-written set. The owner approved switching, and from 2026-11-15 the live demo loads both v2 students (`MODEL_SET: v2/` in [`pages.yml`](../.github/workflows/pages.yml)).

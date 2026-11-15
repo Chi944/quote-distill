@@ -2,7 +2,8 @@ name: pages
 
 # Builds the demo and publishes it with GitHub Pages. The page loads its models from MODEL_BASE (a repository
 # variable, e.g. https://huggingface.co/<user>/<repo>/resolve/main/), which must be public and hold tagger/ and
-# generative/ folders. Needs Settings > Pages > Source: GitHub Actions.
+# generative/ folders. MODEL_SET picks the folder under it: "v2/" for the students retrained on generator v2
+# (docs/generator-v2.md), or "" for the first published ones. Needs Settings > Pages > Source: GitHub Actions.
 
 on:
   push:
@@ -31,10 +32,15 @@ jobs:
           cache-dependency-path: demo/package-lock.json
       - run: npm ci --ignore-scripts
         working-directory: demo
+      - name: Pick the model folder
+        env:
+          MODEL_BASE: ${{ vars.MODEL_BASE }}
+          MODEL_SET: v2/
+        run: |
+          base="${MODEL_BASE%/}"
+          echo "VITE_MODEL_BASE=${base:+$base/$MODEL_SET}" >> "$GITHUB_ENV"
       - run: npm run build
         working-directory: demo
-        env:
-          VITE_MODEL_BASE: ${{ vars.MODEL_BASE }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: demo/dist
